@@ -6,6 +6,8 @@
 
 Una calculadora de probabilidades de combate para Dungeons & Dragons 5e inspirada en Baldur's Gate 3. Calcula las probabilidades exactas de impactar, hacer crítico y el daño esperado contra cualquier enemigo.
 
+![Vista general de la calculadora](screenshots/preview-full.png)
+
 ### Características principales
 
 - **Tabla completa de probabilidades**: Ve tus probabilidades de impacto contra CAs del 1 al 30
@@ -19,7 +21,7 @@ Una calculadora de probabilidades de combate para Dungeons & Dragons 5e inspirad
 
 ### Cómo usar
 
-1. Abre `calculator-standalone.html` en cualquier navegador o https://francomal.github.io/dnd-attack-probability/
+1. Abre `calculator-standalone.html` en cualquier navegador
 2. Configura tu personaje:
    - Bonificador de ataque (+5, +8, etc.)
    - Dados de daño (1d8, 2d6, etc.)
@@ -49,6 +51,8 @@ Utiliza distribución multinomial para cálculos precisos:
 
 A combat probability calculator for Dungeons & Dragons 5e inspired by Baldur's Gate 3. It calculates exact probabilities of hitting, critical strikes, and expected damage against any enemy.
 
+![Calculator overview](screenshots/preview-full.png)
+
 ### Main Features
 
 - **Complete probability table**: See your hit chances against AC 1 to 30
@@ -62,7 +66,7 @@ A combat probability calculator for Dungeons & Dragons 5e inspired by Baldur's G
 
 ### How to Use
 
-1. Open `calculator-standalone.html` in any browser or https://francomal.github.io/dnd-attack-probability/
+1. Open `calculator-standalone.html` in any browser
 2. Configure your character:
    - Attack bonus (+5, +8, etc.)
    - Damage dice (1d8, 2d6, etc.)
@@ -101,6 +105,16 @@ Uses multinomial distribution for precise calculations:
 - 50.6% chance to hit all 3 attacks
 
 **Click on distribution groups to see detailed critical breakdowns!**
+
+### 📸 Screenshots / Capturas de Pantalla
+
+**Distribución de múltiples ataques con desglose de críticos:**
+
+![Distribución detallada de múltiples ataques](screenshots/multiattack-detail.png)
+
+*La imagen muestra el desglose completo de probabilidades para múltiples ataques, incluyendo todas las combinaciones posibles de impactos normales y críticos, con rangos de daño exactos.*
+
+*The image shows the complete probability breakdown for multiple attacks, including all possible combinations of normal and critical hits, with exact damage ranges.*
 
 ---
 
