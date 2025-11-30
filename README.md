@@ -6,7 +6,12 @@
 
 Una calculadora de probabilidades de combate para Dungeons & Dragons 5e inspirada en Baldur's Gate 3. Calcula las probabilidades exactas de impactar, hacer crítico y el daño esperado contra cualquier enemigo.
 
+<details>
+<summary>📸 Ver captura de pantalla (click para expandir)</summary>
+
 ![Vista general de la calculadora](screenshots/preview-full.png)
+
+</details>
 
 ### Características principales
 
@@ -45,13 +50,18 @@ Utiliza distribución multinomial para cálculos precisos:
 
 ---
 
-## 🇬🇧 English
+## 🇺🇸 English
 
 ### What is this?
 
 A combat probability calculator for Dungeons & Dragons 5e inspired by Baldur's Gate 3. It calculates exact probabilities of hitting, critical strikes, and expected damage against any enemy.
 
+<details>
+<summary>📸 View screenshot (click to expand)</summary>
+
 ![Calculator overview](screenshots/preview-full.png)
+
+</details>
 
 ### Main Features
 
@@ -108,13 +118,18 @@ Uses multinomial distribution for precise calculations:
 
 ### 📸 Screenshots / Capturas de Pantalla
 
-**Distribución de múltiples ataques con desglose de críticos:**
+<details>
+<summary><strong>Ver distribución de múltiples ataques / View multiple attacks distribution</strong></summary>
 
 ![Distribución detallada de múltiples ataques](screenshots/multiattack-detail.png)
 
+**🇪🇸 Español:**
 *La imagen muestra el desglose completo de probabilidades para múltiples ataques, incluyendo todas las combinaciones posibles de impactos normales y críticos, con rangos de daño exactos.*
 
+**🇺🇸 English:**
 *The image shows the complete probability breakdown for multiple attacks, including all possible combinations of normal and critical hits, with exact damage ranges.*
+
+</details>
 
 ---
 
