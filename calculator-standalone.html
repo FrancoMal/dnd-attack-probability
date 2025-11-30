@@ -1,0 +1,1560 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D&D Attack Probability Calculator</title>
+    <style>
+/* Reset y variables */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+:root {
+    /* Colores principales - tema D&D oscuro */
+    --bg-primary: #1a1a1a;
+    --bg-secondary: #252525;
+    --bg-tertiary: #303030;
+    --bg-hover: #383838;
+
+    /* Colores de estado */
+    --color-miss: #d32f2f;
+    --color-hit: #388e3c;
+    --color-crit: #ffa000;
+    --color-highlight: #5e35b1;
+
+    /* Texto */
+    --text-primary: #e0e0e0;
+    --text-secondary: #b0b0b0;
+    --text-muted: #808080;
+
+    /* Bordes */
+    --border-color: #404040;
+    --border-radius: 8px;
+
+    /* Sombras */
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.3);
+    --shadow-md: 0 4px 8px rgba(0, 0, 0, 0.4);
+    --shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.5);
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1a1a1a 0%, #2d1b1b 100%);
+    color: var(--text-primary);
+    line-height: 1.6;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Header */
+header {
+    text-align: center;
+    margin-bottom: 30px;
+    padding: 30px 20px;
+    background: var(--bg-secondary);
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-md);
+}
+
+header h1 {
+    font-size: 2.5em;
+    color: var(--color-crit);
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    margin-bottom: 10px;
+}
+
+.subtitle {
+    color: var(--text-secondary);
+    font-size: 1.1em;
+}
+
+/* Layout principal */
+.main-layout {
+    display: grid;
+    grid-template-columns: 350px 1fr;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+@media (max-width: 1024px) {
+    .main-layout {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Panel de configuración */
+.config-panel {
+    background: var(--bg-secondary);
+    padding: 25px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-md);
+    height: fit-content;
+    position: sticky;
+    top: 20px;
+}
+
+.config-panel h2 {
+    color: var(--color-highlight);
+    margin-bottom: 20px;
+    font-size: 1.5em;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+.input-group {
+    margin-bottom: 20px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: var(--text-secondary);
+    font-weight: 500;
+    font-size: 0.95em;
+}
+
+.input-group input[type="number"],
+.input-group select {
+    width: 100%;
+    padding: 10px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    color: var(--text-primary);
+    font-size: 1em;
+    transition: all 0.3s;
+}
+
+.input-group input[type="number"]:focus,
+.input-group select:focus {
+    outline: none;
+    border-color: var(--color-highlight);
+    box-shadow: 0 0 0 2px rgba(94, 53, 177, 0.2);
+}
+
+/* Tooltip */
+.tooltip {
+    position: relative;
+    display: inline-block;
+    margin-left: 5px;
+    width: 16px;
+    height: 16px;
+    background: var(--color-highlight);
+    color: white;
+    border-radius: 50%;
+    font-size: 12px;
+    text-align: center;
+    line-height: 16px;
+    cursor: help;
+}
+
+.tooltip-text {
+    visibility: hidden;
+    position: absolute;
+    width: 200px;
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+    text-align: left;
+    border-radius: 4px;
+    padding: 8px;
+    position: absolute;
+    z-index: 1;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -100px;
+    opacity: 0;
+    transition: opacity 0.3s;
+    font-size: 0.85em;
+    box-shadow: var(--shadow-md);
+    border: 1px solid var(--border-color);
+}
+
+.tooltip:hover .tooltip-text {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Info icons (tooltips en tabla) */
+.info-icon {
+    display: inline-block;
+    margin-left: 4px;
+    color: var(--color-highlight);
+    font-size: 0.85em;
+    cursor: help;
+    position: relative;
+    vertical-align: super;
+    font-style: normal;
+}
+
+.info-icon::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    visibility: hidden;
+    opacity: 0;
+    width: 220px;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
+    text-align: left;
+    border-radius: 4px;
+    padding: 10px;
+    z-index: 100;
+    bottom: 125%;
+    left: 50%;
+    margin-left: -110px;
+    font-size: 0.9rem;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border-color);
+    transition: opacity 0.3s, visibility 0.3s;
+    font-style: normal;
+    line-height: 1.4;
+}
+
+.info-icon::before {
+    content: '';
+    position: absolute;
+    visibility: hidden;
+    opacity: 0;
+    bottom: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: var(--bg-primary) transparent transparent transparent;
+    z-index: 100;
+    transition: opacity 0.3s, visibility 0.3s;
+}
+
+.info-icon:hover::after,
+.info-icon:hover::before {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* Constructor de dados */
+.dice-builder {
+    background: var(--bg-tertiary);
+    padding: 15px;
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+}
+
+.dice-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.dice-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: var(--bg-secondary);
+    padding: 8px;
+    border-radius: 4px;
+}
+
+.dice-count {
+    width: 60px !important;
+    padding: 5px !important;
+}
+
+.dice-sides {
+    width: 80px !important;
+    padding: 5px !important;
+}
+
+.btn-remove {
+    background: var(--color-miss);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
+    font-size: 20px;
+    line-height: 1;
+    transition: all 0.3s;
+}
+
+.btn-remove:hover {
+    background: #b71c1c;
+    transform: scale(1.1);
+}
+
+.btn-add {
+    width: 100%;
+    padding: 8px;
+    background: var(--color-hit);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+    transition: all 0.3s;
+}
+
+.btn-add:hover {
+    background: #2e7d32;
+}
+
+.dice-notation {
+    margin-top: 10px;
+    padding: 8px;
+    background: var(--bg-primary);
+    border-radius: 4px;
+    text-align: center;
+    color: var(--color-crit);
+    font-weight: bold;
+    font-family: 'Courier New', monospace;
+}
+
+/* Radio buttons */
+.radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.radio-label {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 8px;
+    background: var(--bg-tertiary);
+    border-radius: 4px;
+    transition: all 0.3s;
+}
+
+.radio-label:hover {
+    background: var(--bg-hover);
+}
+
+.radio-label input[type="radio"] {
+    display: none;
+}
+
+.radio-custom {
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--border-color);
+    border-radius: 50%;
+    margin-right: 10px;
+    position: relative;
+    transition: all 0.3s;
+}
+
+.radio-label input[type="radio"]:checked + .radio-custom {
+    border-color: var(--color-highlight);
+}
+
+.radio-label input[type="radio"]:checked + .radio-custom::after {
+    content: '';
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    background: var(--color-highlight);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+/* Slider */
+input[type="range"] {
+    width: 100%;
+    height: 6px;
+    background: var(--bg-tertiary);
+    outline: none;
+    border-radius: 3px;
+    -webkit-appearance: none;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    background: var(--color-highlight);
+    cursor: pointer;
+    border-radius: 50%;
+    transition: all 0.3s;
+}
+
+input[type="range"]::-webkit-slider-thumb:hover {
+    background: #7e57c2;
+    transform: scale(1.2);
+}
+
+input[type="range"]::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+    background: var(--color-highlight);
+    cursor: pointer;
+    border-radius: 50%;
+    border: none;
+}
+
+.attacks-value {
+    float: right;
+    background: var(--color-highlight);
+    color: white;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 0.9em;
+    font-weight: bold;
+}
+
+/* Botón calcular */
+.btn-calculate {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(135deg, var(--color-crit) 0%, #ff6f00 100%);
+    color: white;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 1.1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s;
+    box-shadow: var(--shadow-sm);
+    margin-top: 10px;
+}
+
+.btn-calculate:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-calculate:active {
+    transform: translateY(0);
+}
+
+/* Panel de resultados */
+.results-panel {
+    background: var(--bg-secondary);
+    padding: 25px;
+    border-radius: var(--border-radius);
+    box-shadow: var(--shadow-md);
+}
+
+.results-panel h2 {
+    color: var(--color-highlight);
+    margin-bottom: 20px;
+    font-size: 1.5em;
+    border-bottom: 2px solid var(--border-color);
+    padding-bottom: 10px;
+}
+
+.roll-requirement {
+    background: var(--bg-tertiary);
+    padding: 15px;
+    border-radius: 4px;
+    margin-bottom: 20px;
+    border-left: 4px solid var(--color-highlight);
+    color: var(--text-secondary);
+}
+
+.table-wrapper {
+    overflow-x: auto;
+    margin-bottom: 20px;
+}
+
+/* Tabla de resultados */
+.results-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: var(--bg-tertiary);
+    border-radius: var(--border-radius);
+    overflow: hidden;
+}
+
+.results-table thead {
+    background: var(--bg-primary);
+}
+
+.results-table th {
+    padding: 15px;
+    text-align: left;
+    color: var(--color-crit);
+    font-weight: 600;
+    border-bottom: 2px solid var(--border-color);
+}
+
+.results-table td {
+    padding: 12px 15px;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.results-table tbody tr {
+    transition: all 0.3s;
+}
+
+.results-table tbody tr:hover {
+    background: var(--bg-hover);
+}
+
+.results-table tbody tr.highlighted {
+    background: rgba(94, 53, 177, 0.2);
+    border-left: 4px solid var(--color-highlight);
+}
+
+.no-data {
+    text-align: center;
+    color: var(--text-muted);
+    padding: 40px !important;
+}
+
+/* Barras de probabilidad */
+.prob-bar {
+    display: flex;
+    height: 24px;
+    border-radius: 4px;
+    overflow: hidden;
+    background: var(--bg-secondary);
+}
+
+.bar-segment {
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.8em;
+    font-weight: bold;
+    transition: all 0.3s;
+}
+
+.bar-segment:hover {
+    filter: brightness(1.2);
+}
+
+.bar-miss {
+    background: var(--color-miss);
+}
+
+.bar-hit {
+    background: var(--color-hit);
+}
+
+.bar-crit {
+    background: var(--color-crit);
+}
+
+/* Panel de múltiples ataques */
+.multi-attack-panel {
+    margin-top: 30px;
+    padding: 20px;
+    background: var(--bg-tertiary);
+    border-radius: var(--border-radius);
+    border: 2px solid var(--border-color);
+}
+
+.multi-attack-panel h3 {
+    color: var(--color-crit);
+    margin-bottom: 15px;
+}
+
+.multi-attack-info {
+    background: var(--bg-secondary);
+    padding: 15px;
+    border-radius: 4px;
+    margin-bottom: 15px;
+    color: var(--text-secondary);
+}
+
+#multiAttackDistribution {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.distribution-item {
+    display: grid;
+    grid-template-columns: 100px 1fr 120px;
+    gap: 15px;
+    align-items: center;
+    background: var(--bg-secondary);
+    padding: 12px;
+    border-radius: 4px;
+}
+
+.dist-label {
+    font-weight: bold;
+    color: var(--text-primary);
+}
+
+.dist-bar {
+    height: 30px;
+    background: linear-gradient(90deg, var(--color-hit) 0%, var(--color-crit) 100%);
+    border-radius: 4px;
+    position: relative;
+    overflow: hidden;
+}
+
+.dist-bar::after {
+    content: attr(data-percent);
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: white;
+    font-weight: bold;
+    font-size: 0.9em;
+}
+
+.dist-damage {
+    text-align: right;
+    color: var(--color-crit);
+    font-weight: bold;
+}
+
+/* Distribución expandible con críticos */
+.distribution-group {
+    background: var(--bg-secondary);
+    border-radius: 4px;
+    margin-bottom: 8px;
+    overflow: hidden;
+}
+
+.dist-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 15px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.dist-header:hover {
+    background: var(--bg-hover);
+}
+
+.dist-hits {
+    font-weight: bold;
+    color: var(--text-primary);
+    font-size: 1.05em;
+}
+
+.dist-total-prob {
+    color: var(--color-crit);
+    font-weight: bold;
+    margin-left: auto;
+    margin-right: 15px;
+}
+
+.expand-btn {
+    background: var(--color-highlight);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+    font-size: 1.2em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+}
+
+.expand-btn:hover {
+    background: #7e57c2;
+    transform: scale(1.1);
+}
+
+.expand-btn.expanded {
+    transform: rotate(180deg);
+}
+
+.dist-details {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease-out;
+    padding: 0 15px;
+}
+
+.dist-details.expanded {
+    max-height: 1000px;
+    padding: 0 15px 15px 15px;
+    transition: max-height 0.4s ease-in;
+}
+
+.dist-combo {
+    display: grid;
+    grid-template-columns: 180px 1fr 160px;
+    gap: 12px;
+    align-items: center;
+    padding: 10px;
+    background: var(--bg-tertiary);
+    border-radius: 4px;
+    margin-bottom: 8px;
+    border-left: 3px solid var(--color-highlight);
+}
+
+.combo-label {
+    color: var(--text-secondary);
+    font-size: 0.9em;
+}
+
+.combo-bar {
+    height: 24px;
+    background: linear-gradient(90deg, var(--color-hit) 0%, var(--color-crit) 100%);
+    border-radius: 4px;
+    position: relative;
+    min-width: 2%;
+}
+
+.combo-bar::after {
+    content: attr(data-percent);
+    position: absolute;
+    left: 8px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: white;
+    font-weight: bold;
+    font-size: 0.85em;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+.combo-damage {
+    text-align: right;
+    color: var(--color-crit);
+    font-weight: bold;
+    font-size: 0.9em;
+    line-height: 1.3;
+}
+
+/* Leyenda */
+.legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    padding: 15px;
+    background: var(--bg-tertiary);
+    border-radius: 4px;
+    margin-top: 20px;
+}
+
+.legend-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.color-box {
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+}
+
+.color-box.miss {
+    background: var(--color-miss);
+}
+
+.color-box.hit {
+    background: var(--color-hit);
+}
+
+.color-box.crit {
+    background: var(--color-crit);
+}
+
+.info-text {
+    color: var(--text-muted);
+    font-size: 0.9em;
+    font-style: italic;
+}
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 20px;
+    color: var(--text-muted);
+    font-size: 0.9em;
+}
+
+/* Estilos de valores */
+.value-miss {
+    color: var(--color-miss);
+    font-weight: bold;
+}
+
+.value-hit {
+    color: var(--color-hit);
+    font-weight: bold;
+}
+
+.value-crit {
+    color: var(--color-crit);
+    font-weight: bold;
+}
+
+.value-dpr {
+    color: var(--text-primary);
+    font-weight: bold;
+}
+
+/* Animaciones */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.results-table tbody tr {
+    animation: fadeIn 0.3s ease-in-out;
+}
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⚔️ D&D Attack Probability Calculator</h1>
+            <p class="subtitle">Calcula tus probabilidades de impacto al estilo Baldur's Gate 3</p>
+        </header>
+
+        <div class="main-layout">
+            <!-- Panel de configuración -->
+            <aside class="config-panel">
+                <h2>⚙️ Configuración de Ataque</h2>
+
+                <div class="input-group">
+                    <label for="attackBonus">
+                        Bonificador de Ataque
+                        <span class="tooltip">?
+                            <span class="tooltip-text">Tu modificador de ataque total (ej: +5)</span>
+                        </span>
+                    </label>
+                    <input type="number" id="attackBonus" value="5" min="-5" max="20" step="1">
+                </div>
+
+                <div class="input-group">
+                    <label for="damageBonus">
+                        Bonificador de Daño
+                        <span class="tooltip">?
+                            <span class="tooltip-text">Modificador que se suma al daño (ej: +3)</span>
+                        </span>
+                    </label>
+                    <input type="number" id="damageBonus" value="3" min="0" max="20" step="1">
+                </div>
+
+                <div class="input-group">
+                    <label>Dados de Daño</label>
+                    <div class="dice-builder">
+                        <div id="diceList" class="dice-list">
+                            <div class="dice-item">
+                                <input type="number" class="dice-count" value="1" min="1" max="10">
+                                <span>d</span>
+                                <select class="dice-sides">
+                                    <option value="4">4</option>
+                                    <option value="6">6</option>
+                                    <option value="8" selected>8</option>
+                                    <option value="10">10</option>
+                                    <option value="12">12</option>
+                                    <option value="20">20</option>
+                                    <option value="100">100</option>
+                                </select>
+                                <button class="btn-remove" onclick="removeDice(this)">×</button>
+                            </div>
+                        </div>
+                        <button class="btn-add" onclick="addDice()">+ Añadir Dado</button>
+                        <div class="dice-notation" id="diceNotation">1d8</div>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Rango Crítico</label>
+                    <select id="critRange">
+                        <option value="20" selected>Solo 20 (5%)</option>
+                        <option value="19">19-20 (10%)</option>
+                        <option value="18">18-20 (15%)</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Ventaja / Desventaja</label>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="advantage" value="disadvantage">
+                            <span class="radio-custom"></span>
+                            Desventaja
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="advantage" value="normal" checked>
+                            <span class="radio-custom"></span>
+                            Normal
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="advantage" value="advantage">
+                            <span class="radio-custom"></span>
+                            Ventaja
+                        </label>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="numberOfAttacks">
+                        Número de Ataques
+                        <span class="attacks-value" id="attacksValue">1</span>
+                    </label>
+                    <input type="range" id="numberOfAttacks" min="1" max="8" value="1" step="1">
+                </div>
+
+                <div class="input-group">
+                    <label for="targetAC">
+                        CA Objetivo (Opcional)
+                        <span class="tooltip">?
+                            <span class="tooltip-text">Clase de Armadura del enemigo específico a destacar</span>
+                        </span>
+                    </label>
+                    <input type="number" id="targetAC" value="" min="1" max="30" placeholder="Ej: 15">
+                </div>
+
+                <button class="btn-calculate" onclick="calculator.calculate()">
+                    🎲 Calcular Probabilidades
+                </button>
+            </aside>
+
+            <!-- Panel de resultados -->
+            <main class="results-panel">
+                <h2>📊 Tabla de Probabilidades</h2>
+
+                <div class="roll-requirement" id="rollRequirement"></div>
+
+                <div class="table-wrapper">
+                    <table class="results-table" id="resultsTable">
+                        <thead>
+                            <tr>
+                                <th>
+                                    CA
+                                    <span class="info-icon" data-tooltip="Clase de Armadura del enemigo">ⓘ</span>
+                                </th>
+                                <th>
+                                    Fallo
+                                    <span class="info-icon" data-tooltip="Probabilidad de no impactar (incluso con 1 natural)">ⓘ</span>
+                                </th>
+                                <th>
+                                    Impacto
+                                    <span class="info-icon" data-tooltip="Probabilidad de impacto normal (sin crítico)">ⓘ</span>
+                                </th>
+                                <th>
+                                    Crítico
+                                    <span class="info-icon" data-tooltip="Probabilidad de crítico (duplica dados de daño)">ⓘ</span>
+                                </th>
+                                <th>
+                                    Daño Normal
+                                    <span class="info-icon" data-tooltip="Rango de daño si impactas sin crítico">ⓘ</span>
+                                </th>
+                                <th>
+                                    Daño Crítico
+                                    <span class="info-icon" data-tooltip="Rango de daño con impacto crítico">ⓘ</span>
+                                </th>
+                                <th>
+                                    DPR
+                                    <span class="info-icon" data-tooltip="Damage Per Round: daño promedio esperado por turno considerando todas las probabilidades">ⓘ</span>
+                                </th>
+                                <th>Visualización</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultsBody">
+                            <tr>
+                                <td colspan="8" class="no-data">
+                                    Haz clic en "Calcular Probabilidades" para ver los resultados
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Panel de múltiples ataques -->
+                <div class="multi-attack-panel" id="multiAttackPanel" style="display: none;">
+                    <h3>🎯 Distribución de Múltiples Ataques</h3>
+                    <div class="multi-attack-info" id="multiAttackInfo"></div>
+                    <div id="multiAttackDistribution"></div>
+                </div>
+
+                <!-- Leyenda -->
+                <div class="legend">
+                    <div class="legend-item">
+                        <span class="color-box miss"></span>
+                        <span>Fallo</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="color-box hit"></span>
+                        <span>Impacto Normal</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="color-box crit"></span>
+                        <span>Crítico</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="info-text">DPR = Damage Per Round (daño promedio esperado)</span>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <footer>
+            <p>Calculadora basada en las reglas de D&D 5e y mecánicas de Baldur's Gate 3</p>
+        </footer>
+    </div>
+
+    <script>
+// Calculadora de probabilidades D&D
+class DnDCalculator {
+    constructor() {
+        this.config = {
+            attackBonus: 5,
+            damageBonus: 3,
+            damageDice: [{ count: 1, sides: 8 }],
+            advantage: 'normal',
+            critRange: 20,
+            numberOfAttacks: 1,
+            targetAC: null
+        };
+
+        this.initializeEventListeners();
+    }
+
+    initializeEventListeners() {
+        // Inputs numéricos
+        document.getElementById('attackBonus').addEventListener('input', (e) => {
+            this.config.attackBonus = parseInt(e.target.value) || 0;
+        });
+
+        document.getElementById('damageBonus').addEventListener('input', (e) => {
+            this.config.damageBonus = parseInt(e.target.value) || 0;
+        });
+
+        document.getElementById('critRange').addEventListener('change', (e) => {
+            this.config.critRange = parseInt(e.target.value);
+        });
+
+        document.getElementById('targetAC').addEventListener('input', (e) => {
+            this.config.targetAC = e.target.value ? parseInt(e.target.value) : null;
+        });
+
+        // Ventaja/Desventaja
+        document.querySelectorAll('input[name="advantage"]').forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                this.config.advantage = e.target.value;
+            });
+        });
+
+        // Número de ataques
+        const attacksSlider = document.getElementById('numberOfAttacks');
+        const attacksValue = document.getElementById('attacksValue');
+        attacksSlider.addEventListener('input', (e) => {
+            this.config.numberOfAttacks = parseInt(e.target.value);
+            attacksValue.textContent = e.target.value;
+        });
+
+        // Dados - delegación de eventos
+        document.getElementById('diceList').addEventListener('input', () => {
+            this.updateDiceFromInputs();
+        });
+    }
+
+    updateDiceFromInputs() {
+        const diceItems = document.querySelectorAll('.dice-item');
+        this.config.damageDice = [];
+
+        diceItems.forEach(item => {
+            const count = parseInt(item.querySelector('.dice-count').value) || 1;
+            const sides = parseInt(item.querySelector('.dice-sides').value);
+            this.config.damageDice.push({ count, sides });
+        });
+
+        this.updateDiceNotation();
+    }
+
+    updateDiceNotation() {
+        const notation = this.config.damageDice
+            .map(d => `${d.count}d${d.sides}`)
+            .join(' + ');
+
+        const fullNotation = this.config.damageBonus > 0
+            ? `${notation} + ${this.config.damageBonus}`
+            : notation;
+
+        document.getElementById('diceNotation').textContent = fullNotation;
+    }
+
+    // ========== CÁLCULO DE PROBABILIDADES ==========
+
+    calculateHitChance(ac) {
+        const targetRoll = ac - this.config.attackBonus;
+        const critMin = this.config.critRange;
+
+        if (this.config.advantage === 'normal') {
+            return this.calculateNormalProbability(targetRoll, critMin);
+        } else if (this.config.advantage === 'advantage') {
+            return this.calculateAdvantageProbability(targetRoll, critMin);
+        } else {
+            return this.calculateDisadvantageProbability(targetRoll, critMin);
+        }
+    }
+
+    calculateNormalProbability(targetRoll, critMin) {
+        // Caso: crítico siempre impacta (incluso si necesitas 21+)
+        if (targetRoll >= 21) {
+            const critChance = (21 - critMin) / 20;
+            return {
+                hit: critChance,
+                crit: critChance,
+                miss: 1 - critChance
+            };
+        }
+
+        // Caso: siempre impactas (excepto con 1, que es fallo automático)
+        if (targetRoll <= 1) {
+            const critChance = (21 - critMin) / 20;
+            return {
+                hit: 0.95, // todo excepto el 1
+                crit: critChance,
+                miss: 0.05
+            };
+        }
+
+        // Caso normal
+        const hitRolls = 21 - targetRoll; // resultados que son hit
+        const critRolls = 21 - critMin;   // resultados que son crítico
+
+        return {
+            hit: hitRolls / 20,
+            crit: critRolls / 20,
+            miss: (targetRoll - 1) / 20
+        };
+    }
+
+    calculateAdvantageProbability(targetRoll, critMin) {
+        // Con ventaja: P(max >= x) = 1 - P(ambos < x) = 1 - ((x-1)/20)²
+
+        let pHit, pCrit;
+
+        if (targetRoll >= 21) {
+            // Solo crítico puede impactar
+            pCrit = 1 - ((critMin - 1) / 20) ** 2;
+            pHit = pCrit;
+        } else if (targetRoll <= 1) {
+            // Casi todo impacta (excepto doble 1)
+            pHit = 1 - (1 / 20) ** 2; // 1 - 0.0025 = 0.9975
+            pCrit = 1 - ((critMin - 1) / 20) ** 2;
+        } else {
+            pHit = 1 - ((targetRoll - 1) / 20) ** 2;
+            pCrit = 1 - ((critMin - 1) / 20) ** 2;
+        }
+
+        return {
+            hit: pHit,
+            crit: pCrit,
+            miss: 1 - pHit
+        };
+    }
+
+    calculateDisadvantageProbability(targetRoll, critMin) {
+        // Con desventaja: P(min >= x) = ((21-x)/20)²
+
+        let pHit, pCrit;
+
+        if (targetRoll >= 21) {
+            // Solo crítico puede impactar
+            pCrit = ((21 - critMin) / 20) ** 2;
+            pHit = pCrit;
+        } else if (targetRoll <= 1) {
+            // Siempre impactas excepto con doble 1
+            pHit = 1 - (1 / 20) ** 2;
+            pCrit = ((21 - critMin) / 20) ** 2;
+        } else {
+            pHit = ((21 - targetRoll) / 20) ** 2;
+            pCrit = ((21 - critMin) / 20) ** 2;
+        }
+
+        return {
+            hit: pHit,
+            crit: pCrit,
+            miss: 1 - pHit
+        };
+    }
+
+    // ========== CÁLCULO DE DAÑO ==========
+
+    calculateAverageDamage(isCrit = false) {
+        let avgDice = 0;
+
+        this.config.damageDice.forEach(die => {
+            const avgPerDie = (1 + die.sides) / 2;
+            const multiplier = isCrit ? die.count * 2 : die.count;
+            avgDice += multiplier * avgPerDie;
+        });
+
+        // El bonificador NO se duplica en crítico
+        return avgDice + this.config.damageBonus;
+    }
+
+    calculateDamageRange(isCrit = false) {
+        let min = 0;
+        let max = 0;
+
+        this.config.damageDice.forEach(die => {
+            const multiplier = isCrit ? die.count * 2 : die.count;
+            min += multiplier * 1;
+            max += multiplier * die.sides;
+        });
+
+        return {
+            min: min + this.config.damageBonus,
+            max: max + this.config.damageBonus
+        };
+    }
+
+    calculateExpectedDPR(hitChance, critChance) {
+        const normalDmg = this.calculateAverageDamage(false);
+        const critDmg = this.calculateAverageDamage(true);
+
+        // DPR = P(hit normal) × daño_normal + P(crit) × daño_crítico
+        const pNormalHit = hitChance - critChance;
+        const dpr = pNormalHit * normalDmg + critChance * critDmg;
+
+        return dpr;
+    }
+
+    // ========== MÚLTIPLES ATAQUES ==========
+
+    calculateMultiAttackDistribution(ac) {
+        const n = this.config.numberOfAttacks;
+        const { hit: pHit, crit: pCrit } = this.calculateHitChance(ac);
+
+        const pMiss = 1 - pHit;
+        const pNormal = pHit - pCrit;
+
+        const normalDmg = this.calculateAverageDamage(false);
+        const critDmg = this.calculateAverageDamage(true);
+
+        // Obtener rangos de daño
+        const normalRange = this.calculateDamageRange(false);
+        const critRange = this.calculateDamageRange(true);
+
+        const results = [];
+
+        // Para cada número total de hits
+        for (let totalHits = 0; totalHits <= n; totalHits++) {
+            const hitCombinations = [];
+
+            // Para cada combinación de críticos dentro de los hits
+            for (let crits = 0; crits <= totalHits; crits++) {
+                const normals = totalHits - crits;
+                const misses = n - totalHits;
+
+                // Probabilidad multinomial
+                const prob = this.multinomialCoeff(n, misses, normals, crits) *
+                            Math.pow(pMiss, misses) *
+                            Math.pow(pNormal, normals) *
+                            Math.pow(pCrit, crits);
+
+                // Daño para esta combinación (promedio y rango)
+                const avgDamage = normals * normalDmg + crits * critDmg;
+                const minDamage = normals * normalRange.min + crits * critRange.min;
+                const maxDamage = normals * normalRange.max + crits * critRange.max;
+
+                // Solo incluir si probabilidad > 0.1%
+                if (prob > 0.001) {
+                    hitCombinations.push({
+                        normals: normals,
+                        crits: crits,
+                        probability: prob,
+                        damage: avgDamage,
+                        damageMin: minDamage,
+                        damageMax: maxDamage
+                    });
+                }
+            }
+
+            // Calcular probabilidad total para este número de hits
+            const totalProbability = hitCombinations.reduce((sum, c) => sum + c.probability, 0);
+
+            results.push({
+                totalHits: totalHits,
+                combinations: hitCombinations,
+                totalProbability: totalProbability
+            });
+        }
+
+        return results;
+    }
+
+    multinomialCoeff(n, k1, k2, k3) {
+        return this.factorial(n) / (this.factorial(k1) * this.factorial(k2) * this.factorial(k3));
+    }
+
+    factorial(n) {
+        if (n === 0 || n === 1) return 1;
+        let result = 1;
+        for (let i = 2; i <= n; i++) {
+            result *= i;
+        }
+        return result;
+    }
+
+    binomial(n, k) {
+        if (k < 0 || k > n) return 0;
+        if (k === 0 || k === n) return 1;
+
+        // Optimización: usar la mitad más pequeña
+        k = Math.min(k, n - k);
+
+        let result = 1;
+        for (let i = 0; i < k; i++) {
+            result *= (n - i);
+            result /= (i + 1);
+        }
+
+        return result;
+    }
+
+    // ========== GENERACIÓN DE UI ==========
+
+    calculate() {
+        const resultsBody = document.getElementById('resultsBody');
+        const rollRequirement = document.getElementById('rollRequirement');
+        const multiAttackPanel = document.getElementById('multiAttackPanel');
+
+        // Limpiar resultados previos
+        resultsBody.innerHTML = '';
+
+        // Calcular para CAs del 1 al 30
+        const minAC = 1;
+        const maxAC = 30;
+
+        for (let ac = minAC; ac <= maxAC; ac++) {
+            const { hit, crit, miss } = this.calculateHitChance(ac);
+            const dpr = this.calculateExpectedDPR(hit, crit);
+
+            // Calcular rangos de daño
+            const normalRange = this.calculateDamageRange(false);
+            const critRange = this.calculateDamageRange(true);
+
+            const row = document.createElement('tr');
+
+            // Destacar CA objetivo
+            if (this.config.targetAC && ac === this.config.targetAC) {
+                row.classList.add('highlighted');
+            }
+
+            row.innerHTML = `
+                <td><strong>${ac}</strong></td>
+                <td class="value-miss">${(miss * 100).toFixed(1)}%</td>
+                <td class="value-hit">${((hit - crit) * 100).toFixed(1)}%</td>
+                <td class="value-crit">${(crit * 100).toFixed(1)}%</td>
+                <td class="value-damage">${normalRange.min}-${normalRange.max}</td>
+                <td class="value-damage">${critRange.min}-${critRange.max}</td>
+                <td class="value-dpr">${dpr.toFixed(2)}</td>
+                <td>
+                    <div class="prob-bar">
+                        ${miss > 0.01 ? `<div class="bar-segment bar-miss" style="width: ${miss * 100}%"></div>` : ''}
+                        ${(hit - crit) > 0.01 ? `<div class="bar-segment bar-hit" style="width: ${(hit - crit) * 100}%"></div>` : ''}
+                        ${crit > 0.01 ? `<div class="bar-segment bar-crit" style="width: ${crit * 100}%"></div>` : ''}
+                    </div>
+                </td>
+            `;
+
+            resultsBody.appendChild(row);
+        }
+
+        // Mostrar información del roll requerido
+        if (this.config.targetAC) {
+            const targetRoll = this.config.targetAC - this.config.attackBonus;
+            let requirementText = '';
+
+            if (targetRoll <= 1) {
+                requirementText = `<strong>CA ${this.config.targetAC}:</strong> Impactas automáticamente (excepto con 1 natural)`;
+            } else if (targetRoll >= 21) {
+                requirementText = `<strong>CA ${this.config.targetAC}:</strong> Solo puedes impactar con crítico natural`;
+            } else {
+                requirementText = `<strong>CA ${this.config.targetAC}:</strong> Necesitas sacar <strong>${targetRoll}</strong> o más en el d20`;
+            }
+
+            const normalDmg = this.calculateAverageDamage(false);
+            const critDmg = this.calculateAverageDamage(true);
+            const normalRange = this.calculateDamageRange(false);
+            const critRange = this.calculateDamageRange(true);
+
+            requirementText += `<br><strong>Daño normal:</strong> ${normalRange.min}-${normalRange.max} (promedio ${normalDmg.toFixed(1)})`;
+            requirementText += `<br><strong>Daño crítico:</strong> ${critRange.min}-${critRange.max} (promedio ${critDmg.toFixed(1)})`;
+
+            rollRequirement.innerHTML = requirementText;
+        } else {
+            rollRequirement.innerHTML = '<strong>Consejo:</strong> Especifica una CA objetivo para ver los requisitos de tirada';
+        }
+
+        // Múltiples ataques
+        if (this.config.numberOfAttacks > 1) {
+            multiAttackPanel.style.display = 'block';
+            this.renderMultiAttackDistribution();
+        } else {
+            multiAttackPanel.style.display = 'none';
+        }
+    }
+
+    renderMultiAttackDistribution() {
+        const targetAC = this.config.targetAC || 15;
+        const distribution = this.calculateMultiAttackDistribution(targetAC);
+        const distributionDiv = document.getElementById('multiAttackDistribution');
+        const infoDiv = document.getElementById('multiAttackInfo');
+
+        // Texto de ventaja/desventaja
+        const advantageText = this.config.advantage === 'advantage' ? ' <strong style="color: var(--color-hit);">(CON VENTAJA)</strong>' :
+                              this.config.advantage === 'disadvantage' ? ' <strong style="color: var(--color-miss);">(CON DESVENTAJA)</strong>' :
+                              '';
+
+        // Calcular resumen de daño total
+        const normalRange = this.calculateDamageRange(false);
+        const critRange = this.calculateDamageRange(true);
+        const n = this.config.numberOfAttacks;
+
+        const allNormalsMin = n * normalRange.min;
+        const allNormalsMax = n * normalRange.max;
+        const allCritsMin = n * critRange.min;
+        const allCritsMax = n * critRange.max;
+
+        // Información general
+        const { hit: pHit, crit: pCrit } = this.calculateHitChance(targetAC);
+        infoDiv.innerHTML = `
+            <strong>Contra CA ${targetAC} con ${this.config.numberOfAttacks} ataques${advantageText}:</strong><br>
+            Probabilidad de impacto por ataque: ${(pHit * 100).toFixed(1)}%<br>
+            Probabilidad de crítico por ataque: ${(pCrit * 100).toFixed(1)}%<br>
+            <br>
+            <strong style="color: var(--color-crit);">📊 Resumen de daño total:</strong><br>
+            <span style="color: var(--text-secondary);">
+                • Si todos impactan (sin críticos): <strong style="color: var(--color-hit);">${allNormalsMin}-${allNormalsMax} daño</strong><br>
+                • Si todos impactan con críticos: <strong style="color: var(--color-crit);">${allCritsMin}-${allCritsMax} daño</strong><br>
+                • Rango total posible: <strong style="color: var(--text-primary);">0-${allCritsMax} daño</strong>
+            </span><br>
+            <br>
+            <em style="color: var(--text-muted); font-size: 0.9em;">Haz clic en cada grupo para ver el desglose detallado de críticos</em>
+        `;
+
+        // Distribución con grupos expandibles
+        distributionDiv.innerHTML = '';
+
+        distribution.forEach(({ totalHits, combinations, totalProbability }) => {
+            if (totalProbability < 0.001) return; // Ignorar probabilidades muy bajas
+
+            const group = document.createElement('div');
+            group.className = 'distribution-group';
+
+            // Header del grupo
+            const header = document.createElement('div');
+            header.className = 'dist-header';
+            header.innerHTML = `
+                <span class="dist-hits">${totalHits} ${totalHits === 1 ? 'impacto' : 'impactos'}</span>
+                <span class="dist-total-prob">${(totalProbability * 100).toFixed(1)}%</span>
+                <button class="expand-btn">▼</button>
+            `;
+
+            // Detalles expandibles (combinaciones de críticos)
+            const details = document.createElement('div');
+            details.className = 'dist-details';
+
+            combinations.forEach(({ normals, crits, probability, damage, damageMin, damageMax }) => {
+                const combo = document.createElement('div');
+                combo.className = 'dist-combo';
+
+                const label = normals === 0 && crits === 0
+                    ? 'Sin impactos'
+                    : `${normals} ${normals === 1 ? 'normal' : 'normales'}, ${crits} ${crits === 1 ? 'crítico' : 'críticos'}`;
+
+                // Formatear display de daño
+                const damageDisplay = damageMin === damageMax
+                    ? `${damageMin} daño`
+                    : `${damageMin}-${damageMax} daño <span style="color: var(--text-muted); font-size: 0.85em;">(avg: ${damage.toFixed(1)})</span>`;
+
+                combo.innerHTML = `
+                    <span class="combo-label">${label}</span>
+                    <div class="combo-bar" style="width: ${Math.max((probability / totalProbability) * 100, 2)}%" data-percent="${(probability * 100).toFixed(1)}%"></div>
+                    <span class="combo-damage">${damageDisplay}</span>
+                `;
+
+                details.appendChild(combo);
+            });
+
+            // Event listener para expandir/colapsar
+            header.addEventListener('click', () => {
+                const btn = header.querySelector('.expand-btn');
+                details.classList.toggle('expanded');
+                btn.classList.toggle('expanded');
+            });
+
+            group.appendChild(header);
+            group.appendChild(details);
+            distributionDiv.appendChild(group);
+        });
+    }
+}
+
+// ========== HELPERS GLOBALES ==========
+
+function addDice() {
+    const diceList = document.getElementById('diceList');
+
+    const diceItem = document.createElement('div');
+    diceItem.className = 'dice-item';
+    diceItem.innerHTML = `
+        <input type="number" class="dice-count" value="1" min="1" max="10">
+        <span>d</span>
+        <select class="dice-sides">
+            <option value="4">4</option>
+            <option value="6" selected>6</option>
+            <option value="8">8</option>
+            <option value="10">10</option>
+            <option value="12">12</option>
+            <option value="20">20</option>
+            <option value="100">100</option>
+        </select>
+        <button class="btn-remove" onclick="removeDice(this)">×</button>
+    `;
+
+    diceList.appendChild(diceItem);
+    calculator.updateDiceFromInputs();
+}
+
+function removeDice(button) {
+    const diceList = document.getElementById('diceList');
+
+    // No permitir eliminar el último dado
+    if (diceList.children.length <= 1) {
+        alert('Debes tener al menos un dado de daño');
+        return;
+    }
+
+    button.parentElement.remove();
+    calculator.updateDiceFromInputs();
+}
+
+// ========== INICIALIZACIÓN ==========
+
+let calculator;
+
+document.addEventListener('DOMContentLoaded', () => {
+    calculator = new DnDCalculator();
+    calculator.updateDiceNotation();
+
+    // Calcular automáticamente al cargar
+    calculator.calculate();
+});
+    </script>
+</body>
+</html>

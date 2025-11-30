@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>D&D Attack Probability Calculator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>⚔️ D&D Attack Probability Calculator</h1>
+            <p class="subtitle">Calcula tus probabilidades de impacto al estilo Baldur's Gate 3</p>
+        </header>
+
+        <div class="main-layout">
+            <!-- Panel de configuración -->
+            <aside class="config-panel">
+                <h2>⚙️ Configuración de Ataque</h2>
+
+                <div class="input-group">
+                    <label for="attackBonus">
+                        Bonificador de Ataque
+                        <span class="tooltip">?
+                            <span class="tooltip-text">Tu modificador de ataque total (ej: +5)</span>
+                        </span>
+                    </label>
+                    <input type="number" id="attackBonus" value="5" min="-5" max="20" step="1">
+                </div>
+
+                <div class="input-group">
+                    <label for="damageBonus">
+                        Bonificador de Daño
+                        <span class="tooltip">?
+                            <span class="tooltip-text">Modificador que se suma al daño (ej: +3)</span>
+                        </span>
+                    </label>
+                    <input type="number" id="damageBonus" value="3" min="0" max="20" step="1">
+                </div>
+
+                <div class="input-group">
+                    <label>Dados de Daño</label>
+                    <div class="dice-builder">
+                        <div id="diceList" class="dice-list">
+                            <div class="dice-item">
+                                <input type="number" class="dice-count" value="1" min="1" max="10">
+                                <span>d</span>
+                                <select class="dice-sides">
+                                    <option value="4">4</option>
+                                    <option value="6">6</option>
+                                    <option value="8" selected>8</option>
+                                    <option value="10">10</option>
+                                    <option value="12">12</option>
+                                    <option value="20">20</option>
+                                    <option value="100">100</option>
+                                </select>
+                                <button class="btn-remove" onclick="removeDice(this)">×</button>
+                            </div>
+                        </div>
+                        <button class="btn-add" onclick="addDice()">+ Añadir Dado</button>
+                        <div class="dice-notation" id="diceNotation">1d8</div>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label>Rango Crítico</label>
+                    <select id="critRange">
+                        <option value="20" selected>Solo 20 (5%)</option>
+                        <option value="19">19-20 (10%)</option>
+                        <option value="18">18-20 (15%)</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label>Ventaja / Desventaja</label>
+                    <div class="radio-group">
+                        <label class="radio-label">
+                            <input type="radio" name="advantage" value="disadvantage">
+                            <span class="radio-custom"></span>
+                            Desventaja
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="advantage" value="normal" checked>
+                            <span class="radio-custom"></span>
+                            Normal
+                        </label>
+                        <label class="radio-label">
+                            <input type="radio" name="advantage" value="advantage">
+                            <span class="radio-custom"></span>
+                            Ventaja
+                        </label>
+                    </div>
+                </div>
+
+                <div class="input-group">
+                    <label for="numberOfAttacks">
+                        Número de Ataques
+                        <span class="attacks-value" id="attacksValue">1</span>
+                    </label>
+                    <input type="range" id="numberOfAttacks" min="1" max="8" value="1" step="1">
+                </div>
+
+                <div class="input-group">
+                    <label for="targetAC">
+                        CA Objetivo (Opcional)
+                        <span class="tooltip">?
+                            <span class="tooltip-text">Clase de Armadura del enemigo específico a destacar</span>
+                        </span>
+                    </label>
+                    <input type="number" id="targetAC" value="" min="1" max="30" placeholder="Ej: 15">
+                </div>
+
+                <button class="btn-calculate" onclick="calculator.calculate()">
+                    🎲 Calcular Probabilidades
+                </button>
+            </aside>
+
+            <!-- Panel de resultados -->
+            <main class="results-panel">
+                <h2>📊 Tabla de Probabilidades</h2>
+
+                <div class="roll-requirement" id="rollRequirement"></div>
+
+                <div class="table-wrapper">
+                    <table class="results-table" id="resultsTable">
+                        <thead>
+                            <tr>
+                                <th>
+                                    CA
+                                    <span class="info-icon" data-tooltip="Clase de Armadura del enemigo">ⓘ</span>
+                                </th>
+                                <th>
+                                    Fallo
+                                    <span class="info-icon" data-tooltip="Probabilidad de no impactar (incluso con 1 natural)">ⓘ</span>
+                                </th>
+                                <th>
+                                    Impacto
+                                    <span class="info-icon" data-tooltip="Probabilidad de impacto normal (sin crítico)">ⓘ</span>
+                                </th>
+                                <th>
+                                    Crítico
+                                    <span class="info-icon" data-tooltip="Probabilidad de crítico (duplica dados de daño)">ⓘ</span>
+                                </th>
+                                <th>
+                                    Daño Normal
+                                    <span class="info-icon" data-tooltip="Rango de daño si impactas sin crítico">ⓘ</span>
+                                </th>
+                                <th>
+                                    Daño Crítico
+                                    <span class="info-icon" data-tooltip="Rango de daño con impacto crítico">ⓘ</span>
+                                </th>
+                                <th>
+                                    DPR
+                                    <span class="info-icon" data-tooltip="Damage Per Round: daño promedio esperado por turno considerando todas las probabilidades">ⓘ</span>
+                                </th>
+                                <th>Visualización</th>
+                            </tr>
+                        </thead>
+                        <tbody id="resultsBody">
+                            <tr>
+                                <td colspan="8" class="no-data">
+                                    Haz clic en "Calcular Probabilidades" para ver los resultados
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <!-- Panel de múltiples ataques -->
+                <div class="multi-attack-panel" id="multiAttackPanel" style="display: none;">
+                    <h3>🎯 Distribución de Múltiples Ataques</h3>
+                    <div class="multi-attack-info" id="multiAttackInfo"></div>
+                    <div id="multiAttackDistribution"></div>
+                </div>
+
+                <!-- Leyenda -->
+                <div class="legend">
+                    <div class="legend-item">
+                        <span class="color-box miss"></span>
+                        <span>Fallo</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="color-box hit"></span>
+                        <span>Impacto Normal</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="color-box crit"></span>
+                        <span>Crítico</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="info-text">DPR = Damage Per Round (daño promedio esperado)</span>
+                    </div>
+                </div>
+            </main>
+        </div>
+
+        <footer>
+            <p>Calculadora basada en las reglas de D&D 5e y mecánicas de Baldur's Gate 3</p>
+        </footer>
+    </div>
+
+    <script src="calculator.js"></script>
+</body>
+</html>
