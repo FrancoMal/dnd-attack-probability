@@ -57,6 +57,10 @@ header {
     box-shadow: var(--shadow-md);
 }
 
+header {
+    position: relative;
+}
+
 header h1 {
     font-size: 2.5em;
     color: var(--color-crit);
@@ -67,6 +71,49 @@ header h1 {
 .subtitle {
     color: var(--text-secondary);
     font-size: 1.1em;
+}
+
+/* Language Selector */
+.language-selector {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+.language-selector select {
+    padding: 8px 12px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    color: var(--text-primary);
+    font-size: 0.95em;
+    cursor: pointer;
+    transition: all 0.3s;
+    min-width: 150px;
+}
+
+.language-selector select:hover {
+    background: var(--bg-hover);
+    border-color: var(--color-highlight);
+}
+
+.language-selector select:focus {
+    outline: none;
+    border-color: var(--color-highlight);
+    box-shadow: 0 0 0 2px rgba(94, 53, 177, 0.2);
+}
+
+@media (max-width: 768px) {
+    .language-selector {
+        position: static;
+        margin-top: 15px;
+        text-align: center;
+    }
+
+    .language-selector select {
+        width: 100%;
+        max-width: 250px;
+    }
 }
 
 /* Layout principal */
@@ -159,7 +206,7 @@ header h1 {
     border-radius: 4px;
     padding: 8px;
     position: absolute;
-    z-index: 1;
+    z-index: 1000;
     bottom: 125%;
     left: 50%;
     margin-left: -100px;
@@ -198,7 +245,7 @@ header h1 {
     text-align: left;
     border-radius: 4px;
     padding: 10px;
-    z-index: 100;
+    z-index: 1000;
     bottom: 125%;
     left: 50%;
     margin-left: -110px;
@@ -221,7 +268,7 @@ header h1 {
     border-width: 5px;
     border-style: solid;
     border-color: var(--bg-primary) transparent transparent transparent;
-    z-index: 100;
+    z-index: 1000;
     transition: opacity 0.3s, visibility 0.3s;
 }
 
@@ -809,4 +856,324 @@ footer {
 
 .results-table tbody tr {
     animation: fadeIn 0.3s ease-in-out;
+}
+
+/* ========== COMBAT STATISTICS PANEL ========== */
+.combat-stats-panel {
+    background: var(--bg-secondary);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    margin-bottom: 25px;
+    border: 2px solid var(--color-highlight);
+    box-shadow: var(--shadow-md);
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.combat-stats-panel h3 {
+    color: var(--color-crit);
+    margin: 0 0 10px 0;
+    font-size: 1.3em;
+}
+
+.vs-ac-label {
+    color: var(--text-secondary);
+    margin-bottom: 15px;
+    font-size: 0.95em;
+}
+
+.vs-ac-label .ac-number {
+    color: var(--color-highlight);
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+    margin: 15px 0;
+}
+
+.stat-card {
+    background: var(--bg-tertiary);
+    padding: 15px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.3s;
+}
+
+.stat-card:hover {
+    background: var(--bg-hover);
+    transform: translateY(-2px);
+}
+
+.stat-card .stat-icon {
+    font-size: 2em;
+}
+
+.stat-content {
+    flex: 1;
+}
+
+.stat-label {
+    color: var(--text-secondary);
+    font-size: 0.85em;
+    margin-bottom: 4px;
+}
+
+.stat-value {
+    font-size: 1.8em;
+    font-weight: bold;
+    color: var(--color-crit);
+    line-height: 1;
+}
+
+.stat-unit {
+    color: var(--text-muted);
+    font-size: 0.75em;
+    margin-top: 2px;
+}
+
+.defeat-times {
+    background: var(--bg-tertiary);
+    padding: 15px;
+    border-radius: 6px;
+    margin: 15px 0;
+}
+
+.defeat-times h4 {
+    color: var(--color-hit);
+    margin: 0 0 12px 0;
+    font-size: 1.1em;
+}
+
+.defeat-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+}
+
+.defeat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: var(--bg-secondary);
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+.defeat-enemy {
+    color: var(--text-secondary);
+}
+
+.defeat-turns {
+    color: var(--color-crit);
+    font-weight: bold;
+}
+
+.level-estimate {
+    text-align: center;
+    padding: 15px;
+    background: linear-gradient(135deg, var(--color-highlight), #7e57c2);
+    border-radius: 6px;
+    color: white;
+    margin-top: 15px;
+}
+
+.level-badge {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.level-explanation {
+    font-size: 0.85em;
+    opacity: 0.9;
+}
+
+/* Responsive para combat stats */
+@media (max-width: 768px) {
+    .stats-grid {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    }
+
+    .stat-value {
+        font-size: 1.5em;
+    }
+
+    .defeat-list {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* ========== POWER LEVEL SECTION ========== */
+.power-level-section {
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    border-radius: var(--border-radius);
+    padding: 25px;
+    margin-top: 30px;
+    border: 3px solid var(--color-crit);
+    box-shadow: 0 0 20px rgba(255, 160, 0, 0.3);
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.power-level-section h3 {
+    color: var(--color-crit);
+    text-align: center;
+    margin: 0 0 20px 0;
+    font-size: 1.5em;
+    text-shadow: 0 0 10px rgba(255, 160, 0, 0.5);
+}
+
+.power-level-display {
+    text-align: center;
+    padding: 30px;
+    background: radial-gradient(circle, rgba(255, 160, 0, 0.2), transparent);
+    border-radius: 12px;
+    margin-bottom: 25px;
+}
+
+.power-number {
+    font-size: 4em;
+    font-weight: bold;
+    color: var(--color-crit);
+    text-shadow: 0 0 20px rgba(255, 160, 0, 0.6);
+    line-height: 1;
+    animation: powerPulse 2s ease-in-out infinite;
+}
+
+@keyframes powerPulse {
+    0%, 100% {
+        transform: scale(1);
+        text-shadow: 0 0 20px rgba(255, 160, 0, 0.6);
+    }
+    50% {
+        transform: scale(1.05);
+        text-shadow: 0 0 30px rgba(255, 160, 0, 0.9);
+    }
+}
+
+.power-label {
+    font-size: 1.2em;
+    color: var(--text-secondary);
+    margin-top: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.power-breakdown {
+    background: var(--bg-tertiary);
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.power-breakdown h4 {
+    color: var(--color-highlight);
+    margin: 0 0 15px 0;
+    font-size: 1.1em;
+}
+
+.formula-display {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 15px 0;
+    padding: 15px;
+    background: var(--bg-secondary);
+    border-radius: 6px;
+}
+
+.formula-line {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background: var(--bg-tertiary);
+    border-radius: 4px;
+}
+
+.formula-part {
+    color: var(--text-secondary);
+    font-size: 0.95em;
+}
+
+.formula-value {
+    color: var(--color-crit);
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.formula-value.final {
+    font-size: 1.5em;
+    text-shadow: 0 0 10px rgba(255, 160, 0, 0.4);
+}
+
+.formula-operator {
+    text-align: center;
+    color: var(--color-highlight);
+    font-weight: bold;
+    font-size: 1.2em;
+    padding: 4px 0;
+}
+
+.formula-result {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px;
+    background: var(--color-highlight);
+    border-radius: 6px;
+    color: white;
+}
+
+.formula-result .formula-part {
+    color: white;
+}
+
+.power-explanation {
+    margin-top: 15px;
+    padding: 15px;
+    background: var(--bg-secondary);
+    border-radius: 6px;
+    border-left: 4px solid var(--color-crit);
+}
+
+.power-explanation p {
+    color: var(--color-crit);
+    margin: 0 0 10px 0;
+}
+
+.power-explanation ul {
+    margin: 0;
+    padding-left: 20px;
+    color: var(--text-secondary);
+}
+
+.power-explanation li {
+    margin-bottom: 8px;
+    line-height: 1.5;
+}
+
+.power-explanation strong {
+    color: var(--text-primary);
+}
+
+/* Responsive para power level */
+@media (max-width: 768px) {
+    .power-number {
+        font-size: 3em;
+    }
+
+    .formula-line {
+        flex-direction: column;
+        text-align: center;
+        gap: 5px;
+    }
+
+    .formula-result {
+        flex-direction: column;
+        text-align: center;
+        gap: 5px;
+    }
 }

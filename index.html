@@ -9,20 +9,28 @@
 <body>
     <div class="container">
         <header>
-            <h1>⚔️ D&D Attack Probability Calculator</h1>
-            <p class="subtitle">Calcula tus probabilidades de impacto al estilo Baldur's Gate 3</p>
+            <h1 data-i18n="title">⚔️ D&D Attack Probability Calculator</h1>
+            <p class="subtitle" data-i18n="subtitle">Calcula tus probabilidades de impacto al estilo Baldur's Gate 3</p>
+            <div class="language-selector">
+                <select id="languageSelect">
+                    <option value="es">🇪🇸 Español</option>
+                    <option value="en">🇬🇧 English</option>
+                    <option value="pt">🇵🇹 Português</option>
+                    <option value="de">🇩🇪 Deutsch</option>
+                </select>
+            </div>
         </header>
 
         <div class="main-layout">
             <!-- Panel de configuración -->
             <aside class="config-panel">
-                <h2>⚙️ Configuración de Ataque</h2>
+                <h2 data-i18n="configTitle">⚙️ Configuración de Ataque</h2>
 
                 <div class="input-group">
                     <label for="attackBonus">
-                        Bonificador de Ataque
+                        <span data-i18n="attackBonus">Bonificador de Ataque</span>
                         <span class="tooltip">?
-                            <span class="tooltip-text">Tu modificador de ataque total (ej: +5)</span>
+                            <span class="tooltip-text" data-i18n="attackBonusTooltip">Tu modificador de ataque total (ej: +5)</span>
                         </span>
                     </label>
                     <input type="number" id="attackBonus" value="5" min="-5" max="20" step="1">
@@ -30,16 +38,16 @@
 
                 <div class="input-group">
                     <label for="damageBonus">
-                        Bonificador de Daño
+                        <span data-i18n="damageBonus">Bonificador de Daño</span>
                         <span class="tooltip">?
-                            <span class="tooltip-text">Modificador que se suma al daño (ej: +3)</span>
+                            <span class="tooltip-text" data-i18n="damageBonusTooltip">Modificador que se suma al daño (ej: +3)</span>
                         </span>
                     </label>
                     <input type="number" id="damageBonus" value="3" min="0" max="20" step="1">
                 </div>
 
                 <div class="input-group">
-                    <label>Dados de Daño</label>
+                    <label data-i18n="damageDice">Dados de Daño</label>
                     <div class="dice-builder">
                         <div id="diceList" class="dice-list">
                             <div class="dice-item">
@@ -57,44 +65,44 @@
                                 <button class="btn-remove" onclick="removeDice(this)">×</button>
                             </div>
                         </div>
-                        <button class="btn-add" onclick="addDice()">+ Añadir Dado</button>
+                        <button class="btn-add" onclick="addDice()" data-i18n="addDice">+ Añadir Dado</button>
                         <div class="dice-notation" id="diceNotation">1d8</div>
                     </div>
                 </div>
 
                 <div class="input-group">
-                    <label>Rango Crítico</label>
+                    <label data-i18n="critRange">Rango Crítico</label>
                     <select id="critRange">
-                        <option value="20" selected>Solo 20 (5%)</option>
-                        <option value="19">19-20 (10%)</option>
-                        <option value="18">18-20 (15%)</option>
+                        <option value="20" selected data-i18n="critRange20">Solo 20 (5%)</option>
+                        <option value="19" data-i18n="critRange19">19-20 (10%)</option>
+                        <option value="18" data-i18n="critRange18">18-20 (15%)</option>
                     </select>
                 </div>
 
                 <div class="input-group">
-                    <label>Ventaja / Desventaja</label>
+                    <label data-i18n="advantageLabel">Ventaja / Desventaja</label>
                     <div class="radio-group">
                         <label class="radio-label">
                             <input type="radio" name="advantage" value="disadvantage">
                             <span class="radio-custom"></span>
-                            Desventaja
+                            <span data-i18n="disadvantage">Desventaja</span>
                         </label>
                         <label class="radio-label">
                             <input type="radio" name="advantage" value="normal" checked>
                             <span class="radio-custom"></span>
-                            Normal
+                            <span data-i18n="normal">Normal</span>
                         </label>
                         <label class="radio-label">
                             <input type="radio" name="advantage" value="advantage">
                             <span class="radio-custom"></span>
-                            Ventaja
+                            <span data-i18n="advantage">Ventaja</span>
                         </label>
                     </div>
                 </div>
 
                 <div class="input-group">
                     <label for="numberOfAttacks">
-                        Número de Ataques
+                        <span data-i18n="numberOfAttacks">Número de Ataques</span>
                         <span class="attacks-value" id="attacksValue">1</span>
                     </label>
                     <input type="range" id="numberOfAttacks" min="1" max="8" value="1" step="1">
@@ -102,22 +110,76 @@
 
                 <div class="input-group">
                     <label for="targetAC">
-                        CA Objetivo (Opcional)
+                        <span data-i18n="targetAC">CA Objetivo (Opcional)</span>
                         <span class="tooltip">?
-                            <span class="tooltip-text">Clase de Armadura del enemigo específico a destacar</span>
+                            <span class="tooltip-text" data-i18n="targetACTooltip">Clase de Armadura del enemigo específico a destacar</span>
                         </span>
                     </label>
-                    <input type="number" id="targetAC" value="" min="1" max="30" placeholder="Ej: 15">
+                    <input type="number" id="targetAC" value="" min="1" max="30" data-i18n="targetACPlaceholder" placeholder="Ej: 15">
                 </div>
 
-                <button class="btn-calculate" onclick="calculator.calculate()">
+                <button class="btn-calculate" onclick="calculator.calculate()" data-i18n="calculateButton">
                     🎲 Calcular Probabilidades
                 </button>
             </aside>
 
             <!-- Panel de resultados -->
             <main class="results-panel">
-                <h2>📊 Tabla de Probabilidades</h2>
+                <h2 data-i18n="resultsTitle">📊 Tabla de Probabilidades</h2>
+
+                <!-- Combat Statistics Panel -->
+                <div class="combat-stats-panel" id="combatStatsPanel" style="display: none;">
+                    <h3 data-i18n="combatStatsTitle">📊 Estadísticas de Combate</h3>
+                    <div class="vs-ac-label">
+                        <span data-i18n="vsAC">contra CA</span> <span class="ac-number" id="statsTargetAC">15</span>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">⚔️</div>
+                            <div class="stat-content">
+                                <div class="stat-label" data-i18n="statDPRTotal">DPR Total</div>
+                                <div class="stat-value" id="statDPRTotal">0</div>
+                                <div class="stat-unit" data-i18n="damagePerRound">daño/turno</div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon">🎯</div>
+                            <div class="stat-content">
+                                <div class="stat-label" data-i18n="statHitProb">Prob. Impacto</div>
+                                <div class="stat-value" id="statHitChance">0%</div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon">💥</div>
+                            <div class="stat-content">
+                                <div class="stat-label" data-i18n="statDamagePerHit">Daño/Impacto</div>
+                                <div class="stat-value" id="statDamagePerHit">0</div>
+                                <div class="stat-unit" data-i18n="average">promedio</div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon">🎲</div>
+                            <div class="stat-content">
+                                <div class="stat-label" data-i18n="statCritsPerRound">Críticos/Turno</div>
+                                <div class="stat-value" id="statCritsPerRound">0</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="defeat-times">
+                        <h4 data-i18n="defeatTimesTitle">⏱️ Turnos para Derrotar</h4>
+                        <div class="defeat-list" id="defeatTimesList"></div>
+                    </div>
+
+                    <div class="level-estimate">
+                        <div class="level-badge" id="levelBadge">Nivel 1-4</div>
+                        <div class="level-explanation" data-i18n="levelExplanation">Basado en DPR y bonificador de ataque</div>
+                    </div>
+                </div>
 
                 <div class="roll-requirement" id="rollRequirement"></div>
 
@@ -126,39 +188,39 @@
                         <thead>
                             <tr>
                                 <th>
-                                    CA
-                                    <span class="info-icon" data-tooltip="Clase de Armadura del enemigo">ⓘ</span>
+                                    <span data-i18n="tableHeaderAC">CA</span>
+                                    <span class="info-icon" data-i18n-tooltip="tableHeaderACTooltip" data-tooltip="Clase de Armadura del enemigo">ⓘ</span>
                                 </th>
                                 <th>
-                                    Fallo
-                                    <span class="info-icon" data-tooltip="Probabilidad de no impactar (incluso con 1 natural)">ⓘ</span>
+                                    <span data-i18n="tableHeaderMiss">Fallo</span>
+                                    <span class="info-icon" data-i18n-tooltip="tableHeaderMissTooltip" data-tooltip="Probabilidad de no impactar (incluso con 1 natural)">ⓘ</span>
                                 </th>
                                 <th>
-                                    Impacto
-                                    <span class="info-icon" data-tooltip="Probabilidad de impacto normal (sin crítico)">ⓘ</span>
+                                    <span data-i18n="tableHeaderHit">Impacto</span>
+                                    <span class="info-icon" data-i18n-tooltip="tableHeaderHitTooltip" data-tooltip="Probabilidad de impacto normal (sin crítico)">ⓘ</span>
                                 </th>
                                 <th>
-                                    Crítico
-                                    <span class="info-icon" data-tooltip="Probabilidad de crítico (duplica dados de daño)">ⓘ</span>
+                                    <span data-i18n="tableHeaderCrit">Crítico</span>
+                                    <span class="info-icon" data-i18n-tooltip="tableHeaderCritTooltip" data-tooltip="Probabilidad de crítico (duplica dados de daño)">ⓘ</span>
                                 </th>
                                 <th>
-                                    Daño Normal
-                                    <span class="info-icon" data-tooltip="Rango de daño si impactas sin crítico">ⓘ</span>
+                                    <span data-i18n="tableHeaderNormalDmg">Daño Normal</span>
+                                    <span class="info-icon" data-i18n-tooltip="tableHeaderNormalDmgTooltip" data-tooltip="Rango de daño si impactas sin crítico">ⓘ</span>
                                 </th>
                                 <th>
-                                    Daño Crítico
-                                    <span class="info-icon" data-tooltip="Rango de daño con impacto crítico">ⓘ</span>
+                                    <span data-i18n="tableHeaderCritDmg">Daño Crítico</span>
+                                    <span class="info-icon" data-i18n-tooltip="tableHeaderCritDmgTooltip" data-tooltip="Rango de daño con impacto crítico">ⓘ</span>
                                 </th>
                                 <th>
-                                    DPR
-                                    <span class="info-icon" data-tooltip="Damage Per Round: daño promedio esperado por turno considerando todas las probabilidades">ⓘ</span>
+                                    <span data-i18n="tableHeaderDPR">DPR</span>
+                                    <span class="info-icon" data-i18n-tooltip="tableHeaderDPRTooltip" data-tooltip="Damage Per Round: daño promedio esperado por turno considerando todas las probabilidades">ⓘ</span>
                                 </th>
-                                <th>Visualización</th>
+                                <th data-i18n="tableHeaderViz">Visualización</th>
                             </tr>
                         </thead>
                         <tbody id="resultsBody">
                             <tr>
-                                <td colspan="8" class="no-data">
+                                <td colspan="8" class="no-data" data-i18n="noData">
                                     Haz clic en "Calcular Probabilidades" para ver los resultados
                                 </td>
                             </tr>
@@ -168,34 +230,73 @@
 
                 <!-- Panel de múltiples ataques -->
                 <div class="multi-attack-panel" id="multiAttackPanel" style="display: none;">
-                    <h3>🎯 Distribución de Múltiples Ataques</h3>
+                    <h3 data-i18n="multiAttackTitle">🎯 Distribución de Múltiples Ataques</h3>
                     <div class="multi-attack-info" id="multiAttackInfo"></div>
                     <div id="multiAttackDistribution"></div>
+                </div>
+
+                <!-- Power Level Section -->
+                <div class="power-level-section" id="powerLevelSection" style="display: none;">
+                    <h3 data-i18n="powerLevelTitle">⚡ Nivel de Poder del Personaje</h3>
+
+                    <div class="power-level-display">
+                        <div class="power-number" id="powerLevelNumber">0</div>
+                        <div class="power-label" data-i18n="powerLevelLabel">Power Level</div>
+                    </div>
+
+                    <div class="power-breakdown">
+                        <h4 data-i18n="howCalculated">📊 Cómo se calcula:</h4>
+                        <div class="formula-display">
+                            <div class="formula-line">
+                                <span class="formula-part" data-i18n="statDPRTotal">DPR Total</span>
+                                <span class="formula-value" id="formulaDPR">0</span>
+                            </div>
+                            <div class="formula-operator">×</div>
+                            <div class="formula-line">
+                                <span class="formula-part" data-i18n="statHitProb">Probabilidad de Impacto</span>
+                                <span class="formula-value" id="formulaHit">0%</span>
+                            </div>
+                            <div class="formula-operator">× 10</div>
+                            <div class="formula-result">
+                                <span class="formula-part" data-i18n="powerLevelLabel">= Power Level</span>
+                                <span class="formula-value final" id="formulaResult">0</span>
+                            </div>
+                        </div>
+
+                        <div class="power-explanation">
+                            <p><strong data-i18n="whyTheseFactors">¿Por qué estos factores?</strong></p>
+                            <ul>
+                                <li><strong data-i18n="statDPRTotal">DPR Total:</strong> <span data-i18n="dprTotalExplain">Incluye ventaja, críticos y múltiples ataques</span></li>
+                                <li><strong data-i18n="statHitProb">Probabilidad de Impacto:</strong> <span data-i18n="hitChanceExplain">Penaliza builds poco confiables</span></li>
+                                <li><strong>× 10:</strong> <span data-i18n="scaleExplain">Escala para números comparables</span></li>
+                            </ul>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- Leyenda -->
                 <div class="legend">
                     <div class="legend-item">
                         <span class="color-box miss"></span>
-                        <span>Fallo</span>
+                        <span data-i18n="legendMiss">Fallo</span>
                     </div>
                     <div class="legend-item">
                         <span class="color-box hit"></span>
-                        <span>Impacto Normal</span>
+                        <span data-i18n="legendHit">Impacto Normal</span>
                     </div>
                     <div class="legend-item">
                         <span class="color-box crit"></span>
-                        <span>Crítico</span>
+                        <span data-i18n="legendCrit">Crítico</span>
                     </div>
                     <div class="legend-item">
-                        <span class="info-text">DPR = Damage Per Round (daño promedio esperado)</span>
+                        <span class="info-text" data-i18n="legendDPR">DPR = Damage Per Round (daño promedio esperado)</span>
                     </div>
                 </div>
             </main>
         </div>
 
         <footer>
-            <p>Calculadora basada en las reglas de D&D 5e y mecánicas de Baldur's Gate 3</p>
+            <p data-i18n="footerText">Calculadora basada en las reglas de D&D 5e y mecánicas de Baldur's Gate 3</p>
         </footer>
     </div>
 
