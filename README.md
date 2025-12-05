@@ -1,10 +1,12 @@
 # ⚔️ Calculadora de Probabilidades de Ataque D&D
-https://francomal.github.io/dnd-attack-probability/
+
+🌐 **[Ver calculadora online](https://francomal.github.io/dnd-attack-probability/)**
+
 ## 🇪🇸 Español
 
 ### ¿Qué es esto?
 
-Una calculadora de probabilidades de combate para Dungeons & Dragons 5e inspirada en Baldur's Gate 3. Calcula las probabilidades exactas de impactar, hacer crítico y el daño esperado contra cualquier enemigo.
+Una calculadora de probabilidades de combate para Dungeons & Dragons 5e. Calcula las probabilidades exactas de impactar, hacer crítico y el daño esperado contra cualquier enemigo.
 
 <details>
 <summary>📸 Ver captura de pantalla (click para expandir)</summary>
@@ -26,7 +28,7 @@ Una calculadora de probabilidades de combate para Dungeons & Dragons 5e inspirad
 
 ### Cómo usar
 
-1. Abre `calculator-standalone.html` en cualquier navegador o https://francomal.github.io/dnd-attack-probability/
+1. Abre `calculator-standalone.html` en cualquier navegador
 2. Configura tu personaje:
    - Bonificador de ataque (+5, +8, etc.)
    - Dados de daño (1d8, 2d6, etc.)
@@ -44,9 +46,12 @@ Una calculadora de probabilidades de combate para Dungeons & Dragons 5e inspirad
 ### Matemáticas
 
 Utiliza distribución multinomial para cálculos precisos:
-- Ventaja: P(max ≥ x) = 1 - ((x-1)/20)²
-- Desventaja: P(min ≥ x) = ((21-x)/20)²
-- Múltiples ataques: P(f,n,c) = (n!/(f!×n!×c!)) × p_fallo^f × p_normal^n × p_crítico^c
+- **Ventaja**: P(max ≥ x) = 1 - ((x-1)/20)²
+- **Desventaja**: P(min ≥ x) = ((21-x)/20)²
+- **Múltiples ataques**: P(f,n,c) = (n!/(f!×n!×c!)) × p_fallo^f × p_normal^n × p_crítico^c
+- **Power Level**: round(DPR_total × P(hit) × 10)
+  - Métrica combinada que considera daño esperado y probabilidad de impacto
+  - Útil para comparar efectividad general entre builds
 
 ---
 
@@ -54,7 +59,7 @@ Utiliza distribución multinomial para cálculos precisos:
 
 ### What is this?
 
-A combat probability calculator for Dungeons & Dragons 5e inspired by Baldur's Gate 3. It calculates exact probabilities of hitting, critical strikes, and expected damage against any enemy.
+A combat probability calculator for Dungeons & Dragons 5e. It calculates exact probabilities of hitting, critical strikes, and expected damage against any enemy.
 
 <details>
 <summary>📸 View screenshot (click to expand)</summary>
@@ -76,7 +81,7 @@ A combat probability calculator for Dungeons & Dragons 5e inspired by Baldur's G
 
 ### How to Use
 
-1. Open `calculator-standalone.html` in any browser or https://francomal.github.io/dnd-attack-probability/
+1. Open `calculator-standalone.html` in any browser
 2. Configure your character:
    - Attack bonus (+5, +8, etc.)
    - Damage dice (1d8, 2d6, etc.)
@@ -94,9 +99,12 @@ A combat probability calculator for Dungeons & Dragons 5e inspired by Baldur's G
 ### Mathematics
 
 Uses multinomial distribution for precise calculations:
-- Advantage: P(max ≥ x) = 1 - ((x-1)/20)²
-- Disadvantage: P(min ≥ x) = ((21-x)/20)²
-- Multiple attacks: P(f,n,c) = (n!/(f!×n!×c!)) × p_miss^f × p_normal^n × p_crit^c
+- **Advantage**: P(max ≥ x) = 1 - ((x-1)/20)²
+- **Disadvantage**: P(min ≥ x) = ((21-x)/20)²
+- **Multiple attacks**: P(f,n,c) = (n!/(f!×n!×c!)) × p_miss^f × p_normal^n × p_crit^c
+- **Power Level**: round(DPR_total × P(hit) × 10)
+  - Combined metric considering expected damage and hit probability
+  - Useful for comparing overall effectiveness between builds
 
 ---
 
@@ -133,4 +141,4 @@ Uses multinomial distribution for precise calculations:
 
 ---
 
-Made with D&D 5e rules.
+Made with D&D 5e rules

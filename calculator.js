@@ -8,7 +8,7 @@ const translations = {
     es: {
         // Header
         title: "⚔️ Calculadora de Probabilidades de Ataque D&D",
-        subtitle: "Calcula tus probabilidades de impacto al estilo Baldur's Gate 3",
+        subtitle: "Calcula tus probabilidades de impacto y daño esperado",
 
         // Config panel
         configTitle: "⚙️ Configuración de Ataque",
@@ -90,7 +90,7 @@ const translations = {
         legendDPR: "DPR = Damage Per Round (daño promedio esperado)",
 
         // Footer
-        footerText: "Calculadora basada en las reglas de D&D 5e y mecánicas de Baldur's Gate 3",
+        footerText: "Calculadora basada en las reglas de D&D 5e",
 
         // Alerts
         alertMinDice: "Debes tener al menos un dado de daño",
@@ -120,13 +120,72 @@ const translations = {
         whyTheseFactors: "¿Por qué estos factores?",
         dprTotalExplain: "Incluye ventaja, críticos y múltiples ataques",
         hitChanceExplain: "Penaliza builds poco confiables",
-        scaleExplain: "Escala para números comparables"
+        scaleExplain: "Escala para números comparables",
+
+        // Profiles
+        profilesTitle: "📁 Perfiles Guardados",
+        profileNamePlaceholder: "Nombre del perfil...",
+        saveProfileBtn: "💾 Guardar Perfil",
+        loadProfileTooltip: "Cargar este perfil",
+        deleteProfileTooltip: "Eliminar este perfil",
+        noProfiles: "No hay perfiles guardados",
+        confirmDeleteProfile: "¿Eliminar el perfil '{{name}}'?",
+        profileSaved: "Perfil '{{name}}' guardado",
+        profileLoaded: "Perfil '{{name}}' cargado",
+        profileDeleted: "Perfil eliminado",
+        profileNameRequired: "Ingresa un nombre para el perfil",
+        profileWithAdvantage: "Ventaja",
+        profileWithDisadvantage: "Desventaja",
+        profileAttacks: "{{n}} ataques",
+
+        // Profile Comparison
+        compareTitle: "⚔️ Comparar Perfiles",
+        compareSelectProfiles: "Selecciona perfiles a comparar:",
+        compareTargetAC: "CA para comparar",
+        compareButton: "📊 Comparar",
+        compareMinSelect: "Selecciona al menos 2 perfiles para comparar",
+        compareNoProfiles: "Guarda perfiles primero para compararlos",
+        compareResultsTitle: "📊 Comparación de Perfiles",
+        compareVsAC: "contra CA",
+        comparePowerLevel: "Power Level",
+        compareHitChance: "Prob. Impacto",
+        compareCritChance: "Prob. Crítico",
+        compareRollNeeded: "Roll Mínimo",
+        compareNormalDmg: "Daño Normal",
+        compareCritDmg: "Daño Crítico",
+        compareDPR: "DPR Total",
+        compareAttacks: "Ataques",
+        compareBest: "MEJOR",
+        compareAutoHit: "Auto",
+        compareCritOnly: "Solo Crit",
+        compareAdvantage: "Vent.",
+        compareDisadvantage: "Desv.",
+        compareDice: "Tiradas",
+        compareAttackBonus: "Bono Ataque",
+
+        // Profile Editing
+        editProfile: "Editar",
+        editingProfile: "Editando:",
+        updateProfile: "Actualizar Perfil",
+        cancelEdit: "Cancelar",
+
+        // Attack Dice Bonus
+        attackDiceBonus: "Dado Extra al Ataque",
+        attackDiceBonusTooltip: "Dado adicional para tiradas de ataque (ej: Bendición, Inspiración Bárdica)",
+        attackDiceBonusNone: "Ninguno",
+        attackDiceBonusBless: "+1d4 (Bendición)",
+        attackDiceBonusBardic6: "+1d6 (Inspiración)",
+        attackDiceBonusBardic8: "+1d8 (Inspiración)",
+        attackDiceBonusBardic10: "+1d10 (Inspiración)",
+        attackDiceBonusBardic12: "+1d12 (Inspiración)",
+        profileWithAttackDice: "+1d{{sides}}",
+        compareAttackDice: "Dado Extra"
     },
 
     en: {
         // Header
         title: "⚔️ D&D Attack Probability Calculator",
-        subtitle: "Calculate your hit chances Baldur's Gate 3 style",
+        subtitle: "Calculate your hit probabilities and expected damage",
 
         // Config panel
         configTitle: "⚙️ Attack Configuration",
@@ -208,7 +267,7 @@ const translations = {
         legendDPR: "DPR = Damage Per Round (expected average damage)",
 
         // Footer
-        footerText: "Calculator based on D&D 5e rules and Baldur's Gate 3 mechanics",
+        footerText: "Calculator based on D&D 5e rules",
 
         // Alerts
         alertMinDice: "You must have at least one damage die",
@@ -238,13 +297,72 @@ const translations = {
         whyTheseFactors: "Why these factors?",
         dprTotalExplain: "Includes advantage, crits, and multiple attacks",
         hitChanceExplain: "Penalizes unreliable builds",
-        scaleExplain: "Scale for comparable numbers"
+        scaleExplain: "Scale for comparable numbers",
+
+        // Profiles
+        profilesTitle: "📁 Saved Profiles",
+        profileNamePlaceholder: "Profile name...",
+        saveProfileBtn: "💾 Save Profile",
+        loadProfileTooltip: "Load this profile",
+        deleteProfileTooltip: "Delete this profile",
+        noProfiles: "No saved profiles",
+        confirmDeleteProfile: "Delete profile '{{name}}'?",
+        profileSaved: "Profile '{{name}}' saved",
+        profileLoaded: "Profile '{{name}}' loaded",
+        profileDeleted: "Profile deleted",
+        profileNameRequired: "Enter a profile name",
+        profileWithAdvantage: "Advantage",
+        profileWithDisadvantage: "Disadvantage",
+        profileAttacks: "{{n}} attacks",
+
+        // Profile Comparison
+        compareTitle: "⚔️ Compare Profiles",
+        compareSelectProfiles: "Select profiles to compare:",
+        compareTargetAC: "AC to compare",
+        compareButton: "📊 Compare",
+        compareMinSelect: "Select at least 2 profiles to compare",
+        compareNoProfiles: "Save profiles first to compare them",
+        compareResultsTitle: "📊 Profile Comparison",
+        compareVsAC: "vs AC",
+        comparePowerLevel: "Power Level",
+        compareHitChance: "Hit Prob.",
+        compareCritChance: "Crit Prob.",
+        compareRollNeeded: "Min Roll",
+        compareNormalDmg: "Normal Dmg",
+        compareCritDmg: "Crit Dmg",
+        compareDPR: "Total DPR",
+        compareAttacks: "Attacks",
+        compareBest: "BEST",
+        compareAutoHit: "Auto",
+        compareCritOnly: "Crit Only",
+        compareAdvantage: "Adv.",
+        compareDisadvantage: "Dis.",
+        compareDice: "Dice",
+        compareAttackBonus: "Attack Bonus",
+
+        // Profile Editing
+        editProfile: "Edit",
+        editingProfile: "Editing:",
+        updateProfile: "Update Profile",
+        cancelEdit: "Cancel",
+
+        // Attack Dice Bonus
+        attackDiceBonus: "Attack Bonus Die",
+        attackDiceBonusTooltip: "Extra die for attack rolls (e.g., Bless, Bardic Inspiration)",
+        attackDiceBonusNone: "None",
+        attackDiceBonusBless: "+1d4 (Bless)",
+        attackDiceBonusBardic6: "+1d6 (Bardic)",
+        attackDiceBonusBardic8: "+1d8 (Bardic)",
+        attackDiceBonusBardic10: "+1d10 (Bardic)",
+        attackDiceBonusBardic12: "+1d12 (Bardic)",
+        profileWithAttackDice: "+1d{{sides}}",
+        compareAttackDice: "Bonus Die"
     },
 
     pt: {
         // Header
         title: "⚔️ Calculadora de Probabilidade de Ataque D&D",
-        subtitle: "Calcule suas chances de acerto no estilo Baldur's Gate 3",
+        subtitle: "Calcule suas probabilidades de acerto e dano esperado",
 
         // Config panel
         configTitle: "⚙️ Configuração de Ataque",
@@ -326,7 +444,7 @@ const translations = {
         legendDPR: "DPR = Dano Por Rodada (dano médio esperado)",
 
         // Footer
-        footerText: "Calculadora baseada nas regras de D&D 5e e mecânicas de Baldur's Gate 3",
+        footerText: "Calculadora baseada nas regras de D&D 5e",
 
         // Alerts
         alertMinDice: "Você deve ter pelo menos um dado de dano",
@@ -356,13 +474,72 @@ const translations = {
         whyTheseFactors: "Por que esses fatores?",
         dprTotalExplain: "Inclui vantagem, críticos e múltiplos ataques",
         hitChanceExplain: "Penaliza builds pouco confiáveis",
-        scaleExplain: "Escala para números comparáveis"
+        scaleExplain: "Escala para números comparáveis",
+
+        // Profiles
+        profilesTitle: "📁 Perfis Salvos",
+        profileNamePlaceholder: "Nome do perfil...",
+        saveProfileBtn: "💾 Salvar Perfil",
+        loadProfileTooltip: "Carregar este perfil",
+        deleteProfileTooltip: "Excluir este perfil",
+        noProfiles: "Nenhum perfil salvo",
+        confirmDeleteProfile: "Excluir o perfil '{{name}}'?",
+        profileSaved: "Perfil '{{name}}' salvo",
+        profileLoaded: "Perfil '{{name}}' carregado",
+        profileDeleted: "Perfil excluído",
+        profileNameRequired: "Digite um nome para o perfil",
+        profileWithAdvantage: "Vantagem",
+        profileWithDisadvantage: "Desvantagem",
+        profileAttacks: "{{n}} ataques",
+
+        // Profile Comparison
+        compareTitle: "⚔️ Comparar Perfis",
+        compareSelectProfiles: "Selecione perfis para comparar:",
+        compareTargetAC: "CA para comparar",
+        compareButton: "📊 Comparar",
+        compareMinSelect: "Selecione pelo menos 2 perfis para comparar",
+        compareNoProfiles: "Salve perfis primeiro para compará-los",
+        compareResultsTitle: "📊 Comparação de Perfis",
+        compareVsAC: "contra CA",
+        comparePowerLevel: "Power Level",
+        compareHitChance: "Prob. Acerto",
+        compareCritChance: "Prob. Crítico",
+        compareRollNeeded: "Roll Mínimo",
+        compareNormalDmg: "Dano Normal",
+        compareCritDmg: "Dano Crítico",
+        compareDPR: "DPR Total",
+        compareAttacks: "Ataques",
+        compareBest: "MELHOR",
+        compareAutoHit: "Auto",
+        compareCritOnly: "Só Crit",
+        compareAdvantage: "Vant.",
+        compareDisadvantage: "Desv.",
+        compareDice: "Dados",
+        compareAttackBonus: "Bônus Ataque",
+
+        // Profile Editing
+        editProfile: "Editar",
+        editingProfile: "Editando:",
+        updateProfile: "Atualizar Perfil",
+        cancelEdit: "Cancelar",
+
+        // Attack Dice Bonus
+        attackDiceBonus: "Dado Bônus de Ataque",
+        attackDiceBonusTooltip: "Dado extra para rolagens de ataque (ex: Bênção, Inspiração Bárdica)",
+        attackDiceBonusNone: "Nenhum",
+        attackDiceBonusBless: "+1d4 (Bênção)",
+        attackDiceBonusBardic6: "+1d6 (Inspiração)",
+        attackDiceBonusBardic8: "+1d8 (Inspiração)",
+        attackDiceBonusBardic10: "+1d10 (Inspiração)",
+        attackDiceBonusBardic12: "+1d12 (Inspiração)",
+        profileWithAttackDice: "+1d{{sides}}",
+        compareAttackDice: "Dado Bônus"
     },
 
     de: {
         // Header
         title: "⚔️ D&D Angriffwahrscheinlichkeits-Rechner",
-        subtitle: "Berechne deine Trefferchancen im Baldur's Gate 3 Stil",
+        subtitle: "Berechne deine Trefferwahrscheinlichkeiten und erwarteten Schaden",
 
         // Config panel
         configTitle: "⚙️ Angriffskonfiguration",
@@ -444,7 +621,7 @@ const translations = {
         legendDPR: "SPR = Schaden Pro Runde (erwarteter Durchschnittsschaden)",
 
         // Footer
-        footerText: "Rechner basierend auf D&D 5e Regeln und Baldur's Gate 3 Mechaniken",
+        footerText: "Rechner basierend auf D&D 5e Regeln",
 
         // Alerts
         alertMinDice: "Du musst mindestens einen Schadenswürfel haben",
@@ -474,7 +651,66 @@ const translations = {
         whyTheseFactors: "Warum diese Faktoren?",
         dprTotalExplain: "Beinhaltet Vorteil, Kritische und mehrere Angriffe",
         hitChanceExplain: "Bestraft unzuverlässige Builds",
-        scaleExplain: "Skala für vergleichbare Zahlen"
+        scaleExplain: "Skala für vergleichbare Zahlen",
+
+        // Profiles
+        profilesTitle: "📁 Gespeicherte Profile",
+        profileNamePlaceholder: "Profilname...",
+        saveProfileBtn: "💾 Profil Speichern",
+        loadProfileTooltip: "Dieses Profil laden",
+        deleteProfileTooltip: "Dieses Profil löschen",
+        noProfiles: "Keine gespeicherten Profile",
+        confirmDeleteProfile: "Profil '{{name}}' löschen?",
+        profileSaved: "Profil '{{name}}' gespeichert",
+        profileLoaded: "Profil '{{name}}' geladen",
+        profileDeleted: "Profil gelöscht",
+        profileNameRequired: "Gib einen Profilnamen ein",
+        profileWithAdvantage: "Vorteil",
+        profileWithDisadvantage: "Nachteil",
+        profileAttacks: "{{n}} Angriffe",
+
+        // Profile Comparison
+        compareTitle: "⚔️ Profile Vergleichen",
+        compareSelectProfiles: "Profile zum Vergleichen auswählen:",
+        compareTargetAC: "RK zum Vergleichen",
+        compareButton: "📊 Vergleichen",
+        compareMinSelect: "Wähle mindestens 2 Profile zum Vergleichen",
+        compareNoProfiles: "Speichere zuerst Profile zum Vergleichen",
+        compareResultsTitle: "📊 Profil-Vergleich",
+        compareVsAC: "gegen RK",
+        comparePowerLevel: "Power Level",
+        compareHitChance: "Trefferwahrsch.",
+        compareCritChance: "Krit. Wahrsch.",
+        compareRollNeeded: "Min. Wurf",
+        compareNormalDmg: "Normaler Schaden",
+        compareCritDmg: "Krit. Schaden",
+        compareDPR: "Gesamt-SPR",
+        compareAttacks: "Angriffe",
+        compareBest: "BESTE",
+        compareAutoHit: "Auto",
+        compareCritOnly: "Nur Krit",
+        compareAdvantage: "Vort.",
+        compareDisadvantage: "Nacht.",
+        compareDice: "Würfel",
+        compareAttackBonus: "Angriffsbonus",
+
+        // Profile Editing
+        editProfile: "Bearbeiten",
+        editingProfile: "Bearbeiten:",
+        updateProfile: "Profil Aktualisieren",
+        cancelEdit: "Abbrechen",
+
+        // Attack Dice Bonus
+        attackDiceBonus: "Angriffswürfel-Bonus",
+        attackDiceBonusTooltip: "Zusätzlicher Würfel für Angriffswürfe (z.B. Segnen, Bardische Inspiration)",
+        attackDiceBonusNone: "Keiner",
+        attackDiceBonusBless: "+1d4 (Segnen)",
+        attackDiceBonusBardic6: "+1d6 (Bardisch)",
+        attackDiceBonusBardic8: "+1d8 (Bardisch)",
+        attackDiceBonusBardic10: "+1d10 (Bardisch)",
+        attackDiceBonusBardic12: "+1d12 (Bardisch)",
+        profileWithAttackDice: "+1d{{sides}}",
+        compareAttackDice: "Bonuswürfel"
     }
 };
 
@@ -567,10 +803,17 @@ function initializeLanguage() {
         }
     }
 
-    // Set the language selector
+    // Set the initial language in custom selector
     const selector = document.getElementById('languageSelect');
     if (selector) {
-        selector.value = currentLanguage;
+        const selected = selector.querySelector('.select-selected');
+        const items = selector.querySelectorAll('.select-items div');
+
+        items.forEach(item => {
+            if (item.getAttribute('data-value') === currentLanguage) {
+                selected.innerHTML = item.innerHTML;
+            }
+        });
     }
 
     // Apply language
@@ -610,6 +853,765 @@ function estimateCharacterLevel(attackBonus, dpr) {
     return {min: 17, max: 20};
 }
 
+// ========== SISTEMA DE PERFILES ==========
+
+class ProfileManager {
+    constructor(calculator) {
+        this.calculator = calculator;
+        this.storageKey = 'dnd_calc_profiles';
+        this.profiles = this.loadFromStorage();
+        this.editingProfileId = null; // Track which profile is being edited
+    }
+
+    loadFromStorage() {
+        try {
+            const data = localStorage.getItem(this.storageKey);
+            return data ? JSON.parse(data) : [];
+        } catch (e) {
+            console.warn('Error loading profiles:', e);
+            return [];
+        }
+    }
+
+    saveToStorage() {
+        try {
+            localStorage.setItem(this.storageKey, JSON.stringify(this.profiles));
+        } catch (e) {
+            console.warn('Error saving profiles:', e);
+        }
+    }
+
+    generateId() {
+        return Date.now().toString(36) + Math.random().toString(36).substr(2);
+    }
+
+    // Start editing a profile
+    startEditing(id) {
+        const profile = this.profiles.find(p => p.id === id);
+        if (!profile) return;
+
+        this.editingProfileId = id;
+        this.loadProfile(id); // Load config into form
+        this.renderProfiles(); // Re-render to show editing state
+        this.showEditingIndicator(profile.name);
+    }
+
+    // Cancel editing mode
+    cancelEditing() {
+        this.editingProfileId = null;
+        this.hideEditingIndicator();
+        this.renderProfiles();
+    }
+
+    // Show editing indicator UI
+    showEditingIndicator(profileName) {
+        const indicator = document.getElementById('editingIndicator');
+        const textEl = document.getElementById('editingText');
+        if (indicator && textEl) {
+            textEl.textContent = `${t('editingProfile')} ${profileName}`;
+            indicator.style.display = 'flex';
+        }
+    }
+
+    // Hide editing indicator UI
+    hideEditingIndicator() {
+        const indicator = document.getElementById('editingIndicator');
+        if (indicator) {
+            indicator.style.display = 'none';
+        }
+    }
+
+    // Check if currently editing
+    isEditing() {
+        return this.editingProfileId !== null;
+    }
+
+    // Get the profile being edited
+    getEditingProfile() {
+        if (!this.editingProfileId) return null;
+        return this.profiles.find(p => p.id === this.editingProfileId);
+    }
+
+    saveProfile(name) {
+        if (!name || !name.trim()) {
+            return { success: false, messageKey: 'profileNameRequired' };
+        }
+
+        // If editing, update the existing profile
+        if (this.editingProfileId) {
+            const index = this.profiles.findIndex(p => p.id === this.editingProfileId);
+            if (index !== -1) {
+                this.profiles[index] = {
+                    ...this.profiles[index],
+                    name: name.trim(),
+                    updatedAt: Date.now(),
+                    config: {
+                        attackBonus: this.calculator.config.attackBonus,
+                        damageBonus: this.calculator.config.damageBonus,
+                        damageDice: this.calculator.config.damageDice.map(d => ({ ...d })),
+                        attackDiceBonus: this.calculator.config.attackDiceBonus,
+                        advantage: this.calculator.config.advantage,
+                        critRange: this.calculator.config.critRange,
+                        numberOfAttacks: this.calculator.config.numberOfAttacks,
+                        targetAC: this.calculator.config.targetAC
+                    }
+                };
+                const updatedProfile = this.profiles[index];
+                this.editingProfileId = null;
+                this.hideEditingIndicator();
+                this.saveToStorage();
+                this.renderProfiles();
+                return { success: true, profile: updatedProfile, updated: true };
+            }
+        }
+
+        // Create new profile
+        const profile = {
+            id: this.generateId(),
+            name: name.trim(),
+            createdAt: Date.now(),
+            config: {
+                attackBonus: this.calculator.config.attackBonus,
+                damageBonus: this.calculator.config.damageBonus,
+                damageDice: this.calculator.config.damageDice.map(d => ({ ...d })),
+                attackDiceBonus: this.calculator.config.attackDiceBonus,
+                advantage: this.calculator.config.advantage,
+                critRange: this.calculator.config.critRange,
+                numberOfAttacks: this.calculator.config.numberOfAttacks,
+                targetAC: this.calculator.config.targetAC
+            }
+        };
+
+        this.profiles.unshift(profile); // Más reciente primero
+        this.saveToStorage();
+        this.renderProfiles();
+        return { success: true, profile };
+    }
+
+    loadProfile(id) {
+        const profile = this.profiles.find(p => p.id === id);
+        if (!profile) return { success: false };
+
+        // Restaurar configuración en calculator
+        const cfg = profile.config;
+        this.calculator.config.attackBonus = cfg.attackBonus;
+        this.calculator.config.damageBonus = cfg.damageBonus;
+        this.calculator.config.damageDice = cfg.damageDice.map(d => ({ ...d }));
+        this.calculator.config.advantage = cfg.advantage;
+        this.calculator.config.critRange = cfg.critRange;
+        this.calculator.config.numberOfAttacks = cfg.numberOfAttacks;
+        this.calculator.config.targetAC = cfg.targetAC;
+        this.calculator.config.attackDiceBonus = cfg.attackDiceBonus || 0;
+
+        // Actualizar UI inputs
+        this.updateUIFromConfig();
+
+        // Recalcular
+        this.calculator.calculate();
+
+        return { success: true, profile };
+    }
+
+    deleteProfile(id) {
+        const profile = this.profiles.find(p => p.id === id);
+        if (profile && confirm(t('confirmDeleteProfile', { name: profile.name }))) {
+            this.profiles = this.profiles.filter(p => p.id !== id);
+            this.saveToStorage();
+            this.renderProfiles();
+            return true;
+        }
+        return false;
+    }
+
+    updateUIFromConfig() {
+        const cfg = this.calculator.config;
+
+        // Actualizar inputs numéricos
+        document.getElementById('attackBonus').value = cfg.attackBonus;
+        document.getElementById('damageBonus').value = cfg.damageBonus;
+        document.getElementById('critRange').value = cfg.critRange;
+        document.getElementById('numberOfAttacks').value = cfg.numberOfAttacks;
+        document.getElementById('attacksValue').textContent = cfg.numberOfAttacks;
+
+        if (cfg.targetAC) {
+            document.getElementById('targetAC').value = cfg.targetAC;
+        } else {
+            document.getElementById('targetAC').value = '';
+        }
+
+        // Actualizar radio buttons de ventaja
+        document.querySelectorAll('input[name="advantage"]').forEach(radio => {
+            radio.checked = radio.value === cfg.advantage;
+        });
+
+        // Actualizar select de dado extra al ataque
+        const attackDiceBonusSelect = document.getElementById('attackDiceBonus');
+        if (attackDiceBonusSelect) {
+            attackDiceBonusSelect.value = cfg.attackDiceBonus || 0;
+        }
+
+        // Reconstruir dados de daño
+        const diceList = document.getElementById('diceList');
+        diceList.innerHTML = '';
+
+        cfg.damageDice.forEach((die, index) => {
+            const diceItem = document.createElement('div');
+            diceItem.className = 'dice-item';
+            diceItem.innerHTML = `
+                <input type="number" class="dice-count" value="${die.count}" min="1" max="10">
+                <span>d</span>
+                <select class="dice-sides">
+                    <option value="4"${die.sides === 4 ? ' selected' : ''}>4</option>
+                    <option value="6"${die.sides === 6 ? ' selected' : ''}>6</option>
+                    <option value="8"${die.sides === 8 ? ' selected' : ''}>8</option>
+                    <option value="10"${die.sides === 10 ? ' selected' : ''}>10</option>
+                    <option value="12"${die.sides === 12 ? ' selected' : ''}>12</option>
+                    <option value="20"${die.sides === 20 ? ' selected' : ''}>20</option>
+                    <option value="100"${die.sides === 100 ? ' selected' : ''}>100</option>
+                </select>
+                <button class="btn-remove" onclick="removeDice(this)">×</button>
+            `;
+            diceList.appendChild(diceItem);
+        });
+
+        // Actualizar notación de dados
+        this.calculator.updateDiceNotation();
+    }
+
+    formatProfilePreview(config) {
+        // Crear preview compacto: "+5 | 1d8+3 | Ventaja | 2 ataques"
+        const diceStr = config.damageDice.map(d => `${d.count}d${d.sides}`).join('+');
+        const dmgStr = config.damageBonus > 0 ? `${diceStr}+${config.damageBonus}` : diceStr;
+
+        let parts = [`+${config.attackBonus}`, dmgStr];
+
+        if (config.advantage === 'advantage') {
+            parts.push(t('profileWithAdvantage'));
+        } else if (config.advantage === 'disadvantage') {
+            parts.push(t('profileWithDisadvantage'));
+        }
+
+        if (config.attackDiceBonus && config.attackDiceBonus > 0) {
+            parts.push(t('profileWithAttackDice', { sides: config.attackDiceBonus }));
+        }
+
+        if (config.numberOfAttacks > 1) {
+            parts.push(t('profileAttacks', { n: config.numberOfAttacks }));
+        }
+
+        if (config.targetAC) {
+            parts.push(`CA: ${config.targetAC}`);
+        }
+
+        return parts.join(' | ');
+    }
+
+    renderProfiles() {
+        const listEl = document.getElementById('profilesList');
+        const noProfilesEl = document.getElementById('noProfiles');
+
+        if (!listEl) return;
+
+        if (this.profiles.length === 0) {
+            listEl.innerHTML = '';
+            if (noProfilesEl) noProfilesEl.style.display = 'block';
+        } else {
+            if (noProfilesEl) noProfilesEl.style.display = 'none';
+
+            listEl.innerHTML = this.profiles.map(profile => {
+                const isEditing = this.editingProfileId === profile.id;
+                return `
+                <div class="profile-card ${isEditing ? 'editing' : ''}" data-id="${profile.id}">
+                    <div class="profile-info">
+                        <span class="profile-name">${this.escapeHtml(profile.name)}</span>
+                        <span class="profile-preview">${this.formatProfilePreview(profile.config)}</span>
+                    </div>
+                    <div class="profile-actions">
+                        <button class="btn-edit" onclick="editProfile('${profile.id}')" title="${t('editProfile')}">✏️</button>
+                        <button class="btn-load" onclick="loadProfile('${profile.id}')" title="${t('loadProfileTooltip')}">📥</button>
+                        <button class="btn-delete" onclick="deleteProfile('${profile.id}')" title="${t('deleteProfileTooltip')}">🗑️</button>
+                    </div>
+                </div>
+            `}).join('');
+        }
+
+        // También actualizar los checkboxes de comparación si existe el comparador
+        if (typeof profileComparator !== 'undefined' && profileComparator) {
+            profileComparator.renderCompareCheckboxes();
+        }
+    }
+
+    escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+}
+
+// ========== SISTEMA DE COMPARACIÓN DE PERFILES ==========
+
+class ProfileComparator {
+    constructor(profileManager) {
+        this.profileManager = profileManager;
+        this.selectedProfiles = new Set();
+    }
+
+    // Calcular estadísticas para una configuración de perfil
+    calculateStatsForConfig(config, targetAC) {
+        // Cálculos de probabilidad
+        const targetRoll = targetAC - config.attackBonus;
+        const critMin = config.critRange;
+        const bonusDie = config.attackDiceBonus || 0;
+
+        let hitChance, critChance;
+
+        // If there's an attack dice bonus, use the special calculation
+        if (bonusDie && bonusDie > 0) {
+            const result = this.calculateProbabilityWithBonusDie(targetRoll, critMin, config.advantage, bonusDie);
+            hitChance = result.hit;
+            critChance = result.crit;
+        } else if (config.advantage === 'normal') {
+            const result = this.calculateNormalProbability(targetRoll, critMin);
+            hitChance = result.hit;
+            critChance = result.crit;
+        } else if (config.advantage === 'advantage') {
+            const result = this.calculateAdvantageProbability(targetRoll, critMin);
+            hitChance = result.hit;
+            critChance = result.crit;
+        } else {
+            const result = this.calculateDisadvantageProbability(targetRoll, critMin);
+            hitChance = result.hit;
+            critChance = result.crit;
+        }
+
+        // Calcular daño
+        const normalDamage = this.calculateDamageRange(config.damageDice, config.damageBonus, false);
+        const critDamage = this.calculateDamageRange(config.damageDice, config.damageBonus, true);
+
+        // DPR
+        const normalAvgDmg = this.calculateAverageDamage(config.damageDice, config.damageBonus, false);
+        const critAvgDmg = this.calculateAverageDamage(config.damageDice, config.damageBonus, true);
+        const pNormalHit = hitChance - critChance;
+        const dprPerAttack = pNormalHit * normalAvgDmg + critChance * critAvgDmg;
+        const totalDPR = dprPerAttack * config.numberOfAttacks;
+
+        // Power Level
+        const powerLevel = Math.round(totalDPR * hitChance * 10);
+
+        // Roll mínimo necesario
+        let rollNeeded;
+        if (targetRoll <= 1) {
+            rollNeeded = 'auto'; // Impacto automático
+        } else if (targetRoll >= 21) {
+            rollNeeded = 'crit'; // Solo crítico
+        } else {
+            rollNeeded = targetRoll;
+        }
+
+        return {
+            hitChance,
+            critChance,
+            normalDamage,
+            critDamage,
+            normalAvgDmg,
+            critAvgDmg,
+            dprPerAttack,
+            totalDPR,
+            powerLevel,
+            rollNeeded,
+            numberOfAttacks: config.numberOfAttacks,
+            advantage: config.advantage
+        };
+    }
+
+    calculateNormalProbability(targetRoll, critMin) {
+        if (targetRoll >= 21) {
+            const critChance = (21 - critMin) / 20;
+            return { hit: critChance, crit: critChance };
+        }
+        if (targetRoll <= 1) {
+            const critChance = (21 - critMin) / 20;
+            return { hit: 0.95, crit: critChance };
+        }
+        const hitRolls = 21 - targetRoll;
+        const critRolls = 21 - critMin;
+        return { hit: hitRolls / 20, crit: critRolls / 20 };
+    }
+
+    calculateAdvantageProbability(targetRoll, critMin) {
+        let pHit, pCrit;
+        if (targetRoll >= 21) {
+            pCrit = 1 - ((critMin - 1) / 20) ** 2;
+            pHit = pCrit;
+        } else if (targetRoll <= 1) {
+            pHit = 1 - (1 / 20) ** 2;
+            pCrit = 1 - ((critMin - 1) / 20) ** 2;
+        } else {
+            pHit = 1 - ((targetRoll - 1) / 20) ** 2;
+            pCrit = 1 - ((critMin - 1) / 20) ** 2;
+        }
+        return { hit: pHit, crit: pCrit };
+    }
+
+    calculateDisadvantageProbability(targetRoll, critMin) {
+        let pHit, pCrit;
+        if (targetRoll >= 21) {
+            pCrit = ((21 - critMin) / 20) ** 2;
+            pHit = pCrit;
+        } else if (targetRoll <= 1) {
+            pHit = 1 - (1 / 20) ** 2;
+            pCrit = ((21 - critMin) / 20) ** 2;
+        } else {
+            pHit = ((21 - targetRoll) / 20) ** 2;
+            pCrit = ((21 - critMin) / 20) ** 2;
+        }
+        return { hit: pHit, crit: pCrit };
+    }
+
+    calculateProbabilityWithBonusDie(targetRoll, critMin, advantage, bonusDieSides) {
+        let hitCount = 0, critCount = 0, missCount = 0;
+        let totalOutcomes;
+
+        if (advantage === 'normal') {
+            totalOutcomes = 20 * bonusDieSides;
+            for (let d20 = 1; d20 <= 20; d20++) {
+                for (let bonus = 1; bonus <= bonusDieSides; bonus++) {
+                    if (d20 === 1) {
+                        missCount++;
+                    } else if (d20 >= critMin) {
+                        critCount++;
+                    } else if (d20 + bonus >= targetRoll) {
+                        hitCount++;
+                    } else {
+                        missCount++;
+                    }
+                }
+            }
+        } else if (advantage === 'advantage') {
+            totalOutcomes = 20 * 20 * bonusDieSides;
+            for (let d1 = 1; d1 <= 20; d1++) {
+                for (let d2 = 1; d2 <= 20; d2++) {
+                    const d20 = Math.max(d1, d2);
+                    for (let bonus = 1; bonus <= bonusDieSides; bonus++) {
+                        if (d1 === 1 && d2 === 1) {
+                            missCount++;
+                        } else if (d20 >= critMin) {
+                            critCount++;
+                        } else if (d20 + bonus >= targetRoll) {
+                            hitCount++;
+                        } else {
+                            missCount++;
+                        }
+                    }
+                }
+            }
+        } else {
+            // disadvantage
+            totalOutcomes = 20 * 20 * bonusDieSides;
+            for (let d1 = 1; d1 <= 20; d1++) {
+                for (let d2 = 1; d2 <= 20; d2++) {
+                    const d20 = Math.min(d1, d2);
+                    for (let bonus = 1; bonus <= bonusDieSides; bonus++) {
+                        if (d1 === 1 || d2 === 1) {
+                            missCount++;
+                        } else if (d20 >= critMin) {
+                            critCount++;
+                        } else if (d20 + bonus >= targetRoll) {
+                            hitCount++;
+                        } else {
+                            missCount++;
+                        }
+                    }
+                }
+            }
+        }
+
+        return {
+            hit: (hitCount + critCount) / totalOutcomes,
+            crit: critCount / totalOutcomes,
+            miss: missCount / totalOutcomes
+        };
+    }
+
+    calculateDamageRange(damageDice, damageBonus, isCrit) {
+        let min = 0, max = 0;
+        damageDice.forEach(die => {
+            const multiplier = isCrit ? die.count * 2 : die.count;
+            min += multiplier * 1;
+            max += multiplier * die.sides;
+        });
+        return {
+            min: min + damageBonus,
+            max: max + damageBonus,
+            avg: (min + max) / 2 + damageBonus
+        };
+    }
+
+    calculateAverageDamage(damageDice, damageBonus, isCrit) {
+        let avgDice = 0;
+        damageDice.forEach(die => {
+            const avgPerDie = (1 + die.sides) / 2;
+            const multiplier = isCrit ? die.count * 2 : die.count;
+            avgDice += multiplier * avgPerDie;
+        });
+        return avgDice + damageBonus;
+    }
+
+    // Comparar perfiles seleccionados
+    compareProfiles(profileIds, targetAC) {
+        const results = [];
+
+        profileIds.forEach(id => {
+            const profile = this.profileManager.profiles.find(p => p.id === id);
+            if (!profile) return;
+
+            const stats = this.calculateStatsForConfig(profile.config, targetAC);
+            results.push({
+                id: profile.id,
+                name: profile.name,
+                config: profile.config,
+                stats
+            });
+        });
+
+        // Encontrar los mejores valores para cada métrica
+        const bests = this.findBestValues(results);
+
+        return { results, bests, targetAC };
+    }
+
+    findBestValues(results) {
+        if (results.length === 0) return {};
+
+        const bests = {
+            powerLevel: { value: -Infinity, ids: [] },
+            hitChance: { value: -Infinity, ids: [] },
+            critChance: { value: -Infinity, ids: [] },
+            totalDPR: { value: -Infinity, ids: [] },
+            rollNeeded: { value: Infinity, ids: [] }, // Menor es mejor
+            normalDamageMax: { value: -Infinity, ids: [] },
+            critDamageMax: { value: -Infinity, ids: [] }
+        };
+
+        results.forEach(r => {
+            const s = r.stats;
+
+            // Power Level (mayor es mejor)
+            if (s.powerLevel > bests.powerLevel.value) {
+                bests.powerLevel = { value: s.powerLevel, ids: [r.id] };
+            } else if (s.powerLevel === bests.powerLevel.value) {
+                bests.powerLevel.ids.push(r.id);
+            }
+
+            // Hit Chance (mayor es mejor)
+            if (s.hitChance > bests.hitChance.value) {
+                bests.hitChance = { value: s.hitChance, ids: [r.id] };
+            } else if (s.hitChance === bests.hitChance.value) {
+                bests.hitChance.ids.push(r.id);
+            }
+
+            // Crit Chance (mayor es mejor)
+            if (s.critChance > bests.critChance.value) {
+                bests.critChance = { value: s.critChance, ids: [r.id] };
+            } else if (s.critChance === bests.critChance.value) {
+                bests.critChance.ids.push(r.id);
+            }
+
+            // Total DPR (mayor es mejor)
+            if (s.totalDPR > bests.totalDPR.value) {
+                bests.totalDPR = { value: s.totalDPR, ids: [r.id] };
+            } else if (s.totalDPR === bests.totalDPR.value) {
+                bests.totalDPR.ids.push(r.id);
+            }
+
+            // Roll Needed (menor es mejor) - solo para valores numéricos
+            if (typeof s.rollNeeded === 'number') {
+                if (s.rollNeeded < bests.rollNeeded.value) {
+                    bests.rollNeeded = { value: s.rollNeeded, ids: [r.id] };
+                } else if (s.rollNeeded === bests.rollNeeded.value) {
+                    bests.rollNeeded.ids.push(r.id);
+                }
+            } else if (s.rollNeeded === 'auto') {
+                // Auto-hit es el mejor
+                if (bests.rollNeeded.value !== 0) {
+                    bests.rollNeeded = { value: 0, ids: [r.id] };
+                } else {
+                    bests.rollNeeded.ids.push(r.id);
+                }
+            }
+
+            // Max Normal Damage (mayor es mejor)
+            if (s.normalDamage.max > bests.normalDamageMax.value) {
+                bests.normalDamageMax = { value: s.normalDamage.max, ids: [r.id] };
+            } else if (s.normalDamage.max === bests.normalDamageMax.value) {
+                bests.normalDamageMax.ids.push(r.id);
+            }
+
+            // Max Crit Damage (mayor es mejor)
+            if (s.critDamage.max > bests.critDamageMax.value) {
+                bests.critDamageMax = { value: s.critDamage.max, ids: [r.id] };
+            } else if (s.critDamage.max === bests.critDamageMax.value) {
+                bests.critDamageMax.ids.push(r.id);
+            }
+        });
+
+        return bests;
+    }
+
+    // Renderizar la tabla de comparación
+    renderComparison(comparisonData) {
+        const panel = document.getElementById('comparisonResultsPanel');
+        const tableBody = document.getElementById('comparisonTableBody');
+        const acLabel = document.getElementById('comparisonTargetAC');
+
+        if (!panel || !tableBody) return;
+
+        const { results, bests, targetAC } = comparisonData;
+
+        // Mostrar panel y actualizar CA
+        panel.style.display = 'block';
+        if (acLabel) acLabel.textContent = targetAC;
+
+        // Generar filas de la tabla
+        tableBody.innerHTML = results.map(r => {
+            const s = r.stats;
+            const isBest = (metric) => bests[metric]?.ids.includes(r.id);
+
+            // Formatear roll needed
+            let rollDisplay;
+            if (s.rollNeeded === 'auto') {
+                rollDisplay = t('compareAutoHit');
+            } else if (s.rollNeeded === 'crit') {
+                rollDisplay = t('compareCritOnly');
+            } else {
+                rollDisplay = s.rollNeeded + '+';
+            }
+
+            // Formatear ventaja/desventaja
+            let advDisplay = '';
+            if (s.advantage === 'advantage') {
+                advDisplay = `<span class="adv-badge advantage">${t('compareAdvantage')}</span>`;
+            } else if (s.advantage === 'disadvantage') {
+                advDisplay = `<span class="adv-badge disadvantage">${t('compareDisadvantage')}</span>`;
+            }
+
+            // Format dice with damage bonus
+            const diceNotation = this.formatDiceNotation(r.config);
+            const damageBonus = r.config.damageBonus;
+            const diceDisplay = damageBonus > 0 ? `${diceNotation}+${damageBonus}` :
+                               damageBonus < 0 ? `${diceNotation}${damageBonus}` : diceNotation;
+
+            return `
+                <tr>
+                    <td class="profile-name-cell">
+                        <strong>${this.escapeHtml(r.name)}</strong>
+                        ${advDisplay}
+                        ${s.numberOfAttacks > 1 ? `<span class="attacks-badge">${s.numberOfAttacks}×</span>` : ''}
+                    </td>
+                    <td class="dice-cell">
+                        <span class="dice-notation">${diceDisplay}</span>
+                    </td>
+                    <td class="attack-bonus-cell">
+                        <span class="attack-bonus">${this.formatAttackBonus(r.config.attackBonus)}</span>
+                    </td>
+                    <td class="attack-dice-cell">
+                        <span class="attack-dice-bonus">${r.config.attackDiceBonus > 0 ? '+1d' + r.config.attackDiceBonus : '-'}</span>
+                    </td>
+                    <td class="${isBest('powerLevel') ? 'best-value' : ''}">
+                        <span class="value-number">${s.powerLevel}</span>
+                        ${isBest('powerLevel') ? '<span class="best-badge">🏆</span>' : ''}
+                    </td>
+                    <td class="${isBest('rollNeeded') ? 'best-value' : ''}">
+                        <span class="value-number">${rollDisplay}</span>
+                        ${isBest('rollNeeded') ? '<span class="best-badge">🏆</span>' : ''}
+                    </td>
+                    <td class="${isBest('hitChance') ? 'best-value' : ''}">
+                        <span class="value-number">${(s.hitChance * 100).toFixed(1)}%</span>
+                        ${isBest('hitChance') ? '<span class="best-badge">🏆</span>' : ''}
+                    </td>
+                    <td class="${isBest('critChance') ? 'best-value' : ''}">
+                        <span class="value-number">${(s.critChance * 100).toFixed(1)}%</span>
+                        ${isBest('critChance') ? '<span class="best-badge">🏆</span>' : ''}
+                    </td>
+                    <td class="${isBest('normalDamageMax') ? 'best-value' : ''}">
+                        <span class="value-number">${s.normalDamage.min}-${s.normalDamage.max}</span>
+                        ${isBest('normalDamageMax') ? '<span class="best-badge">🏆</span>' : ''}
+                    </td>
+                    <td class="${isBest('critDamageMax') ? 'best-value' : ''}">
+                        <span class="value-number">${s.critDamage.min}-${s.critDamage.max}</span>
+                        ${isBest('critDamageMax') ? '<span class="best-badge">🏆</span>' : ''}
+                    </td>
+                    <td class="${isBest('totalDPR') ? 'best-value' : ''}">
+                        <span class="value-number">${s.totalDPR.toFixed(1)}</span>
+                        ${isBest('totalDPR') ? '<span class="best-badge">🏆</span>' : ''}
+                    </td>
+                </tr>
+            `;
+        }).join('');
+
+        // Scroll a los resultados
+        panel.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    // Format dice notation for display (e.g., "2d6+1d8")
+    formatDiceNotation(config) {
+        const mainDice = config.damageDice.map(d => `${d.count}d${d.sides}`).join('+');
+        return mainDice;
+    }
+
+    // Format attack bonus for display (e.g., "+8" or "-2")
+    formatAttackBonus(bonus) {
+        return bonus >= 0 ? `+${bonus}` : `${bonus}`;
+    }
+
+    // Renderizar checkboxes de selección en la sección de comparación
+    renderCompareCheckboxes() {
+        const container = document.getElementById('compareProfilesList');
+        const noProfilesMsg = document.getElementById('compareNoProfiles');
+
+        if (!container) return;
+
+        const profiles = this.profileManager.profiles;
+
+        if (profiles.length === 0) {
+            container.innerHTML = '';
+            if (noProfilesMsg) noProfilesMsg.style.display = 'block';
+            return;
+        }
+
+        if (noProfilesMsg) noProfilesMsg.style.display = 'none';
+
+        container.innerHTML = profiles.map(profile => `
+            <label class="compare-checkbox-item">
+                <input type="checkbox"
+                       class="compare-profile-checkbox"
+                       value="${profile.id}"
+                       ${this.selectedProfiles.has(profile.id) ? 'checked' : ''}>
+                <span class="checkbox-custom"></span>
+                <span class="compare-profile-name">${this.escapeHtml(profile.name)}</span>
+                <span class="compare-profile-preview">${this.profileManager.formatProfilePreview(profile.config)}</span>
+            </label>
+        `).join('');
+
+        // Event listeners para checkboxes
+        container.querySelectorAll('.compare-profile-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', (e) => {
+                if (e.target.checked) {
+                    this.selectedProfiles.add(e.target.value);
+                } else {
+                    this.selectedProfiles.delete(e.target.value);
+                }
+            });
+        });
+    }
+}
+
 // ========== CALCULADORA DE PROBABILIDADES D&D ==========
 
 class DnDCalculator {
@@ -618,6 +1620,7 @@ class DnDCalculator {
             attackBonus: 5,
             damageBonus: 3,
             damageDice: [{ count: 1, sides: 8 }],
+            attackDiceBonus: 0, // 0 = none, 4 = d4, 6 = d6, 8 = d8, 10 = d10, 12 = d12
             advantage: 'normal',
             critRange: 20,
             numberOfAttacks: 1,
@@ -640,6 +1643,14 @@ class DnDCalculator {
         document.getElementById('critRange').addEventListener('change', (e) => {
             this.config.critRange = parseInt(e.target.value);
         });
+
+        // Attack Dice Bonus (Bless, Bardic Inspiration, etc.)
+        const attackDiceBonusSelect = document.getElementById('attackDiceBonus');
+        if (attackDiceBonusSelect) {
+            attackDiceBonusSelect.addEventListener('change', (e) => {
+                this.config.attackDiceBonus = parseInt(e.target.value) || 0;
+            });
+        }
 
         document.getElementById('targetAC').addEventListener('input', (e) => {
             this.config.targetAC = e.target.value ? parseInt(e.target.value) : null;
@@ -696,7 +1707,14 @@ class DnDCalculator {
     calculateHitChance(ac) {
         const targetRoll = ac - this.config.attackBonus;
         const critMin = this.config.critRange;
+        const bonusDie = this.config.attackDiceBonus;
 
+        // If there's an attack dice bonus, use the special calculation
+        if (bonusDie && bonusDie > 0) {
+            return this.calculateProbabilityWithBonusDie(targetRoll, critMin, this.config.advantage, bonusDie);
+        }
+
+        // Standard calculation without bonus die
         if (this.config.advantage === 'normal') {
             return this.calculateNormalProbability(targetRoll, critMin);
         } else if (this.config.advantage === 'advantage') {
@@ -704,6 +1722,91 @@ class DnDCalculator {
         } else {
             return this.calculateDisadvantageProbability(targetRoll, critMin);
         }
+    }
+
+    // Calculate probability with attack bonus die (Bless, Bardic Inspiration, etc.)
+    // This uses enumeration to get exact probabilities
+    calculateProbabilityWithBonusDie(targetRoll, critMin, advantage, bonusDieSides) {
+        let hitCount = 0, critCount = 0, missCount = 0;
+        let totalOutcomes;
+
+        if (advantage === 'normal') {
+            // d20 + bonus die
+            totalOutcomes = 20 * bonusDieSides;
+            for (let d20 = 1; d20 <= 20; d20++) {
+                for (let bonus = 1; bonus <= bonusDieSides; bonus++) {
+                    if (d20 === 1) {
+                        // Natural 1 always misses
+                        missCount++;
+                    } else if (d20 >= critMin) {
+                        // Critical hit (based on d20 only)
+                        critCount++;
+                    } else if (d20 + bonus >= targetRoll) {
+                        // Normal hit
+                        hitCount++;
+                    } else {
+                        missCount++;
+                    }
+                }
+            }
+        } else if (advantage === 'advantage') {
+            // max(d20_1, d20_2) + bonus die
+            totalOutcomes = 20 * 20 * bonusDieSides;
+            for (let d1 = 1; d1 <= 20; d1++) {
+                for (let d2 = 1; d2 <= 20; d2++) {
+                    const d20 = Math.max(d1, d2);
+                    for (let bonus = 1; bonus <= bonusDieSides; bonus++) {
+                        if (d1 === 1 && d2 === 1) {
+                            // Both natural 1s = miss
+                            missCount++;
+                        } else if (d20 >= critMin) {
+                            // Critical hit
+                            critCount++;
+                        } else if (d20 + bonus >= targetRoll) {
+                            // Normal hit
+                            hitCount++;
+                        } else {
+                            missCount++;
+                        }
+                    }
+                }
+            }
+        } else {
+            // min(d20_1, d20_2) + bonus die (disadvantage)
+            totalOutcomes = 20 * 20 * bonusDieSides;
+            for (let d1 = 1; d1 <= 20; d1++) {
+                for (let d2 = 1; d2 <= 20; d2++) {
+                    const d20 = Math.min(d1, d2);
+                    for (let bonus = 1; bonus <= bonusDieSides; bonus++) {
+                        if (d1 === 1 || d2 === 1) {
+                            // At least one natural 1 with disadvantage = miss
+                            // (we take the min, so if either is 1, result is 1)
+                            if (d20 === 1) {
+                                missCount++;
+                            } else if (d20 >= critMin) {
+                                critCount++;
+                            } else if (d20 + bonus >= targetRoll) {
+                                hitCount++;
+                            } else {
+                                missCount++;
+                            }
+                        } else if (d20 >= critMin) {
+                            critCount++;
+                        } else if (d20 + bonus >= targetRoll) {
+                            hitCount++;
+                        } else {
+                            missCount++;
+                        }
+                    }
+                }
+            }
+        }
+
+        return {
+            hit: (hitCount + critCount) / totalOutcomes,
+            crit: critCount / totalOutcomes,
+            miss: missCount / totalOutcomes
+        };
     }
 
     calculateNormalProbability(targetRoll, critMin) {
@@ -1283,6 +2386,113 @@ function removeDice(button) {
     calculator.updateDiceFromInputs();
 }
 
+// ========== FUNCIONES DE PERFILES ==========
+
+let profileManager;
+let profileComparator;
+
+function saveProfile() {
+    const nameInput = document.getElementById('profileName');
+
+    // If editing, use existing profile name as default
+    let defaultName = nameInput ? nameInput.value : '';
+    if (profileManager.isEditing()) {
+        const editingProfile = profileManager.getEditingProfile();
+        if (editingProfile && !defaultName) {
+            defaultName = editingProfile.name;
+        }
+    }
+
+    const name = defaultName || '';
+
+    const result = profileManager.saveProfile(name);
+
+    if (result.success) {
+        // Limpiar input
+        if (nameInput) nameInput.value = '';
+        // Feedback visual
+        const messageKey = result.updated ? 'profileSaved' : 'profileSaved';
+        showProfileFeedback(t(messageKey, { name: result.profile.name }), 'success');
+    } else {
+        alert(t(result.messageKey));
+    }
+}
+
+function editProfile(id) {
+    profileManager.startEditing(id);
+    // Set the profile name in the input field
+    const profile = profileManager.profiles.find(p => p.id === id);
+    if (profile) {
+        const nameInput = document.getElementById('profileName');
+        if (nameInput) {
+            nameInput.value = profile.name;
+        }
+    }
+    // Scroll to config section
+    document.querySelector('.config-panel')?.scrollIntoView({ behavior: 'smooth' });
+}
+
+function cancelEditProfile() {
+    profileManager.cancelEditing();
+    // Clear name input
+    const nameInput = document.getElementById('profileName');
+    if (nameInput) nameInput.value = '';
+}
+
+function loadProfile(id) {
+    const result = profileManager.loadProfile(id);
+
+    if (result.success) {
+        showProfileFeedback(t('profileLoaded', { name: result.profile.name }), 'success');
+        // Scroll hacia los resultados
+        document.querySelector('.results-panel')?.scrollIntoView({ behavior: 'smooth' });
+    }
+}
+
+function deleteProfile(id) {
+    profileManager.deleteProfile(id);
+}
+
+function showProfileFeedback(message, type) {
+    // Crear elemento de feedback temporal
+    const feedback = document.createElement('div');
+    feedback.className = `profile-feedback ${type}`;
+    feedback.textContent = message;
+
+    const profilesSection = document.querySelector('.profiles-section');
+    if (profilesSection) {
+        profilesSection.appendChild(feedback);
+
+        // Remover después de 2 segundos
+        setTimeout(() => {
+            feedback.classList.add('fade-out');
+            setTimeout(() => feedback.remove(), 300);
+        }, 2000);
+    }
+}
+
+// ========== FUNCIONES DE COMPARACIÓN ==========
+
+function runComparison() {
+    // Verificar que hay perfiles seleccionados
+    const selectedIds = Array.from(profileComparator.selectedProfiles);
+
+    if (selectedIds.length < 2) {
+        alert(t('compareMinSelect'));
+        return;
+    }
+
+    // Obtener CA objetivo
+    const acInput = document.getElementById('compareTargetAC');
+    const targetAC = parseInt(acInput?.value) || 15;
+
+    // Ejecutar comparación
+    const comparisonData = profileComparator.compareProfiles(selectedIds, targetAC);
+
+    // Renderizar resultados
+    profileComparator.renderComparison(comparisonData);
+}
+
 // ========== INICIALIZACIÓN ==========
 
 let calculator;
@@ -1291,17 +2501,60 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize language system first
     initializeLanguage();
 
-    // Add language selector event listener
-    const languageSelect = document.getElementById('languageSelect');
-    if (languageSelect) {
-        languageSelect.addEventListener('change', (e) => {
-            setLanguage(e.target.value);
+    // Setup custom select with flags
+    const customSelect = document.getElementById('languageSelect');
+    if (customSelect) {
+        const selected = customSelect.querySelector('.select-selected');
+        const itemsContainer = customSelect.querySelector('.select-items');
+        const items = itemsContainer.querySelectorAll('div');
+
+        // Toggle dropdown
+        selected.addEventListener('click', (e) => {
+            e.stopPropagation();
+            closeAllSelect(selected);
+            itemsContainer.classList.toggle('select-hide');
+            selected.classList.toggle('select-arrow-active');
         });
+
+        // Handle item selection
+        items.forEach(item => {
+            item.addEventListener('click', (e) => {
+                const lang = item.getAttribute('data-value');
+                selected.innerHTML = item.innerHTML;
+                itemsContainer.classList.add('select-hide');
+                selected.classList.remove('select-arrow-active');
+                setLanguage(lang);
+            });
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', () => {
+            closeAllSelect();
+        });
+
+        function closeAllSelect(except) {
+            const items = document.querySelectorAll('.select-items');
+            const selecteds = document.querySelectorAll('.select-selected');
+            items.forEach((item, i) => {
+                if (except !== selecteds[i]) {
+                    item.classList.add('select-hide');
+                    selecteds[i].classList.remove('select-arrow-active');
+                }
+            });
+        }
     }
 
     // Initialize calculator
     calculator = new DnDCalculator();
     calculator.updateDiceNotation();
+
+    // Initialize profile manager
+    profileManager = new ProfileManager(calculator);
+    profileManager.renderProfiles();
+
+    // Initialize profile comparator
+    profileComparator = new ProfileComparator(profileManager);
+    profileComparator.renderCompareCheckboxes();
 
     // Calcular automáticamente al cargar
     calculator.calculate();

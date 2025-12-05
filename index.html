@@ -4,20 +4,26 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>D&D Attack Probability Calculator</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/css/flag-icons.min.css">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
     <div class="container">
         <header>
             <h1 data-i18n="title">⚔️ D&D Attack Probability Calculator</h1>
-            <p class="subtitle" data-i18n="subtitle">Calcula tus probabilidades de impacto al estilo Baldur's Gate 3</p>
+            <p class="subtitle" data-i18n="subtitle">Calcula tus probabilidades de impacto y daño esperado</p>
             <div class="language-selector">
-                <select id="languageSelect">
-                    <option value="es">🇪🇸 Español</option>
-                    <option value="en">🇬🇧 English</option>
-                    <option value="pt">🇵🇹 Português</option>
-                    <option value="de">🇩🇪 Deutsch</option>
-                </select>
+                <div class="custom-select" id="languageSelect">
+                    <div class="select-selected">
+                        <span class="fi fi-es"></span> Español
+                    </div>
+                    <div class="select-items select-hide">
+                        <div data-value="es"><span class="fi fi-es"></span> Español</div>
+                        <div data-value="en"><span class="fi fi-us"></span> English</div>
+                        <div data-value="pt"><span class="fi fi-pt"></span> Português</div>
+                        <div data-value="de"><span class="fi fi-de"></span> Deutsch</div>
+                    </div>
+                </div>
             </div>
         </header>
 
@@ -34,6 +40,23 @@
                         </span>
                     </label>
                     <input type="number" id="attackBonus" value="5" min="-5" max="20" step="1">
+                </div>
+
+                <div class="input-group">
+                    <label for="attackDiceBonus">
+                        <span data-i18n="attackDiceBonus">Dado Extra al Ataque</span>
+                        <span class="tooltip">?
+                            <span class="tooltip-text" data-i18n="attackDiceBonusTooltip">Dado adicional para tiradas de ataque (ej: Bendición, Inspiración Bárdica)</span>
+                        </span>
+                    </label>
+                    <select id="attackDiceBonus">
+                        <option value="0" selected data-i18n="attackDiceBonusNone">Ninguno</option>
+                        <option value="4" data-i18n="attackDiceBonusBless">+1d4 (Bendición)</option>
+                        <option value="6" data-i18n="attackDiceBonusBardic6">+1d6 (Inspiración)</option>
+                        <option value="8" data-i18n="attackDiceBonusBardic8">+1d8 (Inspiración)</option>
+                        <option value="10" data-i18n="attackDiceBonusBardic10">+1d10 (Inspiración)</option>
+                        <option value="12" data-i18n="attackDiceBonusBardic12">+1d12 (Inspiración)</option>
+                    </select>
                 </div>
 
                 <div class="input-group">
@@ -121,6 +144,48 @@
                 <button class="btn-calculate" onclick="calculator.calculate()" data-i18n="calculateButton">
                     🎲 Calcular Probabilidades
                 </button>
+
+                <!-- Sección de Perfiles -->
+                <div class="profiles-section">
+                    <h3 data-i18n="profilesTitle">📁 Perfiles Guardados</h3>
+
+                    <div class="save-profile">
+                        <input type="text" id="profileName" data-i18n="profileNamePlaceholder" placeholder="Nombre del perfil...">
+                        <button class="btn-save-profile" onclick="saveProfile()" data-i18n="saveProfileBtn">💾 Guardar Perfil</button>
+                    </div>
+
+                    <!-- Editing indicator -->
+                    <div class="editing-indicator" id="editingIndicator" style="display: none;">
+                        <span class="editing-text" id="editingText">Editando: Perfil</span>
+                        <button class="btn-cancel-edit" onclick="cancelEditProfile()" data-i18n="cancelEdit">✖ Cancelar</button>
+                    </div>
+
+                    <div class="profiles-list" id="profilesList">
+                        <!-- Perfiles se generan dinámicamente -->
+                    </div>
+
+                    <div class="no-profiles" id="noProfiles" data-i18n="noProfiles">No hay perfiles guardados</div>
+                </div>
+
+                <!-- Sección de Comparación de Perfiles -->
+                <div class="compare-section">
+                    <h3 data-i18n="compareTitle">⚔️ Comparar Perfiles</h3>
+
+                    <div class="compare-profiles-selection">
+                        <label data-i18n="compareSelectProfiles">Selecciona perfiles a comparar:</label>
+                        <div class="compare-profiles-list" id="compareProfilesList">
+                            <!-- Checkboxes se generan dinámicamente -->
+                        </div>
+                        <div class="compare-no-profiles" id="compareNoProfiles" data-i18n="compareNoProfiles">Guarda perfiles primero para compararlos</div>
+                    </div>
+
+                    <div class="compare-ac-input">
+                        <label for="compareTargetAC" data-i18n="compareTargetAC">CA para comparar</label>
+                        <input type="number" id="compareTargetAC" value="15" min="1" max="30">
+                    </div>
+
+                    <button class="btn-compare" onclick="runComparison()" data-i18n="compareButton">📊 Comparar</button>
+                </div>
             </aside>
 
             <!-- Panel de resultados -->
@@ -274,6 +339,38 @@
                     </div>
                 </div>
 
+                <!-- Panel de Comparación de Perfiles -->
+                <div class="comparison-results-panel" id="comparisonResultsPanel" style="display: none;">
+                    <h3 data-i18n="compareResultsTitle">📊 Comparación de Perfiles</h3>
+                    <div class="comparison-vs-ac">
+                        <span data-i18n="compareVsAC">contra CA</span>
+                        <span class="comparison-ac-number" id="comparisonTargetAC">15</span>
+                    </div>
+
+                    <div class="comparison-table-wrapper">
+                        <table class="comparison-table">
+                            <thead>
+                                <tr>
+                                    <th>Perfil</th>
+                                    <th data-i18n="compareDice">Tiradas</th>
+                                    <th data-i18n="compareAttackBonus">Bono Ataque</th>
+                                    <th data-i18n="compareAttackDice">Dado Extra</th>
+                                    <th data-i18n="comparePowerLevel">Power Level</th>
+                                    <th data-i18n="compareRollNeeded">Roll Mínimo</th>
+                                    <th data-i18n="compareHitChance">Prob. Impacto</th>
+                                    <th data-i18n="compareCritChance">Prob. Crítico</th>
+                                    <th data-i18n="compareNormalDmg">Daño Normal</th>
+                                    <th data-i18n="compareCritDmg">Daño Crítico</th>
+                                    <th data-i18n="compareDPR">DPR Total</th>
+                                </tr>
+                            </thead>
+                            <tbody id="comparisonTableBody">
+                                <!-- Filas se generan dinámicamente -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
                 <!-- Leyenda -->
                 <div class="legend">
                     <div class="legend-item">
@@ -296,7 +393,7 @@
         </div>
 
         <footer>
-            <p data-i18n="footerText">Calculadora basada en las reglas de D&D 5e y mecánicas de Baldur's Gate 3</p>
+            <p data-i18n="footerText">Calculadora basada en las reglas de D&D 5e</p>
         </footer>
     </div>
 
