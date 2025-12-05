@@ -1,5 +1,5 @@
 # ⚔️ Calculadora de Probabilidades de Ataque D&D
-
+https://francomal.github.io/dnd-attack-probability/
 ## 🇪🇸 Español
 
 ### ¿Qué es esto?
@@ -26,7 +26,7 @@ Una calculadora de probabilidades de combate para Dungeons & Dragons 5e inspirad
 
 ### Cómo usar
 
-1. Abre `calculator-standalone.html` en cualquier navegador
+1. Abre `calculator-standalone.html` en cualquier navegador o https://francomal.github.io/dnd-attack-probability/
 2. Configura tu personaje:
    - Bonificador de ataque (+5, +8, etc.)
    - Dados de daño (1d8, 2d6, etc.)
@@ -76,7 +76,7 @@ A combat probability calculator for Dungeons & Dragons 5e inspired by Baldur's G
 
 ### How to Use
 
-1. Open `calculator-standalone.html` in any browser
+1. Open `calculator-standalone.html` in any browser or https://francomal.github.io/dnd-attack-probability/
 2. Configure your character:
    - Attack bonus (+5, +8, etc.)
    - Damage dice (1d8, 2d6, etc.)
@@ -133,4 +133,4 @@ Uses multinomial distribution for precise calculations:
 
 ---
 
-Made with D&D 5e rules and Baldur's Gate 3 mechanics
+Made with D&D 5e rules.
