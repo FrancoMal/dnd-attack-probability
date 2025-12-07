@@ -12,6 +12,7 @@ const translations = {
 
         // Config panel
         configTitle: "⚙️ Configuración de Ataque",
+        closeConfig: "Cerrar Configuración",
         attackBonus: "Bonificador de Ataque",
         attackBonusTooltip: "Tu modificador de ataque total (ej: +5)",
         damageBonus: "Bonificador de Daño",
@@ -189,6 +190,7 @@ const translations = {
 
         // Config panel
         configTitle: "⚙️ Attack Configuration",
+        closeConfig: "Close Configuration",
         attackBonus: "Attack Bonus",
         attackBonusTooltip: "Your total attack modifier (e.g., +5)",
         damageBonus: "Damage Bonus",
@@ -366,6 +368,7 @@ const translations = {
 
         // Config panel
         configTitle: "⚙️ Configuração de Ataque",
+        closeConfig: "Fechar Configuração",
         attackBonus: "Bônus de Ataque",
         attackBonusTooltip: "Seu modificador total de ataque (ex: +5)",
         damageBonus: "Bônus de Dano",
@@ -543,6 +546,7 @@ const translations = {
 
         // Config panel
         configTitle: "⚙️ Angriffskonfiguration",
+        closeConfig: "Konfiguration schließen",
         attackBonus: "Angriffsbonus",
         attackBonusTooltip: "Dein gesamter Angriffsmodifikator (z.B. +5)",
         damageBonus: "Schadensbonus",
@@ -2140,6 +2144,9 @@ class DnDCalculator {
                 powerLevelSection.style.display = 'none';
             }
         }
+
+        // Auto-cerrar panel en móvil después de calcular
+        autoClosePanelAfterCalculate();
     }
 
     renderMultiAttackDistribution() {
@@ -2556,6 +2563,100 @@ document.addEventListener('DOMContentLoaded', () => {
     profileComparator = new ProfileComparator(profileManager);
     profileComparator.renderCompareCheckboxes();
 
+    // Initialize mobile panel toggle
+    initMobilePanelToggle();
+
     // Calcular automáticamente al cargar
     calculator.calculate();
+});
+
+// ========== MOBILE PANEL TOGGLE ==========
+
+// Estado del panel (mobile only)
+let mobileConfigPanelOpen = true; // Default abierto
+
+function initMobilePanelToggle() {
+    // Solo inicializar si estamos en móvil
+    if (window.innerWidth > 768) {
+        return;
+    }
+
+    // Leer estado guardado
+    const saved = localStorage.getItem('mobileConfigPanelOpen');
+    if (saved !== null) {
+        mobileConfigPanelOpen = saved === 'true';
+    }
+
+    // Aplicar estado inicial
+    updatePanelVisibility();
+}
+
+function closeMobilePanel() {
+    mobileConfigPanelOpen = false;
+    updatePanelVisibility();
+
+    // Scroll suave a resultados
+    setTimeout(() => {
+        const resultsPanel = document.querySelector('.results-panel');
+        if (resultsPanel) {
+            resultsPanel.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    }, 100);
+}
+
+function openMobilePanel() {
+    mobileConfigPanelOpen = true;
+    updatePanelVisibility();
+
+    // Scroll suave al panel
+    setTimeout(() => {
+        const configPanel = document.querySelector('.config-panel');
+        if (configPanel) {
+            configPanel.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    }, 100);
+}
+
+function updatePanelVisibility() {
+    const panel = document.querySelector('.config-panel');
+    const fab = document.querySelector('.mobile-fab-btn');
+
+    if (!panel || !fab) return;
+
+    if (mobileConfigPanelOpen) {
+        panel.classList.remove('mobile-collapsed');
+        fab.style.display = 'none';
+    } else {
+        panel.classList.add('mobile-collapsed');
+        fab.style.display = 'flex';
+    }
+
+    localStorage.setItem('mobileConfigPanelOpen', mobileConfigPanelOpen);
+}
+
+// Auto-cerrar después de calcular (solo móvil)
+function autoClosePanelAfterCalculate() {
+    if (window.innerWidth <= 768 && mobileConfigPanelOpen) {
+        setTimeout(closeMobilePanel, 300);
+    }
+}
+
+// Resetear en resize
+window.addEventListener('resize', () => {
+    if (window.innerWidth > 768) {
+        // Desktop: siempre mostrar panel
+        const panel = document.querySelector('.config-panel');
+        const fab = document.querySelector('.mobile-fab-btn');
+        if (panel) panel.classList.remove('mobile-collapsed');
+        if (fab) fab.style.display = 'none';
+    } else {
+        // Móvil: aplicar estado guardado
+        updatePanelVisibility();
+    }
 });

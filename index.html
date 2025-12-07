@@ -30,6 +30,12 @@
         <div class="main-layout">
             <!-- Panel de configuración -->
             <aside class="config-panel">
+                <!-- Botón cerrar móvil -->
+                <button class="mobile-panel-close" onclick="closeMobilePanel()" aria-label="Cerrar configuración">
+                    <span class="close-icon">▼</span>
+                    <span data-i18n="closeConfig">Cerrar Configuración</span>
+                </button>
+
                 <h2 data-i18n="configTitle">⚙️ Configuración de Ataque</h2>
 
                 <div class="input-group">
@@ -396,6 +402,11 @@
             <p data-i18n="footerText">Calculadora basada en las reglas de D&D 5e</p>
         </footer>
     </div>
+
+    <!-- FAB Móvil -->
+    <button class="mobile-fab-btn" onclick="openMobilePanel()" aria-label="Abrir configuración" style="display: none;">
+        <span>⚙️</span>
+    </button>
 
     <script src="calculator.js"></script>
 </body>
