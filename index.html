@@ -100,6 +100,16 @@
                 </div>
 
                 <div class="input-group">
+                    <label for="sneakAttackDice">
+                        <span data-i18n="sneakAttack">Sneak Attack (d6)</span>
+                        <span class="tooltip">?
+                            <span class="tooltip-text" data-i18n="sneakAttackTooltip">Cantidad de d6 de Sneak Attack. Se aplica UNA sola vez por turno y se duplica en crítico (regla oficial de D&D 5e).</span>
+                        </span>
+                    </label>
+                    <input type="number" id="sneakAttackDice" value="0" min="0" max="12" step="1">
+                </div>
+
+                <div class="input-group">
                     <label data-i18n="critRange">Rango Crítico</label>
                     <select id="critRange">
                         <option value="20" selected data-i18n="critRange20">Solo 20 (5%)</option>
@@ -239,6 +249,15 @@
                                 <div class="stat-value" id="statCritsPerRound">0</div>
                             </div>
                         </div>
+
+                        <div class="stat-card" id="statSneakAttackCard" style="display: none;">
+                            <div class="stat-icon">🗡️</div>
+                            <div class="stat-content">
+                                <div class="stat-label" data-i18n="statSneakAttack">Sneak Attack</div>
+                                <div class="stat-value" id="statSneakAttack">0</div>
+                                <div class="stat-unit" data-i18n="damagePerRound">daño/turno</div>
+                            </div>
+                        </div>
                     </div>
 
                     <div class="defeat-times">
@@ -361,6 +380,7 @@
                                     <th data-i18n="compareDice">Tiradas</th>
                                     <th data-i18n="compareAttackBonus">Bono Ataque</th>
                                     <th data-i18n="compareAttackDice">Dado Extra</th>
+                                    <th data-i18n="compareSneakAttack">Sneak Attack</th>
                                     <th data-i18n="comparePowerLevel">Power Level</th>
                                     <th data-i18n="compareRollNeeded">Roll Mínimo</th>
                                     <th data-i18n="compareHitChance">Prob. Impacto</th>

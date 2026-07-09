@@ -21,6 +21,7 @@ Una calculadora de probabilidades de combate para Dungeons & Dragons 5e. Calcula
 - **Ventaja/Desventaja**: Cálculos precisos con mecánica de 2d20
 - **Rango crítico configurable**: 20, 19-20 o 18-20
 - **Múltiples dados**: Soporta combinaciones complejas (2d6+1d4+3, etc.)
+- **Sneak Attack**: Dados d6 que se aplican **una sola vez por turno** y se **duplican en crítico** (regla oficial de D&D 5e). No se multiplican por el número de ataques
 - **Múltiples ataques**: Calcula probabilidades de hacer 0, 1, 2... n impactos
 - **Distribución de críticos**: Ve cuántos de tus impactos serán críticos
 - **Rangos de daño**: Muestra daño mínimo-máximo para cada escenario
@@ -74,6 +75,7 @@ A combat probability calculator for Dungeons & Dragons 5e. It calculates exact p
 - **Advantage/Disadvantage**: Precise calculations with 2d20 mechanics
 - **Configurable critical range**: 20, 19-20, or 18-20
 - **Multiple dice**: Supports complex combinations (2d6+1d4+3, etc.)
+- **Sneak Attack**: d6 dice applied **once per turn** and **doubled on a critical hit** (official D&D 5e rule). Not multiplied by the number of attacks
 - **Multiple attacks**: Calculate probabilities of landing 0, 1, 2... n hits
 - **Critical distribution**: See how many of your hits will be critical
 - **Damage ranges**: Shows minimum-maximum damage for each scenario

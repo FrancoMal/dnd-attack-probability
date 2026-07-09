@@ -180,7 +180,16 @@ const translations = {
         attackDiceBonusBardic10: "+1d10 (Inspiración)",
         attackDiceBonusBardic12: "+1d12 (Inspiración)",
         profileWithAttackDice: "+1d{{sides}}",
-        compareAttackDice: "Dado Extra"
+        compareAttackDice: "Dado Extra",
+
+        // Sneak Attack (Ataque Furtivo)
+        sneakAttack: "Sneak Attack (d6)",
+        sneakAttackTooltip: "Cantidad de d6 de Sneak Attack. Se aplica UNA sola vez por turno y se duplica en crítico (regla oficial de D&D 5e).",
+        sneakNotation: "furtivo",
+        statSneakAttack: "Sneak Attack",
+        compareSneakAttack: "Sneak Attack",
+        profileWithSneak: "+{{n}}d6 SA",
+        multiAttackSneakNote: "• +{{n}}d6 de Sneak Attack incluidos (1 vez por turno, se duplican en crítico)"
     },
 
     en: {
@@ -358,7 +367,16 @@ const translations = {
         attackDiceBonusBardic10: "+1d10 (Bardic)",
         attackDiceBonusBardic12: "+1d12 (Bardic)",
         profileWithAttackDice: "+1d{{sides}}",
-        compareAttackDice: "Bonus Die"
+        compareAttackDice: "Bonus Die",
+
+        // Sneak Attack
+        sneakAttack: "Sneak Attack (d6)",
+        sneakAttackTooltip: "Number of Sneak Attack d6. Applied ONCE per turn and doubled on a critical hit (official D&D 5e rule).",
+        sneakNotation: "sneak",
+        statSneakAttack: "Sneak Attack",
+        compareSneakAttack: "Sneak Attack",
+        profileWithSneak: "+{{n}}d6 SA",
+        multiAttackSneakNote: "• +{{n}}d6 Sneak Attack included (once per turn, doubled on crit)"
     },
 
     pt: {
@@ -536,7 +554,16 @@ const translations = {
         attackDiceBonusBardic10: "+1d10 (Inspiração)",
         attackDiceBonusBardic12: "+1d12 (Inspiração)",
         profileWithAttackDice: "+1d{{sides}}",
-        compareAttackDice: "Dado Bônus"
+        compareAttackDice: "Dado Bônus",
+
+        // Sneak Attack (Ataque Furtivo)
+        sneakAttack: "Sneak Attack (d6)",
+        sneakAttackTooltip: "Quantidade de d6 de Sneak Attack. Aplicado UMA vez por turno e dobrado em um acerto crítico (regra oficial de D&D 5e).",
+        sneakNotation: "furtivo",
+        statSneakAttack: "Sneak Attack",
+        compareSneakAttack: "Sneak Attack",
+        profileWithSneak: "+{{n}}d6 SA",
+        multiAttackSneakNote: "• +{{n}}d6 de Sneak Attack incluídos (1 vez por turno, dobram no crítico)"
     },
 
     de: {
@@ -714,7 +741,16 @@ const translations = {
         attackDiceBonusBardic10: "+1d10 (Bardisch)",
         attackDiceBonusBardic12: "+1d12 (Bardisch)",
         profileWithAttackDice: "+1d{{sides}}",
-        compareAttackDice: "Bonuswürfel"
+        compareAttackDice: "Bonuswürfel",
+
+        // Sneak Attack (Hinterhältiger Angriff)
+        sneakAttack: "Sneak Attack (W6)",
+        sneakAttackTooltip: "Anzahl der Sneak-Attack-W6. Wird EINMAL pro Zug angewendet und bei einem kritischen Treffer verdoppelt (offizielle D&D-5e-Regel).",
+        sneakNotation: "heimlich",
+        statSneakAttack: "Sneak Attack",
+        compareSneakAttack: "Sneak Attack",
+        profileWithSneak: "+{{n}}W6 SA",
+        multiAttackSneakNote: "• +{{n}}W6 Sneak Attack enthalten (einmal pro Zug, im Kritischen verdoppelt)"
     }
 };
 
@@ -954,6 +990,7 @@ class ProfileManager {
                         damageBonus: this.calculator.config.damageBonus,
                         damageDice: this.calculator.config.damageDice.map(d => ({ ...d })),
                         attackDiceBonus: this.calculator.config.attackDiceBonus,
+                        sneakAttackDice: this.calculator.config.sneakAttackDice,
                         advantage: this.calculator.config.advantage,
                         critRange: this.calculator.config.critRange,
                         numberOfAttacks: this.calculator.config.numberOfAttacks,
@@ -979,6 +1016,7 @@ class ProfileManager {
                 damageBonus: this.calculator.config.damageBonus,
                 damageDice: this.calculator.config.damageDice.map(d => ({ ...d })),
                 attackDiceBonus: this.calculator.config.attackDiceBonus,
+                sneakAttackDice: this.calculator.config.sneakAttackDice,
                 advantage: this.calculator.config.advantage,
                 critRange: this.calculator.config.critRange,
                 numberOfAttacks: this.calculator.config.numberOfAttacks,
@@ -1006,6 +1044,7 @@ class ProfileManager {
         this.calculator.config.numberOfAttacks = cfg.numberOfAttacks;
         this.calculator.config.targetAC = cfg.targetAC;
         this.calculator.config.attackDiceBonus = cfg.attackDiceBonus || 0;
+        this.calculator.config.sneakAttackDice = cfg.sneakAttackDice || 0;
 
         // Actualizar UI inputs
         this.updateUIFromConfig();
@@ -1054,6 +1093,12 @@ class ProfileManager {
             attackDiceBonusSelect.value = cfg.attackDiceBonus || 0;
         }
 
+        // Actualizar input de Sneak Attack
+        const sneakAttackInput = document.getElementById('sneakAttackDice');
+        if (sneakAttackInput) {
+            sneakAttackInput.value = cfg.sneakAttackDice || 0;
+        }
+
         // Reconstruir dados de daño
         const diceList = document.getElementById('diceList');
         diceList.innerHTML = '';
@@ -1097,6 +1142,10 @@ class ProfileManager {
 
         if (config.attackDiceBonus && config.attackDiceBonus > 0) {
             parts.push(t('profileWithAttackDice', { sides: config.attackDiceBonus }));
+        }
+
+        if (config.sneakAttackDice && config.sneakAttackDice > 0) {
+            parts.push(t('profileWithSneak', { n: config.sneakAttackDice }));
         }
 
         if (config.numberOfAttacks > 1) {
@@ -1197,7 +1246,19 @@ class ProfileComparator {
         const critAvgDmg = this.calculateAverageDamage(config.damageDice, config.damageBonus, true);
         const pNormalHit = hitChance - critChance;
         const dprPerAttack = pNormalHit * normalAvgDmg + critChance * critAvgDmg;
-        const totalDPR = dprPerAttack * config.numberOfAttacks;
+
+        // Sneak Attack: 1 vez por turno, se duplica en crítico (no se multiplica por nº de ataques)
+        const sneakDice = config.sneakAttackDice || 0;
+        const n = config.numberOfAttacks;
+        let sneakDPR = 0;
+        if (sneakDice > 0) {
+            const avgSA = sneakDice * 3.5;
+            const pNoCrit = Math.pow(1 - critChance, n);
+            const pNoHit = Math.pow(1 - hitChance, n);
+            sneakDPR = (1 - pNoCrit) * (2 * avgSA) + (pNoCrit - pNoHit) * avgSA;
+        }
+
+        const totalDPR = dprPerAttack * n + sneakDPR;
 
         // Power Level
         const powerLevel = Math.round(totalDPR * hitChance * 10);
@@ -1221,6 +1282,8 @@ class ProfileComparator {
             critAvgDmg,
             dprPerAttack,
             totalDPR,
+            sneakDPR,
+            sneakAttackDice: sneakDice,
             powerLevel,
             rollNeeded,
             numberOfAttacks: config.numberOfAttacks,
@@ -1521,6 +1584,9 @@ class ProfileComparator {
                     <td class="attack-dice-cell">
                         <span class="attack-dice-bonus">${r.config.attackDiceBonus > 0 ? '+1d' + r.config.attackDiceBonus : '-'}</span>
                     </td>
+                    <td class="sneak-attack-cell">
+                        <span class="sneak-attack-dice">${s.sneakAttackDice > 0 ? s.sneakAttackDice + 'd6' : '-'}</span>
+                    </td>
                     <td class="${isBest('powerLevel') ? 'best-value' : ''}">
                         <span class="value-number">${s.powerLevel}</span>
                         ${isBest('powerLevel') ? '<span class="best-badge">🏆</span>' : ''}
@@ -1625,6 +1691,7 @@ class DnDCalculator {
             damageBonus: 3,
             damageDice: [{ count: 1, sides: 8 }],
             attackDiceBonus: 0, // 0 = none, 4 = d4, 6 = d6, 8 = d8, 10 = d10, 12 = d12
+            sneakAttackDice: 0, // cantidad de d6 de Sneak Attack (0 = ninguno). Se aplica 1 vez por turno y se duplica en crítico
             advantage: 'normal',
             critRange: 20,
             numberOfAttacks: 1,
@@ -1653,6 +1720,15 @@ class DnDCalculator {
         if (attackDiceBonusSelect) {
             attackDiceBonusSelect.addEventListener('change', (e) => {
                 this.config.attackDiceBonus = parseInt(e.target.value) || 0;
+            });
+        }
+
+        // Sneak Attack (dados d6, una vez por turno)
+        const sneakAttackInput = document.getElementById('sneakAttackDice');
+        if (sneakAttackInput) {
+            sneakAttackInput.addEventListener('input', (e) => {
+                this.config.sneakAttackDice = Math.max(0, parseInt(e.target.value) || 0);
+                this.updateDiceNotation();
             });
         }
 
@@ -1699,9 +1775,14 @@ class DnDCalculator {
             .map(d => `${d.count}d${d.sides}`)
             .join(' + ');
 
-        const fullNotation = this.config.damageBonus > 0
+        let fullNotation = this.config.damageBonus > 0
             ? `${notation} + ${this.config.damageBonus}`
             : notation;
+
+        // Añadir Sneak Attack a la notación (se resuelve 1 vez por turno)
+        if (this.config.sneakAttackDice > 0) {
+            fullNotation += ` + ${this.config.sneakAttackDice}d6 ${t('sneakNotation')}`;
+        }
 
         document.getElementById('diceNotation').textContent = fullNotation;
     }
@@ -1897,7 +1978,25 @@ class DnDCalculator {
 
     // ========== CÁLCULO DE DAÑO ==========
 
-    calculateAverageDamage(isCrit = false) {
+    // Promedio del Sneak Attack (Nd6). Se duplica en crítico como cualquier dado (RAW).
+    getSneakAttackAverage(isCrit = false) {
+        const dice = this.config.sneakAttackDice || 0;
+        if (dice <= 0) return 0;
+        const multiplier = isCrit ? 2 : 1;
+        return dice * multiplier * 3.5; // promedio de un d6 = 3.5
+    }
+
+    // Rango (min-max) del Sneak Attack, duplicado en crítico
+    getSneakAttackRange(isCrit = false) {
+        const dice = this.config.sneakAttackDice || 0;
+        if (dice <= 0) return { min: 0, max: 0 };
+        const multiplier = isCrit ? 2 : 1;
+        return { min: dice * multiplier * 1, max: dice * multiplier * 6 };
+    }
+
+    // includeSneak: true incluye el SA en el daño de UN impacto (útil para 1 ataque/turno).
+    // Para los totales por turno se usa false y el SA se suma aparte una sola vez.
+    calculateAverageDamage(isCrit = false, includeSneak = true) {
         let avgDice = 0;
 
         this.config.damageDice.forEach(die => {
@@ -1907,10 +2006,12 @@ class DnDCalculator {
         });
 
         // El bonificador NO se duplica en crítico
-        return avgDice + this.config.damageBonus;
+        let total = avgDice + this.config.damageBonus;
+        if (includeSneak) total += this.getSneakAttackAverage(isCrit);
+        return total;
     }
 
-    calculateDamageRange(isCrit = false) {
+    calculateDamageRange(isCrit = false, includeSneak = true) {
         let min = 0;
         let max = 0;
 
@@ -1920,21 +2021,53 @@ class DnDCalculator {
             max += multiplier * die.sides;
         });
 
-        return {
-            min: min + this.config.damageBonus,
-            max: max + this.config.damageBonus
-        };
+        min += this.config.damageBonus;
+        max += this.config.damageBonus;
+
+        if (includeSneak) {
+            const sa = this.getSneakAttackRange(isCrit);
+            min += sa.min;
+            max += sa.max;
+        }
+
+        return { min, max };
     }
 
-    calculateExpectedDPR(hitChance, critChance) {
-        const normalDmg = this.calculateAverageDamage(false);
-        const critDmg = this.calculateAverageDamage(true);
+    calculateExpectedDPR(hitChance, critChance, includeSneak = true) {
+        const normalDmg = this.calculateAverageDamage(false, includeSneak);
+        const critDmg = this.calculateAverageDamage(true, includeSneak);
 
         // DPR = P(hit normal) × daño_normal + P(crit) × daño_crítico
         const pNormalHit = hitChance - critChance;
         const dpr = pNormalHit * normalDmg + critChance * critDmg;
 
         return dpr;
+    }
+
+    // Sneak Attack esperado POR TURNO: se aplica 1 sola vez (al mejor impacto disponible).
+    // Se duplica si hay al menos un crítico en el turno.
+    calculateExpectedSneakAttack(hitChance, critChance) {
+        const dice = this.config.sneakAttackDice || 0;
+        if (dice <= 0) return 0;
+
+        const n = this.config.numberOfAttacks;
+        const avgSA = dice * 3.5;
+
+        const pNoCrit = Math.pow(1 - critChance, n);
+        const pNoHit = Math.pow(1 - hitChance, n);
+        const pAtLeastCrit = 1 - pNoCrit;              // al menos un crítico
+        const pHitNoCrit = pNoCrit - pNoHit;           // al menos un impacto pero ningún crítico
+
+        // Si hay crítico, el SA se aplica ahí (dados duplicados); si no, en un impacto normal.
+        return pAtLeastCrit * (2 * avgSA) + pHitNoCrit * avgSA;
+    }
+
+    // DPR TOTAL por turno = daño del arma × nº de ataques + Sneak Attack (1 vez por turno)
+    calculateTotalDPR(hitChance, critChance) {
+        const weaponDPRperAttack = this.calculateExpectedDPR(hitChance, critChance, false);
+        const weaponTotal = weaponDPRperAttack * this.config.numberOfAttacks;
+        const sneakTotal = this.calculateExpectedSneakAttack(hitChance, critChance);
+        return weaponTotal + sneakTotal;
     }
 
     // ========== MÚLTIPLES ATAQUES ==========
@@ -1946,12 +2079,15 @@ class DnDCalculator {
         const pMiss = 1 - pHit;
         const pNormal = pHit - pCrit;
 
-        const normalDmg = this.calculateAverageDamage(false);
-        const critDmg = this.calculateAverageDamage(true);
+        // Daño de ARMA por ataque (sin Sneak Attack: se suma aparte 1 vez por turno)
+        const normalDmg = this.calculateAverageDamage(false, false);
+        const critDmg = this.calculateAverageDamage(true, false);
 
-        // Obtener rangos de daño
-        const normalRange = this.calculateDamageRange(false);
-        const critRange = this.calculateDamageRange(true);
+        // Rangos de daño del arma (sin Sneak Attack)
+        const normalRange = this.calculateDamageRange(false, false);
+        const critRange = this.calculateDamageRange(true, false);
+
+        const sneakDice = this.config.sneakAttackDice || 0;
 
         const results = [];
 
@@ -1970,10 +2106,20 @@ class DnDCalculator {
                             Math.pow(pNormal, normals) *
                             Math.pow(pCrit, crits);
 
+                // Sneak Attack: 1 sola vez por turno si hubo al menos un impacto.
+                // Se duplica si hay al menos un crítico (se aplica al crítico).
+                let saAvg = 0, saMin = 0, saMax = 0;
+                if (sneakDice > 0 && totalHits >= 1) {
+                    const saMult = crits >= 1 ? 2 : 1;
+                    saAvg = sneakDice * saMult * 3.5;
+                    saMin = sneakDice * saMult * 1;
+                    saMax = sneakDice * saMult * 6;
+                }
+
                 // Daño para esta combinación (promedio y rango)
-                const avgDamage = normals * normalDmg + crits * critDmg;
-                const minDamage = normals * normalRange.min + crits * critRange.min;
-                const maxDamage = normals * normalRange.max + crits * critRange.max;
+                const avgDamage = normals * normalDmg + crits * critDmg + saAvg;
+                const minDamage = normals * normalRange.min + crits * critRange.min + saMin;
+                const maxDamage = normals * normalRange.max + crits * critRange.max + saMax;
 
                 // Solo incluir si probabilidad > 0.1%
                 if (prob > 0.001) {
@@ -2118,7 +2264,7 @@ class DnDCalculator {
         if (this.config.targetAC && combatStatsPanel) {
             const targetAC = this.config.targetAC;
             const { hit: targetHit, crit: targetCrit } = this.calculateHitChance(targetAC);
-            const targetDPR = this.calculateExpectedDPR(targetHit, targetCrit) * this.config.numberOfAttacks;
+            const targetDPR = this.calculateTotalDPR(targetHit, targetCrit);
             this.renderCombatStats(targetAC, targetDPR, targetHit, targetCrit);
         } else if (combatStatsPanel) {
             combatStatsPanel.style.display = 'none';
@@ -2135,8 +2281,8 @@ class DnDCalculator {
         // Power Level - mostrar si hay CA objetivo
         if (this.config.targetAC) {
             const targetAC = this.config.targetAC;
-            const { hit: targetHit } = this.calculateHitChance(targetAC);
-            const targetDPR = this.calculateExpectedDPR(targetHit, this.calculateHitChance(targetAC).crit) * this.config.numberOfAttacks;
+            const { hit: targetHit, crit: targetCrit } = this.calculateHitChance(targetAC);
+            const targetDPR = this.calculateTotalDPR(targetHit, targetCrit);
             this.renderPowerLevel(targetAC, targetDPR, targetHit);
         } else {
             const powerLevelSection = document.getElementById('powerLevelSection');
@@ -2160,15 +2306,18 @@ class DnDCalculator {
                               this.config.advantage === 'disadvantage' ? t('multiAttackDisadvantage') :
                               '';
 
-        // Calcular resumen de daño total
-        const normalRange = this.calculateDamageRange(false);
-        const critRange = this.calculateDamageRange(true);
+        // Calcular resumen de daño total (arma × n + Sneak Attack 1 vez por turno)
+        const normalRange = this.calculateDamageRange(false, false);
+        const critRange = this.calculateDamageRange(true, false);
         const n = this.config.numberOfAttacks;
+        const saNormal = this.getSneakAttackRange(false);
+        const saCrit = this.getSneakAttackRange(true);
+        const sneakDice = this.config.sneakAttackDice || 0;
 
-        const allNormalsMin = n * normalRange.min;
-        const allNormalsMax = n * normalRange.max;
-        const allCritsMin = n * critRange.min;
-        const allCritsMax = n * critRange.max;
+        const allNormalsMin = n * normalRange.min + saNormal.min;
+        const allNormalsMax = n * normalRange.max + saNormal.max;
+        const allCritsMin = n * critRange.min + saCrit.min;
+        const allCritsMax = n * critRange.max + saCrit.max;
 
         // Información general
         const { hit: pHit, crit: pCrit } = this.calculateHitChance(targetAC);
@@ -2183,6 +2332,7 @@ class DnDCalculator {
                 ${t('multiAttackAllCrit', { min: allCritsMin, max: allCritsMax })}<br>
                 ${t('multiAttackRange', { max: allCritsMax })}
             </span><br>
+            ${sneakDice > 0 ? `<span style="color: var(--color-crit);">${t('multiAttackSneakNote', { n: sneakDice })}</span><br>` : ''}
             <br>
             ${t('multiAttackHint')}
         `;
@@ -2258,15 +2408,19 @@ class DnDCalculator {
             return;
         }
 
-        // Calcular métricas
-        const normalDmg = this.calculateAverageDamage(false);
-        const critDmg = this.calculateAverageDamage(true);
+        // Calcular métricas (daño por impacto = solo arma; el SA se muestra aparte)
+        const normalDmg = this.calculateAverageDamage(false, false);
+        const critDmg = this.calculateAverageDamage(true, false);
         const pNormalGivenHit = (hitChance - critChance) / hitChance;
         const pCritGivenHit = critChance / hitChance;
         const damagePerHit = (pNormalGivenHit * normalDmg) + (pCritGivenHit * critDmg);
 
         const numAttacks = this.config.numberOfAttacks;
         const critsPerRound = critChance * numAttacks;
+
+        // Sneak Attack esperado por turno (1 vez, se duplica en crítico)
+        const sneakDice = this.config.sneakAttackDice || 0;
+        const sneakPerRound = this.calculateExpectedSneakAttack(hitChance, critChance);
 
         // Turnos para derrotar diferentes enemigos
         const enemies = [
@@ -2296,6 +2450,18 @@ class DnDCalculator {
         if (hitProb) hitProb.textContent = (hitChance * 100).toFixed(1) + '%';
         if (dmgPerHit) dmgPerHit.textContent = damagePerHit.toFixed(1);
         if (critsRound) critsRound.textContent = critsPerRound.toFixed(2);
+
+        // Sneak Attack card (solo visible si hay dados de SA configurados)
+        const sneakCard = document.getElementById('statSneakAttackCard');
+        const sneakValue = document.getElementById('statSneakAttack');
+        if (sneakCard) {
+            if (sneakDice > 0) {
+                sneakCard.style.display = '';
+                if (sneakValue) sneakValue.textContent = sneakPerRound.toFixed(1);
+            } else {
+                sneakCard.style.display = 'none';
+            }
+        }
 
         // Actualizar turnos para derrotar
         const defeatList = document.getElementById('defeatTimesList');
