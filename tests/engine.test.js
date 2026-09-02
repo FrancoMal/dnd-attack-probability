@@ -250,3 +250,90 @@ test('powerAttackComparison usa DPR por turno (respeta nº de ataques y Sneak At
     close(row.normal, engine.dprPerTurn(cfg, 15), 'normal 2 ataques');
     close(row.power, engine.dprPerTurn(engine.withPowerAttack(cfg), 15), 'GWM 2 ataques');
 });
+
+// ---------- Power Level ----------
+
+test('powerLevel no vuelve a contar la probabilidad de impacto: es el DPR promedio vs CA 13-20, ×10', () => {
+    const cfg = base();
+    const acs = [13, 14, 15, 16, 17, 18, 19, 20];
+    const esperado = Math.round(acs.reduce((s, ac) => s + engine.dprPerTurn(cfg, ac), 0) / acs.length * 10);
+    assert.equal(engine.powerLevel(cfg), esperado);
+});
+
+test('powerLevel no depende de la CA objetivo que tenga puesta el usuario', () => {
+    const a = engine.powerLevel(base({ targetAC: 10 }));
+    const b = engine.powerLevel(base({ targetAC: 25 }));
+    const c = engine.powerLevel(base({ targetAC: null }));
+    assert.equal(a, b);
+    assert.equal(b, c);
+});
+
+test('powerLevel: dos builds con daño esperado parecido puntúan parecido, aunque una pegue menos seguido', () => {
+    // Precisa y de poco daño vs imprecisa y de mucho daño, ajustadas para dar un DPR similar
+    const precisa = base({ attackBonus: 9, damageBonus: 3, damageDice: [{ count: 1, sides: 8 }], numberOfAttacks: 2 });
+    const bruta = base({ attackBonus: 2, damageBonus: 13, damageDice: [{ count: 2, sides: 6 }], numberOfAttacks: 2 });
+
+    const dprPrecisa = engine.dprPerTurn(precisa, 16);
+    const dprBruta = engine.dprPerTurn(bruta, 16);
+    assert.ok(Math.abs(dprPrecisa - dprBruta) < 5, `DPR parecidos: ${dprPrecisa.toFixed(1)} vs ${dprBruta.toFixed(1)}`);
+
+    const ratio = engine.powerLevel(precisa) / engine.powerLevel(bruta);
+    assert.ok(ratio > 0.6 && ratio < 1.7, `sin doble penalización, ratio=${ratio.toFixed(2)}`);
+});
+
+test('powerLevel crece con el daño y con la precisión', () => {
+    const bajo = base({ attackBonus: 3, damageBonus: 1 });
+    assert.ok(engine.powerLevel(base()) > engine.powerLevel(bajo));
+    assert.ok(engine.powerLevel(base({ attackBonus: 12 })) > engine.powerLevel(base()));
+    assert.ok(engine.powerLevel(base({ numberOfAttacks: 3 })) > engine.powerLevel(base()));
+});
+
+// ---------- Nivel estimado ----------
+
+test('estimateCharacterLevel elige el tramo que mejor encaja, no el primero que matchea una sola señal', () => {
+    // Casos donde el OR devolvía un tramo absurdo
+    // 36 de DPR no es una build de nivel 1-4, por más que el bonificador sea bajo
+    const muchoDano = engine.estimateCharacterLevel(2, 36);   // antes: nivel 1-4
+    assert.ok(muchoDano.max >= 6, `36 de DPR no es nivel 1-4: ${muchoDano.min}-${muchoDano.max}`);
+
+    // 3.9 de DPR no es una build de nivel 15-20, por más que el bonificador sea alto
+    const pocoDano = engine.estimateCharacterLevel(12, 3.9);  // antes: nivel 9-16
+    assert.ok(pocoDano.max <= 11, `3.9 de DPR no es nivel alto: ${pocoDano.min}-${pocoDano.max}`);
+
+    // Las dos señales se promedian: el resultado queda entre lo que dice cada una
+    assert.ok(muchoDano.min > 1 && pocoDano.min > 1, 'ninguna señal domina sola');
+});
+
+test('estimateCharacterLevel: una build coherente cae en su tramo', () => {
+    const nivel1 = engine.estimateCharacterLevel(5, 8);
+    assert.ok(nivel1.min <= 4 && nivel1.max <= 7, `${nivel1.min}-${nivel1.max}`);
+
+    const nivel20 = engine.estimateCharacterLevel(14, 58);
+    assert.ok(nivel20.min >= 12, `+14 y 58 de DPR es de nivel alto: ${nivel20.min}-${nivel20.max}`);
+});
+
+test('estimateCharacterLevel siempre devuelve un rango válido dentro de 1..20', () => {
+    for (const ab of [-5, 0, 5, 10, 20, 40]) {
+        for (const dpr of [0, 1, 10, 50, 200, 1000]) {
+            const r = engine.estimateCharacterLevel(ab, dpr);
+            assert.ok(Number.isInteger(r.min) && Number.isInteger(r.max), `enteros AB${ab} DPR${dpr}`);
+            assert.ok(r.min >= 1 && r.max <= 20 && r.min <= r.max, `rango AB${ab} DPR${dpr}: ${r.min}-${r.max}`);
+        }
+    }
+});
+
+test('estimateCharacterLevel es monótono: más daño o más bonificador nunca bajan el nivel', () => {
+    let previo = 0;
+    for (const dpr of [3, 8, 15, 25, 40, 60, 90]) {
+        const actual = engine.estimateCharacterLevel(8, dpr).min;
+        assert.ok(actual >= previo, `DPR ${dpr} bajó el nivel: ${actual} < ${previo}`);
+        previo = actual;
+    }
+
+    previo = 0;
+    for (const ab of [-2, 0, 3, 6, 9, 12, 16]) {
+        const actual = engine.estimateCharacterLevel(ab, 20).min;
+        assert.ok(actual >= previo, `AB ${ab} bajó el nivel: ${actual} < ${previo}`);
+        previo = actual;
+    }
+});

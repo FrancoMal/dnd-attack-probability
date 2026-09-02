@@ -6,6 +6,13 @@ let currentLanguage = 'es';
 // Translation object with all supported languages
 const translations = {
     es: {
+        // Power Level
+        powerLevelFormula: "DPR promedio vs CA",
+        powerLevelBulletDPR: "DPR promedio",
+        powerLevelBulletRange: "Rango de CAs",
+        powerLevelExplainDPR: "Daño esperado por turno promediado sobre las CAs con las que te cruzás de verdad. Incluye ventaja, críticos, múltiples ataques y Sneak Attack.",
+        powerLevelExplainRange: "Se promedia sobre un rango de CAs en vez de usar tu CA objetivo, para que el número sirva para comparar builds entre sí.",
+        powerLevelExplainScale: "Escala para números comparables",
         // Exportar / importar perfiles
         exportProfilesBtn: "Exportar JSON",
         importProfilesBtn: "Importar JSON",
@@ -232,6 +239,13 @@ const translations = {
     },
 
     en: {
+        // Power Level
+        powerLevelFormula: "Average DPR vs AC",
+        powerLevelBulletDPR: "Average DPR",
+        powerLevelBulletRange: "AC range",
+        powerLevelExplainDPR: "Expected damage per turn averaged over the ACs you actually face. Includes advantage, crits, multiple attacks and Sneak Attack.",
+        powerLevelExplainRange: "Averaged over a range of ACs instead of your target AC, so the number is useful for comparing builds.",
+        powerLevelExplainScale: "Scale for comparable numbers",
         // Exportar / importar perfiles
         exportProfilesBtn: "Export JSON",
         importProfilesBtn: "Import JSON",
@@ -458,6 +472,13 @@ const translations = {
     },
 
     pt: {
+        // Power Level
+        powerLevelFormula: "DPR médio vs CA",
+        powerLevelBulletDPR: "DPR médio",
+        powerLevelBulletRange: "Intervalo de CAs",
+        powerLevelExplainDPR: "Dano esperado por turno calculado sobre as CAs que você realmente enfrenta. Inclui vantagem, críticos, múltiplos ataques e Sneak Attack.",
+        powerLevelExplainRange: "É a média sobre um intervalo de CAs em vez da sua CA alvo, para que o número sirva para comparar builds.",
+        powerLevelExplainScale: "Escala para números comparáveis",
         // Exportar / importar perfiles
         exportProfilesBtn: "Exportar JSON",
         importProfilesBtn: "Importar JSON",
@@ -684,6 +705,13 @@ const translations = {
     },
 
     de: {
+        // Power Level
+        powerLevelFormula: "Durchschnittlicher DPR vs RK",
+        powerLevelBulletDPR: "Durchschnittlicher DPR",
+        powerLevelBulletRange: "RK-Spanne",
+        powerLevelExplainDPR: "Erwarteter Schaden pro Runde, gemittelt über die RKs, denen du wirklich begegnest. Enthält Vorteil, Kritische, Mehrfachangriffe und Sneak Attack.",
+        powerLevelExplainRange: "Gemittelt über eine Spanne von RKs statt deiner Ziel-RK, damit die Zahl zum Vergleich von Builds taugt.",
+        powerLevelExplainScale: "Skalierung für vergleichbare Zahlen",
         // Exportar / importar perfiles
         exportProfilesBtn: "JSON exportieren",
         importProfilesBtn: "JSON importieren",
@@ -1009,39 +1037,6 @@ function initializeLanguage() {
 
     // Apply language
     setLanguage(currentLanguage);
-}
-
-// ========== SISTEMA DE ESTADÍSTICAS DE COMBATE ==========
-
-function estimateCharacterLevel(attackBonus, dpr) {
-    // Benchmarks basados en DMG y análisis de optimización típica de D&D 5e
-    const benchmarks = [
-        {minLevel: 1, maxLevel: 4, minDPR: 5, maxDPR: 15, minAB: 2, maxAB: 5},
-        {minLevel: 3, maxLevel: 7, minDPR: 12, maxDPR: 25, minAB: 4, maxAB: 7},
-        {minLevel: 5, maxLevel: 11, minDPR: 20, maxDPR: 40, minAB: 6, maxAB: 10},
-        {minLevel: 9, maxLevel: 16, minDPR: 35, maxDPR: 60, minAB: 9, maxAB: 13},
-        {minLevel: 15, maxLevel: 20, minDPR: 55, maxDPR: 100, minAB: 12, maxAB: 17}
-    ];
-
-    for (const bench of benchmarks) {
-        const dprMatch = dpr >= bench.minDPR && dpr <= bench.maxDPR;
-        const abMatch = attackBonus >= bench.minAB && attackBonus <= bench.maxAB;
-
-        if (dprMatch || abMatch) {
-            // Ajustar rango si solo uno coincide
-            if (dprMatch && !abMatch) {
-                if (attackBonus > bench.maxAB) {
-                    return {min: bench.minLevel + 2, max: Math.min(20, bench.maxLevel + 2)};
-                } else {
-                    return {min: Math.max(1, bench.minLevel - 2), max: bench.maxLevel};
-                }
-            }
-            return {min: bench.minLevel, max: bench.maxLevel};
-        }
-    }
-
-    // Extremadamente poderoso
-    return {min: 17, max: 20};
 }
 
 // ========== SISTEMA DE PERFILES ==========
@@ -1398,8 +1393,9 @@ class ProfileComparator {
         const sneakDPR = DnDEngine.sneakAttackPerTurn(config, targetAC);
         const totalDPR = DnDEngine.dprPerTurn(config, targetAC);
 
-        // Power Level
-        const powerLevel = Math.round(totalDPR * hitChance * 10);
+        // Power Level: mismo criterio que el panel (promedio sobre CAs típicas),
+        // así dos perfiles siguen siendo comparables aunque cambie la CA de comparación
+        const powerLevel = DnDEngine.powerLevel(config);
 
         // Roll mínimo necesario
         const targetRoll = targetAC - config.attackBonus;
@@ -1978,18 +1974,8 @@ class DnDCalculator {
         // GWM / Sharpshooter
         this.renderPowerAttack();
 
-        // Power Level - mostrar si hay CA objetivo
-        if (this.config.targetAC) {
-            const targetAC = this.config.targetAC;
-            const { hit: targetHit, crit: targetCrit } = this.calculateHitChance(targetAC);
-            const targetDPR = this.calculateTotalDPR(targetAC);
-            this.renderPowerLevel(targetAC, targetDPR, targetHit);
-        } else {
-            const powerLevelSection = document.getElementById('powerLevelSection');
-            if (powerLevelSection) {
-                powerLevelSection.style.display = 'none';
-            }
-        }
+        // Power Level: no depende de la CA objetivo, se muestra siempre
+        this.renderPowerLevel();
     }
 
     // Barra pegajosa: CA objetivo, % de impacto y daño por turno siempre a la vista
@@ -2159,7 +2145,7 @@ class DnDCalculator {
         ];
 
         // Nivel estimado
-        const level = estimateCharacterLevel(this.config.attackBonus, dpr);
+        const level = DnDEngine.estimateCharacterLevel(this.config.attackBonus, dpr);
 
         // Mostrar panel
         panel.style.display = 'block';
@@ -2251,41 +2237,26 @@ class DnDCalculator {
             </div>`).join('');
     }
 
-    calculatePowerLevel(dpr, hitChance) {
-        // Fórmula: Power Level = DPR × hit_chance × 10
-        // Esto da un número único y comparable entre builds
-        const powerLevel = Math.round(dpr * hitChance * 10);
-        return powerLevel;
+    calculatePowerLevel() {
+        return DnDEngine.powerLevel(this.engineConfig());
     }
 
-    renderPowerLevel(ac, dpr, hitChance) {
+    renderPowerLevel() {
         const section = document.getElementById('powerLevelSection');
+        if (!section) return;
 
-        if (!section) {
-            console.warn('Power level section not found');
-            return;
-        }
+        const cfg = this.engineConfig();
+        const powerLevel = DnDEngine.powerLevel(cfg);
+        const acs = DnDEngine.POWER_LEVEL_ACS;
+        const promedio = acs.reduce((sum, ac) => sum + DnDEngine.dprPerTurn(cfg, ac), 0) / acs.length;
 
-        // Calcular Power Level
-        const powerLevel = this.calculatePowerLevel(dpr, hitChance);
-
-        // Mostrar sección
         section.style.display = 'block';
 
-        // Actualizar número principal
-        const powerNumber = document.getElementById('powerLevelNumber');
-        if (powerNumber) {
-            powerNumber.textContent = powerLevel;
-        }
-
-        // Actualizar fórmula breakdown
-        const formulaDPR = document.getElementById('formulaDPR');
-        const formulaHit = document.getElementById('formulaHit');
-        const formulaResult = document.getElementById('formulaResult');
-
-        if (formulaDPR) formulaDPR.textContent = dpr.toFixed(1);
-        if (formulaHit) formulaHit.textContent = (hitChance * 100).toFixed(1) + '%';
-        if (formulaResult) formulaResult.textContent = powerLevel;
+        const set = (id, value) => { const el = document.getElementById(id); if (el) el.textContent = value; };
+        set('powerLevelNumber', powerLevel);
+        set('formulaDPR', promedio.toFixed(1));
+        set('formulaAcRange', `${acs[0]}–${acs[acs.length - 1]}`);
+        set('formulaResult', powerLevel);
     }
 }
 

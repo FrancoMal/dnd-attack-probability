@@ -85,10 +85,12 @@ b, strong { font-weight: 650; }
 /* ---------- Barra superior ---------- */
 .topbar {
     display: flex; align-items: center; justify-content: space-between;
+    flex-wrap: wrap; gap: 8px;
     padding: calc(8px + env(safe-area-inset-top)) var(--gutter) 8px;
     min-height: 52px;
 }
-.brand { display: flex; align-items: baseline; gap: 8px; font-family: var(--font-display); }
+/* El nombre nunca se parte: si no entra todo, el botón Instalar baja a su propia línea */
+.brand { display: flex; align-items: baseline; gap: 8px; font-family: var(--font-display); white-space: nowrap; flex: 0 0 auto; }
 .brand-mark { color: var(--crit); font-size: 1.3em; line-height: 1; }
 .brand-name { font-size: 1.15em; font-weight: 600; }
 
@@ -100,7 +102,7 @@ b, strong { font-weight: 650; }
 }
 .lang-switch button[aria-pressed="true"] { background: var(--bg-elev-2); color: var(--ink); }
 
-.btn-install { margin-left: auto; margin-right: 10px; border-color: var(--crit); color: var(--crit); }
+.btn-install { order: 3; flex: 1 0 100%; border-color: var(--crit); color: var(--crit); }
 
 /* ---------- Barra de resultado pegajosa ---------- */
 .hero {
@@ -325,6 +327,7 @@ details.panel > .panel-body { padding: 0 14px 14px; display: flex; flex-directio
 .formula { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 0.9em; }
 .formula > div { display: flex; flex-direction: column; padding: 8px 10px; background: var(--bg-input); border-radius: var(--radius-sm); }
 .formula > div span { color: var(--ink-3); font-size: 0.8em; }
+.formula .ac-range { color: var(--ink-2); font-variant-numeric: tabular-nums; }
 .formula > div b { font-variant-numeric: tabular-nums; font-size: 1.1em; }
 .formula .op { background: transparent; color: var(--ink-3); padding: 0 2px; }
 .formula .res b { color: var(--crit); }
@@ -378,7 +381,8 @@ details.panel > .panel-body { padding: 0 14px 14px; display: flex; flex-directio
    ========================================================================== */
 @media (min-width: 900px) {
     :root { --gutter: 24px; }
-    .topbar { padding-left: var(--gutter); padding-right: var(--gutter); }
+    .topbar { padding-left: var(--gutter); padding-right: var(--gutter); flex-wrap: nowrap; }
+    .btn-install { order: 0; flex: 0 0 auto; margin-left: auto; margin-right: 12px; }
     .brand-name { font-size: 1.3em; }
     .hero { grid-template-columns: auto auto auto; justify-content: start; gap: 28px; max-width: 1280px; margin: 0 auto; border-radius: 0 0 var(--radius) var(--radius); border: 1px solid var(--line); border-top: 0; }
     .hero-stat { padding-left: 28px; border-left: 1px solid var(--line); min-width: 150px; }
