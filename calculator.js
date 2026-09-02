@@ -6,12 +6,50 @@ let currentLanguage = 'es';
 // Translation object with all supported languages
 const translations = {
     es: {
+        // Exportar / importar perfiles
+        exportProfilesBtn: "Exportar JSON",
+        importProfilesBtn: "Importar JSON",
+        exportNoProfiles: "No hay perfiles para exportar",
+        exportDone: "{{n}} perfil(es) exportado(s)",
+        importDone: "{{n}} perfil(es) importado(s)",
+        importDoneWithSkips: "{{n}} perfil(es) importado(s), {{skipped}} omitido(s) por estar incompletos",
+        importErrorEmpty: "El archivo está vacío",
+        importErrorInvalidJson: "El archivo no es un JSON válido",
+        importErrorFormat: "El archivo no tiene una lista de perfiles",
+        importErrorNoValidProfiles: "Ningún perfil del archivo tiene los campos obligatorios (nombre, bonificador de ataque y dados de daño)",
+        importErrorRead: "No se pudo leer el archivo",
+        installApp: "Instalar",
+        // Barra superior / hero / tabla compacta
+        appName: "Ataque D&D",
+        skipToResults: "Ir a los resultados",
+        heroTargetAC: "CA objetivo",
+        heroHit: "impacto",
+        heroDPR: "daño/turno",
+        heroNeed: "necesitás {{roll}}+",
+        heroCritOnly: "solo con crítico",
+        heroAuto: "impacto automático",
+        heroCritShort: "{{crit}} crítico",
+        showAllRows: "Ver CA 1–30",
+        showNearRows: "Ver solo cercanas",
+        // GWM / Sharpshooter
+        powerAttack: "Great Weapon Master / Sharpshooter",
+        powerAttackTooltip: "Muestra hasta qué CA conviene usar el -5 al ataque / +10 al daño.",
+        powerAttackTitle: "Great Weapon Master / Sharpshooter",
+        powerAttackCutoff: "Conviene activar el -5/+10 hasta <strong>CA {{ac}}</strong>",
+        powerAttackNever: "El -5/+10 <strong>no conviene</strong> contra ninguna CA: tu daño base ya es alto.",
+        powerAttackAlways: "El -5/+10 <strong>conviene siempre</strong> (hasta CA 30).",
+        powerAttackVsTarget: "Contra CA {{ac}}: <strong>{{normal}}</strong> DPR normal vs <strong>{{power}}</strong> con -5/+10 →",
+        powerAttackUse: "activalo",
+        powerAttackSkip: "no lo actives",
+        powerAttackTie: "da igual",
+        powerAttackLegendPower: "Conviene -5/+10",
+        powerAttackLegendNormal: "Conviene ataque normal",
         // Header
-        title: "⚔️ Calculadora de Probabilidades de Ataque D&D",
+        title: "Calculadora de Probabilidades de Ataque D&D",
         subtitle: "Calcula tus probabilidades de impacto y daño esperado",
 
         // Config panel
-        configTitle: "⚙️ Configuración de Ataque",
+        configTitle: "Configuración de Ataque",
         closeConfig: "Cerrar Configuración",
         attackBonus: "Bonificador de Ataque",
         attackBonusTooltip: "Tu modificador de ataque total (ej: +5)",
@@ -21,8 +59,8 @@ const translations = {
         addDice: "+ Añadir Dado",
         critRange: "Rango Crítico",
         critRange20: "Solo 20 (5%)",
-        critRange19: "19-20 (10%)",
-        critRange18: "18-20 (15%)",
+        critRange19: "-20 (10%)",
+        critRange18: "-20 (15%)",
         advantageLabel: "Ventaja / Desventaja",
         disadvantage: "Desventaja",
         normal: "Normal",
@@ -31,10 +69,10 @@ const translations = {
         targetAC: "CA Objetivo (Opcional)",
         targetACTooltip: "Clase de Armadura del enemigo específico a destacar",
         targetACPlaceholder: "Ej: 15",
-        calculateButton: "🎲 Calcular Probabilidades",
+        calculateButton: "Calcular Probabilidades",
 
         // Results panel
-        resultsTitle: "📊 Tabla de Probabilidades",
+        resultsTitle: "Tabla de Probabilidades",
         tableHeaderAC: "CA",
         tableHeaderACTooltip: "Clase de Armadura del enemigo",
         tableHeaderMiss: "Fallo",
@@ -61,7 +99,7 @@ const translations = {
         damageCrit: "<br><strong>Daño crítico:</strong> {{min}}-{{max}} (promedio {{avg}})",
 
         // Multi-attack panel
-        multiAttackTitle: "🎯 Distribución de Múltiples Ataques",
+        multiAttackTitle: "Distribución de Múltiples Ataques",
         multiAttackWith: "Contra CA {{ac}} con {{n}} ataques",
         multiAttackAdvantage: " <strong style=\"color: var(--color-hit);\">(CON VENTAJA)</strong>",
         multiAttackDisadvantage: " <strong style=\"color: var(--color-miss);\">(CON DESVENTAJA)</strong>",
@@ -97,7 +135,7 @@ const translations = {
         alertMinDice: "Debes tener al menos un dado de daño",
 
         // Combat Statistics
-        combatStatsTitle: "📊 Estadísticas de Combate",
+        combatStatsTitle: "Estadísticas de Combate",
         vsAC: "contra CA",
         statDPRTotal: "DPR Total",
         statHitProb: "Prob. Impacto",
@@ -105,7 +143,7 @@ const translations = {
         statCritsPerRound: "Críticos/Turno",
         damagePerRound: "daño/turno",
         average: "promedio",
-        defeatTimesTitle: "⏱️ Turnos para Derrotar",
+        defeatTimesTitle: "Turnos para Derrotar",
         enemyWeak: "Enemigo débil (20 HP)",
         enemyNormal: "Enemigo normal (50 HP)",
         enemyStrong: "Enemigo fuerte (100 HP)",
@@ -115,23 +153,24 @@ const translations = {
         levelRange: "Nivel",
 
         // Power Level
-        powerLevelTitle: "⚡ Nivel de Poder del Personaje",
+        powerLevelTitle: "Nivel de Poder del Personaje",
         powerLevelLabel: "Power Level",
-        howCalculated: "📊 Cómo se calcula:",
+        howCalculated: "Cómo se calcula:",
         whyTheseFactors: "¿Por qué estos factores?",
         dprTotalExplain: "Incluye ventaja, críticos y múltiples ataques",
         hitChanceExplain: "Penaliza builds poco confiables",
         scaleExplain: "Escala para números comparables",
 
         // Profiles
-        profilesTitle: "📁 Perfiles Guardados",
+        profilesTitle: "Perfiles Guardados",
         profileNamePlaceholder: "Nombre del perfil...",
-        saveProfileBtn: "💾 Guardar Perfil",
+        saveProfileBtn: "Guardar Perfil",
         loadProfileTooltip: "Cargar este perfil",
         deleteProfileTooltip: "Eliminar este perfil",
         noProfiles: "No hay perfiles guardados",
         confirmDeleteProfile: "¿Eliminar el perfil '{{name}}'?",
         profileSaved: "Perfil '{{name}}' guardado",
+        profileUpdated: "Perfil '{{name}}' actualizado",
         profileLoaded: "Perfil '{{name}}' cargado",
         profileDeleted: "Perfil eliminado",
         profileNameRequired: "Ingresa un nombre para el perfil",
@@ -140,13 +179,13 @@ const translations = {
         profileAttacks: "{{n}} ataques",
 
         // Profile Comparison
-        compareTitle: "⚔️ Comparar Perfiles",
+        compareTitle: "Comparar Perfiles",
         compareSelectProfiles: "Selecciona perfiles a comparar:",
         compareTargetAC: "CA para comparar",
-        compareButton: "📊 Comparar",
+        compareButton: "Comparar",
         compareMinSelect: "Selecciona al menos 2 perfiles para comparar",
         compareNoProfiles: "Guarda perfiles primero para compararlos",
-        compareResultsTitle: "📊 Comparación de Perfiles",
+        compareResultsTitle: "Comparación de Perfiles",
         compareVsAC: "contra CA",
         comparePowerLevel: "Power Level",
         compareHitChance: "Prob. Impacto",
@@ -193,12 +232,50 @@ const translations = {
     },
 
     en: {
+        // Exportar / importar perfiles
+        exportProfilesBtn: "Export JSON",
+        importProfilesBtn: "Import JSON",
+        exportNoProfiles: "No profiles to export",
+        exportDone: "{{n}} profile(s) exported",
+        importDone: "{{n}} profile(s) imported",
+        importDoneWithSkips: "{{n}} profile(s) imported, {{skipped}} skipped for being incomplete",
+        importErrorEmpty: "The file is empty",
+        importErrorInvalidJson: "The file is not valid JSON",
+        importErrorFormat: "The file has no profile list",
+        importErrorNoValidProfiles: "No profile in the file has the required fields (name, attack bonus and damage dice)",
+        importErrorRead: "The file could not be read",
+        installApp: "Install",
+        // Barra superior / hero / tabla compacta
+        appName: "D&D Attack",
+        skipToResults: "Skip to results",
+        heroTargetAC: "Target AC",
+        heroHit: "to hit",
+        heroDPR: "damage/turn",
+        heroNeed: "need {{roll}}+",
+        heroCritOnly: "crit only",
+        heroAuto: "auto hit",
+        heroCritShort: "{{crit}} crit",
+        showAllRows: "Show AC 1–30",
+        showNearRows: "Show nearby only",
+        // GWM / Sharpshooter
+        powerAttack: "Great Weapon Master / Sharpshooter",
+        powerAttackTooltip: "Shows up to which AC the -5 to hit / +10 damage is worth it.",
+        powerAttackTitle: "Great Weapon Master / Sharpshooter",
+        powerAttackCutoff: "Use -5/+10 up to <strong>AC {{ac}}</strong>",
+        powerAttackNever: "-5/+10 is <strong>never worth it</strong>: your base damage is already high.",
+        powerAttackAlways: "-5/+10 is <strong>always worth it</strong> (up to AC 30).",
+        powerAttackVsTarget: "Against AC {{ac}}: <strong>{{normal}}</strong> DPR normal vs <strong>{{power}}</strong> with -5/+10 →",
+        powerAttackUse: "use it",
+        powerAttackSkip: "don't use it",
+        powerAttackTie: "no difference",
+        powerAttackLegendPower: "-5/+10 is better",
+        powerAttackLegendNormal: "Normal attack is better",
         // Header
-        title: "⚔️ D&D Attack Probability Calculator",
+        title: "D&D Attack Probability Calculator",
         subtitle: "Calculate your hit probabilities and expected damage",
 
         // Config panel
-        configTitle: "⚙️ Attack Configuration",
+        configTitle: "Attack Configuration",
         closeConfig: "Close Configuration",
         attackBonus: "Attack Bonus",
         attackBonusTooltip: "Your total attack modifier (e.g., +5)",
@@ -208,8 +285,8 @@ const translations = {
         addDice: "+ Add Die",
         critRange: "Critical Range",
         critRange20: "Only 20 (5%)",
-        critRange19: "19-20 (10%)",
-        critRange18: "18-20 (15%)",
+        critRange19: "-20 (10%)",
+        critRange18: "-20 (15%)",
         advantageLabel: "Advantage / Disadvantage",
         disadvantage: "Disadvantage",
         normal: "Normal",
@@ -218,10 +295,10 @@ const translations = {
         targetAC: "Target AC (Optional)",
         targetACTooltip: "Armor Class of specific enemy to highlight",
         targetACPlaceholder: "e.g., 15",
-        calculateButton: "🎲 Calculate Probabilities",
+        calculateButton: "Calculate Probabilities",
 
         // Results panel
-        resultsTitle: "📊 Probability Table",
+        resultsTitle: "Probability Table",
         tableHeaderAC: "AC",
         tableHeaderACTooltip: "Enemy Armor Class",
         tableHeaderMiss: "Miss",
@@ -248,7 +325,7 @@ const translations = {
         damageCrit: "<br><strong>Critical damage:</strong> {{min}}-{{max}} (average {{avg}})",
 
         // Multi-attack panel
-        multiAttackTitle: "🎯 Multiple Attacks Distribution",
+        multiAttackTitle: "Multiple Attacks Distribution",
         multiAttackWith: "Against AC {{ac}} with {{n}} attacks",
         multiAttackAdvantage: " <strong style=\"color: var(--color-hit);\">(WITH ADVANTAGE)</strong>",
         multiAttackDisadvantage: " <strong style=\"color: var(--color-miss);\">(WITH DISADVANTAGE)</strong>",
@@ -284,7 +361,7 @@ const translations = {
         alertMinDice: "You must have at least one damage die",
 
         // Combat Statistics
-        combatStatsTitle: "📊 Combat Statistics",
+        combatStatsTitle: "Combat Statistics",
         vsAC: "vs AC",
         statDPRTotal: "Total DPR",
         statHitProb: "Hit Prob.",
@@ -292,7 +369,7 @@ const translations = {
         statCritsPerRound: "Crits/Round",
         damagePerRound: "damage/round",
         average: "average",
-        defeatTimesTitle: "⏱️ Turns to Defeat",
+        defeatTimesTitle: "Turns to Defeat",
         enemyWeak: "Weak enemy (20 HP)",
         enemyNormal: "Normal enemy (50 HP)",
         enemyStrong: "Strong enemy (100 HP)",
@@ -302,23 +379,24 @@ const translations = {
         levelRange: "Level",
 
         // Power Level
-        powerLevelTitle: "⚡ Character Power Level",
+        powerLevelTitle: "Character Power Level",
         powerLevelLabel: "Power Level",
-        howCalculated: "📊 How it's calculated:",
+        howCalculated: "How it's calculated:",
         whyTheseFactors: "Why these factors?",
         dprTotalExplain: "Includes advantage, crits, and multiple attacks",
         hitChanceExplain: "Penalizes unreliable builds",
         scaleExplain: "Scale for comparable numbers",
 
         // Profiles
-        profilesTitle: "📁 Saved Profiles",
+        profilesTitle: "Saved Profiles",
         profileNamePlaceholder: "Profile name...",
-        saveProfileBtn: "💾 Save Profile",
+        saveProfileBtn: "Save Profile",
         loadProfileTooltip: "Load this profile",
         deleteProfileTooltip: "Delete this profile",
         noProfiles: "No saved profiles",
         confirmDeleteProfile: "Delete profile '{{name}}'?",
         profileSaved: "Profile '{{name}}' saved",
+        profileUpdated: "Profile '{{name}}' updated",
         profileLoaded: "Profile '{{name}}' loaded",
         profileDeleted: "Profile deleted",
         profileNameRequired: "Enter a profile name",
@@ -327,13 +405,13 @@ const translations = {
         profileAttacks: "{{n}} attacks",
 
         // Profile Comparison
-        compareTitle: "⚔️ Compare Profiles",
+        compareTitle: "Compare Profiles",
         compareSelectProfiles: "Select profiles to compare:",
         compareTargetAC: "AC to compare",
-        compareButton: "📊 Compare",
+        compareButton: "Compare",
         compareMinSelect: "Select at least 2 profiles to compare",
         compareNoProfiles: "Save profiles first to compare them",
-        compareResultsTitle: "📊 Profile Comparison",
+        compareResultsTitle: "Profile Comparison",
         compareVsAC: "vs AC",
         comparePowerLevel: "Power Level",
         compareHitChance: "Hit Prob.",
@@ -380,12 +458,50 @@ const translations = {
     },
 
     pt: {
+        // Exportar / importar perfiles
+        exportProfilesBtn: "Exportar JSON",
+        importProfilesBtn: "Importar JSON",
+        exportNoProfiles: "Não há perfis para exportar",
+        exportDone: "{{n}} perfil(is) exportado(s)",
+        importDone: "{{n}} perfil(is) importado(s)",
+        importDoneWithSkips: "{{n}} perfil(is) importado(s), {{skipped}} ignorado(s) por estarem incompletos",
+        importErrorEmpty: "O arquivo está vazio",
+        importErrorInvalidJson: "O arquivo não é um JSON válido",
+        importErrorFormat: "O arquivo não tem uma lista de perfis",
+        importErrorNoValidProfiles: "Nenhum perfil do arquivo tem os campos obrigatórios (nome, bônus de ataque e dados de dano)",
+        importErrorRead: "Não foi possível ler o arquivo",
+        installApp: "Instalar",
+        // Barra superior / hero / tabla compacta
+        appName: "Ataque D&D",
+        skipToResults: "Ir para os resultados",
+        heroTargetAC: "CA alvo",
+        heroHit: "acerto",
+        heroDPR: "dano/turno",
+        heroNeed: "precisa {{roll}}+",
+        heroCritOnly: "só com crítico",
+        heroAuto: "acerto automático",
+        heroCritShort: "{{crit}} crítico",
+        showAllRows: "Ver CA 1–30",
+        showNearRows: "Ver só próximas",
+        // GWM / Sharpshooter
+        powerAttack: "Great Weapon Master / Sharpshooter",
+        powerAttackTooltip: "Mostra até qual CA vale a pena usar o -5 no ataque / +10 no dano.",
+        powerAttackTitle: "Great Weapon Master / Sharpshooter",
+        powerAttackCutoff: "Vale usar o -5/+10 até <strong>CA {{ac}}</strong>",
+        powerAttackNever: "O -5/+10 <strong>nunca vale a pena</strong>: seu dano base já é alto.",
+        powerAttackAlways: "O -5/+10 <strong>sempre vale a pena</strong> (até CA 30).",
+        powerAttackVsTarget: "Contra CA {{ac}}: <strong>{{normal}}</strong> DPR normal vs <strong>{{power}}</strong> com -5/+10 →",
+        powerAttackUse: "ative",
+        powerAttackSkip: "não ative",
+        powerAttackTie: "tanto faz",
+        powerAttackLegendPower: "Melhor -5/+10",
+        powerAttackLegendNormal: "Melhor ataque normal",
         // Header
-        title: "⚔️ Calculadora de Probabilidade de Ataque D&D",
+        title: "Calculadora de Probabilidade de Ataque D&D",
         subtitle: "Calcule suas probabilidades de acerto e dano esperado",
 
         // Config panel
-        configTitle: "⚙️ Configuração de Ataque",
+        configTitle: "Configuração de Ataque",
         closeConfig: "Fechar Configuração",
         attackBonus: "Bônus de Ataque",
         attackBonusTooltip: "Seu modificador total de ataque (ex: +5)",
@@ -395,8 +511,8 @@ const translations = {
         addDice: "+ Adicionar Dado",
         critRange: "Alcance Crítico",
         critRange20: "Apenas 20 (5%)",
-        critRange19: "19-20 (10%)",
-        critRange18: "18-20 (15%)",
+        critRange19: "-20 (10%)",
+        critRange18: "-20 (15%)",
         advantageLabel: "Vantagem / Desvantagem",
         disadvantage: "Desvantagem",
         normal: "Normal",
@@ -405,10 +521,10 @@ const translations = {
         targetAC: "CA Alvo (Opcional)",
         targetACTooltip: "Classe de Armadura do inimigo específico para destacar",
         targetACPlaceholder: "Ex: 15",
-        calculateButton: "🎲 Calcular Probabilidades",
+        calculateButton: "Calcular Probabilidades",
 
         // Results panel
-        resultsTitle: "📊 Tabela de Probabilidades",
+        resultsTitle: "Tabela de Probabilidades",
         tableHeaderAC: "CA",
         tableHeaderACTooltip: "Classe de Armadura do inimigo",
         tableHeaderMiss: "Erro",
@@ -435,7 +551,7 @@ const translations = {
         damageCrit: "<br><strong>Dano crítico:</strong> {{min}}-{{max}} (média {{avg}})",
 
         // Multi-attack panel
-        multiAttackTitle: "🎯 Distribuição de Múltiplos Ataques",
+        multiAttackTitle: "Distribuição de Múltiplos Ataques",
         multiAttackWith: "Contra CA {{ac}} com {{n}} ataques",
         multiAttackAdvantage: " <strong style=\"color: var(--color-hit);\">(COM VANTAGEM)</strong>",
         multiAttackDisadvantage: " <strong style=\"color: var(--color-miss);\">(COM DESVANTAGEM)</strong>",
@@ -471,7 +587,7 @@ const translations = {
         alertMinDice: "Você deve ter pelo menos um dado de dano",
 
         // Combat Statistics
-        combatStatsTitle: "📊 Estatísticas de Combate",
+        combatStatsTitle: "Estatísticas de Combate",
         vsAC: "contra CA",
         statDPRTotal: "DPR Total",
         statHitProb: "Prob. Acerto",
@@ -479,7 +595,7 @@ const translations = {
         statCritsPerRound: "Críticos/Turno",
         damagePerRound: "dano/rodada",
         average: "média",
-        defeatTimesTitle: "⏱️ Turnos para Derrotar",
+        defeatTimesTitle: "Turnos para Derrotar",
         enemyWeak: "Inimigo fraco (20 HP)",
         enemyNormal: "Inimigo normal (50 HP)",
         enemyStrong: "Inimigo forte (100 HP)",
@@ -489,23 +605,24 @@ const translations = {
         levelRange: "Nível",
 
         // Power Level
-        powerLevelTitle: "⚡ Nível de Poder do Personagem",
+        powerLevelTitle: "Nível de Poder do Personagem",
         powerLevelLabel: "Power Level",
-        howCalculated: "📊 Como é calculado:",
+        howCalculated: "Como é calculado:",
         whyTheseFactors: "Por que esses fatores?",
         dprTotalExplain: "Inclui vantagem, críticos e múltiplos ataques",
         hitChanceExplain: "Penaliza builds pouco confiáveis",
         scaleExplain: "Escala para números comparáveis",
 
         // Profiles
-        profilesTitle: "📁 Perfis Salvos",
+        profilesTitle: "Perfis Salvos",
         profileNamePlaceholder: "Nome do perfil...",
-        saveProfileBtn: "💾 Salvar Perfil",
+        saveProfileBtn: "Salvar Perfil",
         loadProfileTooltip: "Carregar este perfil",
         deleteProfileTooltip: "Excluir este perfil",
         noProfiles: "Nenhum perfil salvo",
         confirmDeleteProfile: "Excluir o perfil '{{name}}'?",
         profileSaved: "Perfil '{{name}}' salvo",
+        profileUpdated: "Perfil '{{name}}' atualizado",
         profileLoaded: "Perfil '{{name}}' carregado",
         profileDeleted: "Perfil excluído",
         profileNameRequired: "Digite um nome para o perfil",
@@ -514,13 +631,13 @@ const translations = {
         profileAttacks: "{{n}} ataques",
 
         // Profile Comparison
-        compareTitle: "⚔️ Comparar Perfis",
+        compareTitle: "Comparar Perfis",
         compareSelectProfiles: "Selecione perfis para comparar:",
         compareTargetAC: "CA para comparar",
-        compareButton: "📊 Comparar",
+        compareButton: "Comparar",
         compareMinSelect: "Selecione pelo menos 2 perfis para comparar",
         compareNoProfiles: "Salve perfis primeiro para compará-los",
-        compareResultsTitle: "📊 Comparação de Perfis",
+        compareResultsTitle: "Comparação de Perfis",
         compareVsAC: "contra CA",
         comparePowerLevel: "Power Level",
         compareHitChance: "Prob. Acerto",
@@ -567,12 +684,50 @@ const translations = {
     },
 
     de: {
+        // Exportar / importar perfiles
+        exportProfilesBtn: "JSON exportieren",
+        importProfilesBtn: "JSON importieren",
+        exportNoProfiles: "Keine Profile zum Exportieren",
+        exportDone: "{{n}} Profil(e) exportiert",
+        importDone: "{{n}} Profil(e) importiert",
+        importDoneWithSkips: "{{n}} Profil(e) importiert, {{skipped}} wegen fehlender Felder übersprungen",
+        importErrorEmpty: "Die Datei ist leer",
+        importErrorInvalidJson: "Die Datei ist kein gültiges JSON",
+        importErrorFormat: "Die Datei enthält keine Profilliste",
+        importErrorNoValidProfiles: "Kein Profil in der Datei hat die Pflichtfelder (Name, Angriffsbonus und Schadenswürfel)",
+        importErrorRead: "Die Datei konnte nicht gelesen werden",
+        installApp: "Installieren",
+        // Barra superior / hero / tabla compacta
+        appName: "D&D Angriff",
+        skipToResults: "Zu den Ergebnissen",
+        heroTargetAC: "Ziel-RK",
+        heroHit: "Treffer",
+        heroDPR: "Schaden/Runde",
+        heroNeed: "brauchst {{roll}}+",
+        heroCritOnly: "nur krit.",
+        heroAuto: "automatischer Treffer",
+        heroCritShort: "{{crit}} krit.",
+        showAllRows: "RK 1–30 zeigen",
+        showNearRows: "Nur nahe zeigen",
+        // GWM / Sharpshooter
+        powerAttack: "Great Weapon Master / Sharpshooter",
+        powerAttackTooltip: "Zeigt, bis zu welcher RK sich -5 auf den Angriff / +10 Schaden lohnt.",
+        powerAttackTitle: "Great Weapon Master / Sharpshooter",
+        powerAttackCutoff: "-5/+10 lohnt sich bis <strong>RK {{ac}}</strong>",
+        powerAttackNever: "-5/+10 lohnt sich <strong>nie</strong>: dein Grundschaden ist bereits hoch.",
+        powerAttackAlways: "-5/+10 lohnt sich <strong>immer</strong> (bis RK 30).",
+        powerAttackVsTarget: "Gegen RK {{ac}}: <strong>{{normal}}</strong> DPR normal vs <strong>{{power}}</strong> mit -5/+10 →",
+        powerAttackUse: "aktivieren",
+        powerAttackSkip: "nicht aktivieren",
+        powerAttackTie: "kein Unterschied",
+        powerAttackLegendPower: "-5/+10 ist besser",
+        powerAttackLegendNormal: "Normaler Angriff ist besser",
         // Header
-        title: "⚔️ D&D Angriffwahrscheinlichkeits-Rechner",
+        title: "D&D Angriffwahrscheinlichkeits-Rechner",
         subtitle: "Berechne deine Trefferwahrscheinlichkeiten und erwarteten Schaden",
 
         // Config panel
-        configTitle: "⚙️ Angriffskonfiguration",
+        configTitle: "Angriffskonfiguration",
         closeConfig: "Konfiguration schließen",
         attackBonus: "Angriffsbonus",
         attackBonusTooltip: "Dein gesamter Angriffsmodifikator (z.B. +5)",
@@ -582,8 +737,8 @@ const translations = {
         addDice: "+ Würfel hinzufügen",
         critRange: "Kritischer Bereich",
         critRange20: "Nur 20 (5%)",
-        critRange19: "19-20 (10%)",
-        critRange18: "18-20 (15%)",
+        critRange19: "-20 (10%)",
+        critRange18: "-20 (15%)",
         advantageLabel: "Vorteil / Nachteil",
         disadvantage: "Nachteil",
         normal: "Normal",
@@ -592,10 +747,10 @@ const translations = {
         targetAC: "Ziel-RK (Optional)",
         targetACTooltip: "Rüstungsklasse des spezifischen Feindes zum Hervorheben",
         targetACPlaceholder: "z.B. 15",
-        calculateButton: "🎲 Wahrscheinlichkeiten berechnen",
+        calculateButton: "Wahrscheinlichkeiten berechnen",
 
         // Results panel
-        resultsTitle: "📊 Wahrscheinlichkeitstabelle",
+        resultsTitle: "Wahrscheinlichkeitstabelle",
         tableHeaderAC: "RK",
         tableHeaderACTooltip: "Rüstungsklasse des Feindes",
         tableHeaderMiss: "Fehlschlag",
@@ -622,7 +777,7 @@ const translations = {
         damageCrit: "<br><strong>Kritischer Schaden:</strong> {{min}}-{{max}} (Durchschnitt {{avg}})",
 
         // Multi-attack panel
-        multiAttackTitle: "🎯 Verteilung mehrerer Angriffe",
+        multiAttackTitle: "Verteilung mehrerer Angriffe",
         multiAttackWith: "Gegen RK {{ac}} mit {{n}} Angriffen",
         multiAttackAdvantage: " <strong style=\"color: var(--color-hit);\">(MIT VORTEIL)</strong>",
         multiAttackDisadvantage: " <strong style=\"color: var(--color-miss);\">(MIT NACHTEIL)</strong>",
@@ -658,7 +813,7 @@ const translations = {
         alertMinDice: "Du musst mindestens einen Schadenswürfel haben",
 
         // Combat Statistics
-        combatStatsTitle: "📊 Kampfstatistiken",
+        combatStatsTitle: "Kampfstatistiken",
         vsAC: "gegen RK",
         statDPRTotal: "Gesamt-SPR",
         statHitProb: "Trefferwahrsch.",
@@ -666,7 +821,7 @@ const translations = {
         statCritsPerRound: "Kritische/Runde",
         damagePerRound: "schaden/runde",
         average: "durchschnitt",
-        defeatTimesTitle: "⏱️ Runden zum Besiegen",
+        defeatTimesTitle: "Runden zum Besiegen",
         enemyWeak: "Schwacher Gegner (20 TP)",
         enemyNormal: "Normaler Gegner (50 TP)",
         enemyStrong: "Starker Gegner (100 TP)",
@@ -676,23 +831,24 @@ const translations = {
         levelRange: "Stufe",
 
         // Power Level
-        powerLevelTitle: "⚡ Charakter-Machtstufe",
+        powerLevelTitle: "Charakter-Machtstufe",
         powerLevelLabel: "Power Level",
-        howCalculated: "📊 Wie wird es berechnet:",
+        howCalculated: "Wie wird es berechnet:",
         whyTheseFactors: "Warum diese Faktoren?",
         dprTotalExplain: "Beinhaltet Vorteil, Kritische und mehrere Angriffe",
         hitChanceExplain: "Bestraft unzuverlässige Builds",
         scaleExplain: "Skala für vergleichbare Zahlen",
 
         // Profiles
-        profilesTitle: "📁 Gespeicherte Profile",
+        profilesTitle: "Gespeicherte Profile",
         profileNamePlaceholder: "Profilname...",
-        saveProfileBtn: "💾 Profil Speichern",
+        saveProfileBtn: "Profil Speichern",
         loadProfileTooltip: "Dieses Profil laden",
         deleteProfileTooltip: "Dieses Profil löschen",
         noProfiles: "Keine gespeicherten Profile",
         confirmDeleteProfile: "Profil '{{name}}' löschen?",
         profileSaved: "Profil '{{name}}' gespeichert",
+        profileUpdated: "Profil '{{name}}' aktualisiert",
         profileLoaded: "Profil '{{name}}' geladen",
         profileDeleted: "Profil gelöscht",
         profileNameRequired: "Gib einen Profilnamen ein",
@@ -701,13 +857,13 @@ const translations = {
         profileAttacks: "{{n}} Angriffe",
 
         // Profile Comparison
-        compareTitle: "⚔️ Profile Vergleichen",
+        compareTitle: "Profile Vergleichen",
         compareSelectProfiles: "Profile zum Vergleichen auswählen:",
         compareTargetAC: "RK zum Vergleichen",
-        compareButton: "📊 Vergleichen",
+        compareButton: "Vergleichen",
         compareMinSelect: "Wähle mindestens 2 Profile zum Vergleichen",
         compareNoProfiles: "Speichere zuerst Profile zum Vergleichen",
-        compareResultsTitle: "📊 Profil-Vergleich",
+        compareResultsTitle: "Profil-Vergleich",
         compareVsAC: "gegen RK",
         comparePowerLevel: "Power Level",
         compareHitChance: "Trefferwahrsch.",
@@ -814,9 +970,17 @@ function setLanguage(lang) {
         }
     });
 
+    document.documentElement.lang = lang;
+    document.querySelectorAll('#languageSelect [data-lang]').forEach(btn => {
+        btn.setAttribute('aria-pressed', String(btn.dataset.lang === lang));
+    });
+
     // Re-calculate to update dynamic texts
     if (typeof calculator !== 'undefined' && calculator) {
         calculator.calculate();
+    }
+    if (typeof profileManager !== 'undefined' && profileManager) {
+        profileManager.renderProfiles();
     }
 }
 
@@ -841,19 +1005,6 @@ function initializeLanguage() {
                 currentLanguage = langPrefix;
             }
         }
-    }
-
-    // Set the initial language in custom selector
-    const selector = document.getElementById('languageSelect');
-    if (selector) {
-        const selected = selector.querySelector('.select-selected');
-        const items = selector.querySelectorAll('.select-items div');
-
-        items.forEach(item => {
-            if (item.getAttribute('data-value') === currentLanguage) {
-                selected.innerHTML = item.innerHTML;
-            }
-        });
     }
 
     // Apply language
@@ -922,7 +1073,7 @@ class ProfileManager {
     }
 
     generateId() {
-        return Date.now().toString(36) + Math.random().toString(36).substr(2);
+        return DnDProfilesIO.generateId();
     }
 
     // Start editing a profile
@@ -994,7 +1145,8 @@ class ProfileManager {
                         advantage: this.calculator.config.advantage,
                         critRange: this.calculator.config.critRange,
                         numberOfAttacks: this.calculator.config.numberOfAttacks,
-                        targetAC: this.calculator.config.targetAC
+                        targetAC: this.calculator.config.targetAC,
+                        powerAttack: !!this.calculator.config.powerAttack
                     }
                 };
                 const updatedProfile = this.profiles[index];
@@ -1020,7 +1172,8 @@ class ProfileManager {
                 advantage: this.calculator.config.advantage,
                 critRange: this.calculator.config.critRange,
                 numberOfAttacks: this.calculator.config.numberOfAttacks,
-                targetAC: this.calculator.config.targetAC
+                targetAC: this.calculator.config.targetAC,
+                        powerAttack: !!this.calculator.config.powerAttack
             }
         };
 
@@ -1042,9 +1195,12 @@ class ProfileManager {
         this.calculator.config.advantage = cfg.advantage;
         this.calculator.config.critRange = cfg.critRange;
         this.calculator.config.numberOfAttacks = cfg.numberOfAttacks;
-        this.calculator.config.targetAC = cfg.targetAC;
+        // Los perfiles viejos podían no tener CA objetivo (era opcional). En ese caso se
+        // conserva la que ya estaba: vaciarla dejaría la barra de resultados en blanco.
+        if (cfg.targetAC != null) this.calculator.config.targetAC = cfg.targetAC;
         this.calculator.config.attackDiceBonus = cfg.attackDiceBonus || 0;
         this.calculator.config.sneakAttackDice = cfg.sneakAttackDice || 0;
+        this.calculator.config.powerAttack = !!cfg.powerAttack;
 
         // Actualizar UI inputs
         this.updateUIFromConfig();
@@ -1053,6 +1209,22 @@ class ProfileManager {
         this.calculator.calculate();
 
         return { success: true, profile };
+    }
+
+    // Devuelve el JSON con todos los perfiles guardados
+    exportToJSON() {
+        return DnDProfilesIO.exportProfiles(this.profiles);
+    }
+
+    // Importa un JSON y fusiona con lo guardado (nunca pisa perfiles existentes)
+    importFromJSON(text) {
+        const result = DnDProfilesIO.importProfiles(text);
+        if (!result.ok) return result;
+
+        this.profiles = DnDProfilesIO.mergeProfiles(this.profiles, result.profiles);
+        this.saveToStorage();
+        this.renderProfiles();
+        return result;
     }
 
     deleteProfile(id) {
@@ -1073,8 +1245,11 @@ class ProfileManager {
         document.getElementById('attackBonus').value = cfg.attackBonus;
         document.getElementById('damageBonus').value = cfg.damageBonus;
         document.getElementById('critRange').value = cfg.critRange;
-        document.getElementById('numberOfAttacks').value = cfg.numberOfAttacks;
-        document.getElementById('attacksValue').textContent = cfg.numberOfAttacks;
+        document.querySelectorAll('input[name="numberOfAttacks"]').forEach(radio => {
+            radio.checked = parseInt(radio.value, 10) === cfg.numberOfAttacks;
+        });
+        const powerAttackInput = document.getElementById('powerAttack');
+        if (powerAttackInput) powerAttackInput.checked = !!cfg.powerAttack;
 
         if (cfg.targetAC) {
             document.getElementById('targetAC').value = cfg.targetAC;
@@ -1107,9 +1282,9 @@ class ProfileManager {
             const diceItem = document.createElement('div');
             diceItem.className = 'dice-item';
             diceItem.innerHTML = `
-                <input type="number" class="dice-count" value="${die.count}" min="1" max="10">
-                <span>d</span>
-                <select class="dice-sides">
+                <input type="number" class="dice-count" value="${die.count}" min="1" max="20" inputmode="numeric" aria-label="Cantidad">
+                <span class="dice-d">d</span>
+                <select class="dice-sides" aria-label="Caras">
                     <option value="4"${die.sides === 4 ? ' selected' : ''}>4</option>
                     <option value="6"${die.sides === 6 ? ' selected' : ''}>6</option>
                     <option value="8"${die.sides === 8 ? ' selected' : ''}>8</option>
@@ -1118,7 +1293,7 @@ class ProfileManager {
                     <option value="20"${die.sides === 20 ? ' selected' : ''}>20</option>
                     <option value="100"${die.sides === 100 ? ' selected' : ''}>100</option>
                 </select>
-                <button class="btn-remove" onclick="removeDice(this)">×</button>
+                <button type="button" class="btn-remove" onclick="removeDice(this)" aria-label="Quitar dado">×</button>
             `;
             diceList.appendChild(diceItem);
         });
@@ -1209,61 +1384,25 @@ class ProfileComparator {
         this.selectedProfiles = new Set();
     }
 
-    // Calcular estadísticas para una configuración de perfil
-    calculateStatsForConfig(config, targetAC) {
-        // Cálculos de probabilidad
-        const targetRoll = targetAC - config.attackBonus;
-        const critMin = config.critRange;
-        const bonusDie = config.attackDiceBonus || 0;
+    // Calcular estadísticas para una configuración de perfil (toda la matemática vive en engine.js)
+    calculateStatsForConfig(rawConfig, targetAC) {
+        const config = DnDEngine.normalizeConfig(rawConfig);
+        const { hit: hitChance, crit: critChance } = DnDEngine.hitProbability(config, targetAC);
 
-        let hitChance, critChance;
+        const normalDamage = DnDEngine.damageRange(config, false, false);
+        const critDamage = DnDEngine.damageRange(config, true, false);
+        const normalAvgDmg = DnDEngine.damageAverage(config, false, false);
+        const critAvgDmg = DnDEngine.damageAverage(config, true, false);
 
-        // If there's an attack dice bonus, use the special calculation
-        if (bonusDie && bonusDie > 0) {
-            const result = this.calculateProbabilityWithBonusDie(targetRoll, critMin, config.advantage, bonusDie);
-            hitChance = result.hit;
-            critChance = result.crit;
-        } else if (config.advantage === 'normal') {
-            const result = this.calculateNormalProbability(targetRoll, critMin);
-            hitChance = result.hit;
-            critChance = result.crit;
-        } else if (config.advantage === 'advantage') {
-            const result = this.calculateAdvantageProbability(targetRoll, critMin);
-            hitChance = result.hit;
-            critChance = result.crit;
-        } else {
-            const result = this.calculateDisadvantageProbability(targetRoll, critMin);
-            hitChance = result.hit;
-            critChance = result.crit;
-        }
-
-        // Calcular daño
-        const normalDamage = this.calculateDamageRange(config.damageDice, config.damageBonus, false);
-        const critDamage = this.calculateDamageRange(config.damageDice, config.damageBonus, true);
-
-        // DPR
-        const normalAvgDmg = this.calculateAverageDamage(config.damageDice, config.damageBonus, false);
-        const critAvgDmg = this.calculateAverageDamage(config.damageDice, config.damageBonus, true);
-        const pNormalHit = hitChance - critChance;
-        const dprPerAttack = pNormalHit * normalAvgDmg + critChance * critAvgDmg;
-
-        // Sneak Attack: 1 vez por turno, se duplica en crítico (no se multiplica por nº de ataques)
-        const sneakDice = config.sneakAttackDice || 0;
-        const n = config.numberOfAttacks;
-        let sneakDPR = 0;
-        if (sneakDice > 0) {
-            const avgSA = sneakDice * 3.5;
-            const pNoCrit = Math.pow(1 - critChance, n);
-            const pNoHit = Math.pow(1 - hitChance, n);
-            sneakDPR = (1 - pNoCrit) * (2 * avgSA) + (pNoCrit - pNoHit) * avgSA;
-        }
-
-        const totalDPR = dprPerAttack * n + sneakDPR;
+        const dprPerAttack = DnDEngine.dprPerAttack(config, targetAC);
+        const sneakDPR = DnDEngine.sneakAttackPerTurn(config, targetAC);
+        const totalDPR = DnDEngine.dprPerTurn(config, targetAC);
 
         // Power Level
         const powerLevel = Math.round(totalDPR * hitChance * 10);
 
         // Roll mínimo necesario
+        const targetRoll = targetAC - config.attackBonus;
         let rollNeeded;
         if (targetRoll <= 1) {
             rollNeeded = 'auto'; // Impacto automático
@@ -1283,145 +1422,12 @@ class ProfileComparator {
             dprPerAttack,
             totalDPR,
             sneakDPR,
-            sneakAttackDice: sneakDice,
+            sneakAttackDice: config.sneakAttackDice,
             powerLevel,
             rollNeeded,
             numberOfAttacks: config.numberOfAttacks,
             advantage: config.advantage
         };
-    }
-
-    calculateNormalProbability(targetRoll, critMin) {
-        if (targetRoll >= 21) {
-            const critChance = (21 - critMin) / 20;
-            return { hit: critChance, crit: critChance };
-        }
-        if (targetRoll <= 1) {
-            const critChance = (21 - critMin) / 20;
-            return { hit: 0.95, crit: critChance };
-        }
-        const hitRolls = 21 - targetRoll;
-        const critRolls = 21 - critMin;
-        return { hit: hitRolls / 20, crit: critRolls / 20 };
-    }
-
-    calculateAdvantageProbability(targetRoll, critMin) {
-        let pHit, pCrit;
-        if (targetRoll >= 21) {
-            pCrit = 1 - ((critMin - 1) / 20) ** 2;
-            pHit = pCrit;
-        } else if (targetRoll <= 1) {
-            pHit = 1 - (1 / 20) ** 2;
-            pCrit = 1 - ((critMin - 1) / 20) ** 2;
-        } else {
-            pHit = 1 - ((targetRoll - 1) / 20) ** 2;
-            pCrit = 1 - ((critMin - 1) / 20) ** 2;
-        }
-        return { hit: pHit, crit: pCrit };
-    }
-
-    calculateDisadvantageProbability(targetRoll, critMin) {
-        let pHit, pCrit;
-        if (targetRoll >= 21) {
-            pCrit = ((21 - critMin) / 20) ** 2;
-            pHit = pCrit;
-        } else if (targetRoll <= 1) {
-            pHit = 1 - (1 / 20) ** 2;
-            pCrit = ((21 - critMin) / 20) ** 2;
-        } else {
-            pHit = ((21 - targetRoll) / 20) ** 2;
-            pCrit = ((21 - critMin) / 20) ** 2;
-        }
-        return { hit: pHit, crit: pCrit };
-    }
-
-    calculateProbabilityWithBonusDie(targetRoll, critMin, advantage, bonusDieSides) {
-        let hitCount = 0, critCount = 0, missCount = 0;
-        let totalOutcomes;
-
-        if (advantage === 'normal') {
-            totalOutcomes = 20 * bonusDieSides;
-            for (let d20 = 1; d20 <= 20; d20++) {
-                for (let bonus = 1; bonus <= bonusDieSides; bonus++) {
-                    if (d20 === 1) {
-                        missCount++;
-                    } else if (d20 >= critMin) {
-                        critCount++;
-                    } else if (d20 + bonus >= targetRoll) {
-                        hitCount++;
-                    } else {
-                        missCount++;
-                    }
-                }
-            }
-        } else if (advantage === 'advantage') {
-            totalOutcomes = 20 * 20 * bonusDieSides;
-            for (let d1 = 1; d1 <= 20; d1++) {
-                for (let d2 = 1; d2 <= 20; d2++) {
-                    const d20 = Math.max(d1, d2);
-                    for (let bonus = 1; bonus <= bonusDieSides; bonus++) {
-                        if (d1 === 1 && d2 === 1) {
-                            missCount++;
-                        } else if (d20 >= critMin) {
-                            critCount++;
-                        } else if (d20 + bonus >= targetRoll) {
-                            hitCount++;
-                        } else {
-                            missCount++;
-                        }
-                    }
-                }
-            }
-        } else {
-            // disadvantage
-            totalOutcomes = 20 * 20 * bonusDieSides;
-            for (let d1 = 1; d1 <= 20; d1++) {
-                for (let d2 = 1; d2 <= 20; d2++) {
-                    const d20 = Math.min(d1, d2);
-                    for (let bonus = 1; bonus <= bonusDieSides; bonus++) {
-                        if (d1 === 1 || d2 === 1) {
-                            missCount++;
-                        } else if (d20 >= critMin) {
-                            critCount++;
-                        } else if (d20 + bonus >= targetRoll) {
-                            hitCount++;
-                        } else {
-                            missCount++;
-                        }
-                    }
-                }
-            }
-        }
-
-        return {
-            hit: (hitCount + critCount) / totalOutcomes,
-            crit: critCount / totalOutcomes,
-            miss: missCount / totalOutcomes
-        };
-    }
-
-    calculateDamageRange(damageDice, damageBonus, isCrit) {
-        let min = 0, max = 0;
-        damageDice.forEach(die => {
-            const multiplier = isCrit ? die.count * 2 : die.count;
-            min += multiplier * 1;
-            max += multiplier * die.sides;
-        });
-        return {
-            min: min + damageBonus,
-            max: max + damageBonus,
-            avg: (min + max) / 2 + damageBonus
-        };
-    }
-
-    calculateAverageDamage(damageDice, damageBonus, isCrit) {
-        let avgDice = 0;
-        damageDice.forEach(die => {
-            const avgPerDie = (1 + die.sides) / 2;
-            const multiplier = isCrit ? die.count * 2 : die.count;
-            avgDice += multiplier * avgPerDie;
-        });
-        return avgDice + damageBonus;
     }
 
     // Comparar perfiles seleccionados
@@ -1695,24 +1701,41 @@ class DnDCalculator {
             advantage: 'normal',
             critRange: 20,
             numberOfAttacks: 1,
-            targetAC: null
+            targetAC: 15,
+            powerAttack: false // mostrar análisis de GWM / Sharpshooter (-5/+10)
         };
 
+        this.calcTimer = null;
         this.initializeEventListeners();
+    }
+
+    // Recalcula en vivo tras cualquier cambio de configuración, agrupando ráfagas de input.
+    scheduleCalculate(delay = 150) {
+        clearTimeout(this.calcTimer);
+        this.calcTimer = setTimeout(() => this.calculate(), delay);
+    }
+
+    calculateNow() {
+        clearTimeout(this.calcTimer);
+        this.calculate();
     }
 
     initializeEventListeners() {
         // Inputs numéricos
         document.getElementById('attackBonus').addEventListener('input', (e) => {
             this.config.attackBonus = parseInt(e.target.value) || 0;
+            this.scheduleCalculate();
         });
 
         document.getElementById('damageBonus').addEventListener('input', (e) => {
             this.config.damageBonus = parseInt(e.target.value) || 0;
+            this.updateDiceNotation();
+            this.scheduleCalculate();
         });
 
         document.getElementById('critRange').addEventListener('change', (e) => {
             this.config.critRange = parseInt(e.target.value);
+            this.scheduleCalculate();
         });
 
         // Attack Dice Bonus (Bless, Bardic Inspiration, etc.)
@@ -1720,6 +1743,7 @@ class DnDCalculator {
         if (attackDiceBonusSelect) {
             attackDiceBonusSelect.addEventListener('change', (e) => {
                 this.config.attackDiceBonus = parseInt(e.target.value) || 0;
+                this.scheduleCalculate();
             });
         }
 
@@ -1729,26 +1753,37 @@ class DnDCalculator {
             sneakAttackInput.addEventListener('input', (e) => {
                 this.config.sneakAttackDice = Math.max(0, parseInt(e.target.value) || 0);
                 this.updateDiceNotation();
+                this.scheduleCalculate();
+            });
+        }
+
+        const powerAttackInput = document.getElementById('powerAttack');
+        if (powerAttackInput) {
+            powerAttackInput.addEventListener('change', (e) => {
+                this.config.powerAttack = e.target.checked;
+                this.scheduleCalculate(0);
             });
         }
 
         document.getElementById('targetAC').addEventListener('input', (e) => {
             this.config.targetAC = e.target.value ? parseInt(e.target.value) : null;
+            this.scheduleCalculate();
         });
 
         // Ventaja/Desventaja
         document.querySelectorAll('input[name="advantage"]').forEach(radio => {
             radio.addEventListener('change', (e) => {
                 this.config.advantage = e.target.value;
+                this.scheduleCalculate();
             });
         });
 
-        // Número de ataques
-        const attacksSlider = document.getElementById('numberOfAttacks');
-        const attacksValue = document.getElementById('attacksValue');
-        attacksSlider.addEventListener('input', (e) => {
-            this.config.numberOfAttacks = parseInt(e.target.value);
-            attacksValue.textContent = e.target.value;
+        // Número de ataques (control segmentado)
+        document.querySelectorAll('input[name="numberOfAttacks"]').forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                this.config.numberOfAttacks = parseInt(e.target.value, 10);
+                this.scheduleCalculate(0);
+            });
         });
 
         // Dados - delegación de eventos
@@ -1768,6 +1803,7 @@ class DnDCalculator {
         });
 
         this.updateDiceNotation();
+        this.scheduleCalculate();
     }
 
     updateDiceNotation() {
@@ -1787,393 +1823,46 @@ class DnDCalculator {
         document.getElementById('diceNotation').textContent = fullNotation;
     }
 
-    // ========== CÁLCULO DE PROBABILIDADES ==========
+    // ========== CÁLCULO (delegado a engine.js) ==========
+
+    // Configuración saneada para el motor. Siempre pasar por acá, nunca usar this.config directo.
+    engineConfig() {
+        return DnDEngine.normalizeConfig(this.config);
+    }
 
     calculateHitChance(ac) {
-        const targetRoll = ac - this.config.attackBonus;
-        const critMin = this.config.critRange;
-        const bonusDie = this.config.attackDiceBonus;
-
-        // If there's an attack dice bonus, use the special calculation
-        if (bonusDie && bonusDie > 0) {
-            return this.calculateProbabilityWithBonusDie(targetRoll, critMin, this.config.advantage, bonusDie);
-        }
-
-        // Standard calculation without bonus die
-        if (this.config.advantage === 'normal') {
-            return this.calculateNormalProbability(targetRoll, critMin);
-        } else if (this.config.advantage === 'advantage') {
-            return this.calculateAdvantageProbability(targetRoll, critMin);
-        } else {
-            return this.calculateDisadvantageProbability(targetRoll, critMin);
-        }
+        return DnDEngine.hitProbability(this.engineConfig(), ac);
     }
 
-    // Calculate probability with attack bonus die (Bless, Bardic Inspiration, etc.)
-    // This uses enumeration to get exact probabilities
-    calculateProbabilityWithBonusDie(targetRoll, critMin, advantage, bonusDieSides) {
-        let hitCount = 0, critCount = 0, missCount = 0;
-        let totalOutcomes;
-
-        if (advantage === 'normal') {
-            // d20 + bonus die
-            totalOutcomes = 20 * bonusDieSides;
-            for (let d20 = 1; d20 <= 20; d20++) {
-                for (let bonus = 1; bonus <= bonusDieSides; bonus++) {
-                    if (d20 === 1) {
-                        // Natural 1 always misses
-                        missCount++;
-                    } else if (d20 >= critMin) {
-                        // Critical hit (based on d20 only)
-                        critCount++;
-                    } else if (d20 + bonus >= targetRoll) {
-                        // Normal hit
-                        hitCount++;
-                    } else {
-                        missCount++;
-                    }
-                }
-            }
-        } else if (advantage === 'advantage') {
-            // max(d20_1, d20_2) + bonus die
-            totalOutcomes = 20 * 20 * bonusDieSides;
-            for (let d1 = 1; d1 <= 20; d1++) {
-                for (let d2 = 1; d2 <= 20; d2++) {
-                    const d20 = Math.max(d1, d2);
-                    for (let bonus = 1; bonus <= bonusDieSides; bonus++) {
-                        if (d1 === 1 && d2 === 1) {
-                            // Both natural 1s = miss
-                            missCount++;
-                        } else if (d20 >= critMin) {
-                            // Critical hit
-                            critCount++;
-                        } else if (d20 + bonus >= targetRoll) {
-                            // Normal hit
-                            hitCount++;
-                        } else {
-                            missCount++;
-                        }
-                    }
-                }
-            }
-        } else {
-            // min(d20_1, d20_2) + bonus die (disadvantage)
-            totalOutcomes = 20 * 20 * bonusDieSides;
-            for (let d1 = 1; d1 <= 20; d1++) {
-                for (let d2 = 1; d2 <= 20; d2++) {
-                    const d20 = Math.min(d1, d2);
-                    for (let bonus = 1; bonus <= bonusDieSides; bonus++) {
-                        if (d1 === 1 || d2 === 1) {
-                            // At least one natural 1 with disadvantage = miss
-                            // (we take the min, so if either is 1, result is 1)
-                            if (d20 === 1) {
-                                missCount++;
-                            } else if (d20 >= critMin) {
-                                critCount++;
-                            } else if (d20 + bonus >= targetRoll) {
-                                hitCount++;
-                            } else {
-                                missCount++;
-                            }
-                        } else if (d20 >= critMin) {
-                            critCount++;
-                        } else if (d20 + bonus >= targetRoll) {
-                            hitCount++;
-                        } else {
-                            missCount++;
-                        }
-                    }
-                }
-            }
-        }
-
-        return {
-            hit: (hitCount + critCount) / totalOutcomes,
-            crit: critCount / totalOutcomes,
-            miss: missCount / totalOutcomes
-        };
-    }
-
-    calculateNormalProbability(targetRoll, critMin) {
-        // Caso: crítico siempre impacta (incluso si necesitas 21+)
-        if (targetRoll >= 21) {
-            const critChance = (21 - critMin) / 20;
-            return {
-                hit: critChance,
-                crit: critChance,
-                miss: 1 - critChance
-            };
-        }
-
-        // Caso: siempre impactas (excepto con 1, que es fallo automático)
-        if (targetRoll <= 1) {
-            const critChance = (21 - critMin) / 20;
-            return {
-                hit: 0.95, // todo excepto el 1
-                crit: critChance,
-                miss: 0.05
-            };
-        }
-
-        // Caso normal
-        const hitRolls = 21 - targetRoll; // resultados que son hit
-        const critRolls = 21 - critMin;   // resultados que son crítico
-
-        return {
-            hit: hitRolls / 20,
-            crit: critRolls / 20,
-            miss: (targetRoll - 1) / 20
-        };
-    }
-
-    calculateAdvantageProbability(targetRoll, critMin) {
-        // Con ventaja: P(max >= x) = 1 - P(ambos < x) = 1 - ((x-1)/20)²
-
-        let pHit, pCrit;
-
-        if (targetRoll >= 21) {
-            // Solo crítico puede impactar
-            pCrit = 1 - ((critMin - 1) / 20) ** 2;
-            pHit = pCrit;
-        } else if (targetRoll <= 1) {
-            // Casi todo impacta (excepto doble 1)
-            pHit = 1 - (1 / 20) ** 2; // 1 - 0.0025 = 0.9975
-            pCrit = 1 - ((critMin - 1) / 20) ** 2;
-        } else {
-            pHit = 1 - ((targetRoll - 1) / 20) ** 2;
-            pCrit = 1 - ((critMin - 1) / 20) ** 2;
-        }
-
-        return {
-            hit: pHit,
-            crit: pCrit,
-            miss: 1 - pHit
-        };
-    }
-
-    calculateDisadvantageProbability(targetRoll, critMin) {
-        // Con desventaja: P(min >= x) = ((21-x)/20)²
-
-        let pHit, pCrit;
-
-        if (targetRoll >= 21) {
-            // Solo crítico puede impactar
-            pCrit = ((21 - critMin) / 20) ** 2;
-            pHit = pCrit;
-        } else if (targetRoll <= 1) {
-            // Siempre impactas excepto con doble 1
-            pHit = 1 - (1 / 20) ** 2;
-            pCrit = ((21 - critMin) / 20) ** 2;
-        } else {
-            pHit = ((21 - targetRoll) / 20) ** 2;
-            pCrit = ((21 - critMin) / 20) ** 2;
-        }
-
-        return {
-            hit: pHit,
-            crit: pCrit,
-            miss: 1 - pHit
-        };
-    }
-
-    // ========== CÁLCULO DE DAÑO ==========
-
-    // Promedio del Sneak Attack (Nd6). Se duplica en crítico como cualquier dado (RAW).
     getSneakAttackAverage(isCrit = false) {
-        const dice = this.config.sneakAttackDice || 0;
-        if (dice <= 0) return 0;
-        const multiplier = isCrit ? 2 : 1;
-        return dice * multiplier * 3.5; // promedio de un d6 = 3.5
+        return DnDEngine.sneakAttackAverage(this.engineConfig(), isCrit);
     }
 
-    // Rango (min-max) del Sneak Attack, duplicado en crítico
     getSneakAttackRange(isCrit = false) {
-        const dice = this.config.sneakAttackDice || 0;
-        if (dice <= 0) return { min: 0, max: 0 };
-        const multiplier = isCrit ? 2 : 1;
-        return { min: dice * multiplier * 1, max: dice * multiplier * 6 };
+        return DnDEngine.sneakAttackRange(this.engineConfig(), isCrit);
     }
 
     // includeSneak: true incluye el SA en el daño de UN impacto (útil para 1 ataque/turno).
-    // Para los totales por turno se usa false y el SA se suma aparte una sola vez.
     calculateAverageDamage(isCrit = false, includeSneak = true) {
-        let avgDice = 0;
-
-        this.config.damageDice.forEach(die => {
-            const avgPerDie = (1 + die.sides) / 2;
-            const multiplier = isCrit ? die.count * 2 : die.count;
-            avgDice += multiplier * avgPerDie;
-        });
-
-        // El bonificador NO se duplica en crítico
-        let total = avgDice + this.config.damageBonus;
-        if (includeSneak) total += this.getSneakAttackAverage(isCrit);
-        return total;
+        return DnDEngine.damageAverage(this.engineConfig(), isCrit, includeSneak);
     }
 
     calculateDamageRange(isCrit = false, includeSneak = true) {
-        let min = 0;
-        let max = 0;
-
-        this.config.damageDice.forEach(die => {
-            const multiplier = isCrit ? die.count * 2 : die.count;
-            min += multiplier * 1;
-            max += multiplier * die.sides;
-        });
-
-        min += this.config.damageBonus;
-        max += this.config.damageBonus;
-
-        if (includeSneak) {
-            const sa = this.getSneakAttackRange(isCrit);
-            min += sa.min;
-            max += sa.max;
-        }
-
-        return { min, max };
+        return DnDEngine.damageRange(this.engineConfig(), isCrit, includeSneak);
     }
 
-    calculateExpectedDPR(hitChance, critChance, includeSneak = true) {
-        const normalDmg = this.calculateAverageDamage(false, includeSneak);
-        const critDmg = this.calculateAverageDamage(true, includeSneak);
-
-        // DPR = P(hit normal) × daño_normal + P(crit) × daño_crítico
-        const pNormalHit = hitChance - critChance;
-        const dpr = pNormalHit * normalDmg + critChance * critDmg;
-
-        return dpr;
+    // Sneak Attack esperado POR TURNO (1 vez, duplicado si hubo crítico)
+    calculateExpectedSneakAttack(ac) {
+        return DnDEngine.sneakAttackPerTurn(this.engineConfig(), ac);
     }
 
-    // Sneak Attack esperado POR TURNO: se aplica 1 sola vez (al mejor impacto disponible).
-    // Se duplica si hay al menos un crítico en el turno.
-    calculateExpectedSneakAttack(hitChance, critChance) {
-        const dice = this.config.sneakAttackDice || 0;
-        if (dice <= 0) return 0;
-
-        const n = this.config.numberOfAttacks;
-        const avgSA = dice * 3.5;
-
-        const pNoCrit = Math.pow(1 - critChance, n);
-        const pNoHit = Math.pow(1 - hitChance, n);
-        const pAtLeastCrit = 1 - pNoCrit;              // al menos un crítico
-        const pHitNoCrit = pNoCrit - pNoHit;           // al menos un impacto pero ningún crítico
-
-        // Si hay crítico, el SA se aplica ahí (dados duplicados); si no, en un impacto normal.
-        return pAtLeastCrit * (2 * avgSA) + pHitNoCrit * avgSA;
+    // DPR TOTAL por turno = arma × nº de ataques + Sneak Attack
+    calculateTotalDPR(ac) {
+        return DnDEngine.dprPerTurn(this.engineConfig(), ac);
     }
-
-    // DPR TOTAL por turno = daño del arma × nº de ataques + Sneak Attack (1 vez por turno)
-    calculateTotalDPR(hitChance, critChance) {
-        const weaponDPRperAttack = this.calculateExpectedDPR(hitChance, critChance, false);
-        const weaponTotal = weaponDPRperAttack * this.config.numberOfAttacks;
-        const sneakTotal = this.calculateExpectedSneakAttack(hitChance, critChance);
-        return weaponTotal + sneakTotal;
-    }
-
-    // ========== MÚLTIPLES ATAQUES ==========
 
     calculateMultiAttackDistribution(ac) {
-        const n = this.config.numberOfAttacks;
-        const { hit: pHit, crit: pCrit } = this.calculateHitChance(ac);
-
-        const pMiss = 1 - pHit;
-        const pNormal = pHit - pCrit;
-
-        // Daño de ARMA por ataque (sin Sneak Attack: se suma aparte 1 vez por turno)
-        const normalDmg = this.calculateAverageDamage(false, false);
-        const critDmg = this.calculateAverageDamage(true, false);
-
-        // Rangos de daño del arma (sin Sneak Attack)
-        const normalRange = this.calculateDamageRange(false, false);
-        const critRange = this.calculateDamageRange(true, false);
-
-        const sneakDice = this.config.sneakAttackDice || 0;
-
-        const results = [];
-
-        // Para cada número total de hits
-        for (let totalHits = 0; totalHits <= n; totalHits++) {
-            const hitCombinations = [];
-
-            // Para cada combinación de críticos dentro de los hits
-            for (let crits = 0; crits <= totalHits; crits++) {
-                const normals = totalHits - crits;
-                const misses = n - totalHits;
-
-                // Probabilidad multinomial
-                const prob = this.multinomialCoeff(n, misses, normals, crits) *
-                            Math.pow(pMiss, misses) *
-                            Math.pow(pNormal, normals) *
-                            Math.pow(pCrit, crits);
-
-                // Sneak Attack: 1 sola vez por turno si hubo al menos un impacto.
-                // Se duplica si hay al menos un crítico (se aplica al crítico).
-                let saAvg = 0, saMin = 0, saMax = 0;
-                if (sneakDice > 0 && totalHits >= 1) {
-                    const saMult = crits >= 1 ? 2 : 1;
-                    saAvg = sneakDice * saMult * 3.5;
-                    saMin = sneakDice * saMult * 1;
-                    saMax = sneakDice * saMult * 6;
-                }
-
-                // Daño para esta combinación (promedio y rango)
-                const avgDamage = normals * normalDmg + crits * critDmg + saAvg;
-                const minDamage = normals * normalRange.min + crits * critRange.min + saMin;
-                const maxDamage = normals * normalRange.max + crits * critRange.max + saMax;
-
-                // Solo incluir si probabilidad > 0.1%
-                if (prob > 0.001) {
-                    hitCombinations.push({
-                        normals: normals,
-                        crits: crits,
-                        probability: prob,
-                        damage: avgDamage,
-                        damageMin: minDamage,
-                        damageMax: maxDamage
-                    });
-                }
-            }
-
-            // Calcular probabilidad total para este número de hits
-            const totalProbability = hitCombinations.reduce((sum, c) => sum + c.probability, 0);
-
-            results.push({
-                totalHits: totalHits,
-                combinations: hitCombinations,
-                totalProbability: totalProbability
-            });
-        }
-
-        return results;
-    }
-
-    multinomialCoeff(n, k1, k2, k3) {
-        return this.factorial(n) / (this.factorial(k1) * this.factorial(k2) * this.factorial(k3));
-    }
-
-    factorial(n) {
-        if (n === 0 || n === 1) return 1;
-        let result = 1;
-        for (let i = 2; i <= n; i++) {
-            result *= i;
-        }
-        return result;
-    }
-
-    binomial(n, k) {
-        if (k < 0 || k > n) return 0;
-        if (k === 0 || k === n) return 1;
-
-        // Optimización: usar la mitad más pequeña
-        k = Math.min(k, n - k);
-
-        let result = 1;
-        for (let i = 0; i < k; i++) {
-            result *= (n - i);
-            result /= (i + 1);
-        }
-
-        return result;
+        return DnDEngine.multiAttackDistribution(this.engineConfig(), ac);
     }
 
     // ========== GENERACIÓN DE UI ==========
@@ -2189,20 +1878,26 @@ class DnDCalculator {
         // Calcular para CAs del 1 al 30
         const minAC = 1;
         const maxAC = 30;
+        const includeSneakPerHit = this.config.numberOfAttacks === 1;
 
         for (let ac = minAC; ac <= maxAC; ac++) {
             const { hit, crit, miss } = this.calculateHitChance(ac);
-            const dpr = this.calculateExpectedDPR(hit, crit);
+            // DPR por TURNO (arma × nº de ataques + Sneak Attack una vez), igual que el panel de stats
+            const dpr = this.calculateTotalDPR(ac);
 
-            // Calcular rangos de daño
-            const normalRange = this.calculateDamageRange(false);
-            const critRange = this.calculateDamageRange(true);
+            // Rangos de daño de UN impacto. El SA se incluye solo si hay un único ataque
+            // (con varios ataques se aplica una vez por turno y se muestra aparte).
+            const normalRange = this.calculateDamageRange(false, includeSneakPerHit);
+            const critRange = this.calculateDamageRange(true, includeSneakPerHit);
 
             const row = document.createElement('tr');
 
-            // Destacar CA objetivo
+            // Destacar CA objetivo; en móvil sólo se muestran las filas cercanas (±5)
             if (this.config.targetAC && ac === this.config.targetAC) {
                 row.classList.add('highlighted');
+            }
+            if (this.config.targetAC && Math.abs(ac - this.config.targetAC) > 5) {
+                row.classList.add('row-far');
             }
 
             row.innerHTML = `
@@ -2225,6 +1920,8 @@ class DnDCalculator {
             resultsBody.appendChild(row);
         }
 
+        this.renderHero();
+
         // Mostrar información del roll requerido
         if (this.config.targetAC) {
             const targetRoll = this.config.targetAC - this.config.attackBonus;
@@ -2238,10 +1935,10 @@ class DnDCalculator {
                 requirementText = t('rollReqNormal', { ac: this.config.targetAC, roll: targetRoll });
             }
 
-            const normalDmg = this.calculateAverageDamage(false);
-            const critDmg = this.calculateAverageDamage(true);
-            const normalRange = this.calculateDamageRange(false);
-            const critRange = this.calculateDamageRange(true);
+            const normalDmg = this.calculateAverageDamage(false, includeSneakPerHit);
+            const critDmg = this.calculateAverageDamage(true, includeSneakPerHit);
+            const normalRange = this.calculateDamageRange(false, includeSneakPerHit);
+            const critRange = this.calculateDamageRange(true, includeSneakPerHit);
 
             requirementText += t('damageNormal', {
                 min: normalRange.min,
@@ -2264,7 +1961,7 @@ class DnDCalculator {
         if (this.config.targetAC && combatStatsPanel) {
             const targetAC = this.config.targetAC;
             const { hit: targetHit, crit: targetCrit } = this.calculateHitChance(targetAC);
-            const targetDPR = this.calculateTotalDPR(targetHit, targetCrit);
+            const targetDPR = this.calculateTotalDPR(targetAC);
             this.renderCombatStats(targetAC, targetDPR, targetHit, targetCrit);
         } else if (combatStatsPanel) {
             combatStatsPanel.style.display = 'none';
@@ -2278,11 +1975,14 @@ class DnDCalculator {
             multiAttackPanel.style.display = 'none';
         }
 
+        // GWM / Sharpshooter
+        this.renderPowerAttack();
+
         // Power Level - mostrar si hay CA objetivo
         if (this.config.targetAC) {
             const targetAC = this.config.targetAC;
             const { hit: targetHit, crit: targetCrit } = this.calculateHitChance(targetAC);
-            const targetDPR = this.calculateTotalDPR(targetHit, targetCrit);
+            const targetDPR = this.calculateTotalDPR(targetAC);
             this.renderPowerLevel(targetAC, targetDPR, targetHit);
         } else {
             const powerLevelSection = document.getElementById('powerLevelSection');
@@ -2290,9 +1990,36 @@ class DnDCalculator {
                 powerLevelSection.style.display = 'none';
             }
         }
+    }
 
-        // Auto-cerrar panel en móvil después de calcular
-        autoClosePanelAfterCalculate();
+    // Barra pegajosa: CA objetivo, % de impacto y daño por turno siempre a la vista
+    renderHero() {
+        const hitEl = document.getElementById('heroHit');
+        const dprEl = document.getElementById('heroDPR');
+        const rollEl = document.getElementById('heroRoll');
+        const critEl = document.getElementById('heroCrit');
+        if (!hitEl || !dprEl) return;
+
+        const ac = this.config.targetAC;
+        if (!ac) {
+            hitEl.textContent = '—';
+            dprEl.textContent = '—';
+            if (rollEl) rollEl.textContent = '';
+            if (critEl) critEl.textContent = '';
+            return;
+        }
+
+        const { hit, crit } = this.calculateHitChance(ac);
+        hitEl.textContent = Math.round(hit * 100) + '%';
+        dprEl.textContent = this.calculateTotalDPR(ac).toFixed(1);
+
+        const targetRoll = ac - this.config.attackBonus;
+        if (rollEl) {
+            rollEl.textContent = targetRoll <= 1 ? t('heroAuto')
+                : targetRoll >= 21 ? t('heroCritOnly')
+                : t('heroNeed', { roll: targetRoll });
+        }
+        if (critEl) critEl.textContent = t('heroCritShort', { crit: (crit * 100).toFixed(1) + '%' });
     }
 
     renderMultiAttackDistribution() {
@@ -2360,7 +2087,8 @@ class DnDCalculator {
             const details = document.createElement('div');
             details.className = 'dist-details';
 
-            combinations.forEach(({ normals, crits, probability, damage, damageMin, damageMax }) => {
+            // Ocultar combinaciones despreciables (<0.1%); el total del grupo ya está calculado sin filtrar
+            combinations.filter(c => c.probability >= 0.001).forEach(({ normals, crits, probability, damage, damageMin, damageMax }) => {
                 const combo = document.createElement('div');
                 combo.className = 'dist-combo';
 
@@ -2420,7 +2148,7 @@ class DnDCalculator {
 
         // Sneak Attack esperado por turno (1 vez, se duplica en crítico)
         const sneakDice = this.config.sneakAttackDice || 0;
-        const sneakPerRound = this.calculateExpectedSneakAttack(hitChance, critChance);
+        const sneakPerRound = this.calculateExpectedSneakAttack(ac);
 
         // Turnos para derrotar diferentes enemigos
         const enemies = [
@@ -2467,10 +2195,10 @@ class DnDCalculator {
         const defeatList = document.getElementById('defeatTimesList');
         if (defeatList) {
             defeatList.innerHTML = enemies.map(enemy => {
-                const turns = Math.ceil(enemy.hp / dpr);
+                const turns = dpr > 0 ? `~${Math.ceil(enemy.hp / dpr)}` : '∞';
                 return `<div class="defeat-item">
                     <span class="defeat-enemy">${t(enemy.key)}</span>
-                    <span class="defeat-turns">~${turns} ${t('turnsLabel')}</span>
+                    <span class="defeat-turns">${turns} ${t('turnsLabel')}</span>
                 </div>`;
             }).join('');
         }
@@ -2480,6 +2208,47 @@ class DnDCalculator {
         if (levelBadge) {
             levelBadge.textContent = `${t('levelRange')} ${level.min}-${level.max}`;
         }
+    }
+
+    renderPowerAttack() {
+        const panel = document.getElementById('powerAttackPanel');
+        if (!panel) return;
+        if (!this.config.powerAttack) {
+            panel.style.display = 'none';
+            return;
+        }
+        panel.style.display = 'block';
+
+        const cfg = this.engineConfig();
+        const rows = DnDEngine.powerAttackComparison(cfg, 1, 30);
+        const cutoff = DnDEngine.powerAttackCutoff(cfg, 30);
+
+        // Veredicto principal
+        const verdict = document.getElementById('powerAttackVerdict');
+        if (cutoff === null) verdict.innerHTML = t('powerAttackNever');
+        else if (cutoff >= 30) verdict.innerHTML = t('powerAttackAlways');
+        else verdict.innerHTML = t('powerAttackCutoff', { ac: cutoff });
+
+        // Contra la CA objetivo
+        const target = document.getElementById('powerAttackTarget');
+        const ac = this.config.targetAC;
+        const row = ac ? rows.find(r => r.ac === ac) : null;
+        if (row) {
+            const advice = row.better === 'power' ? t('powerAttackUse')
+                         : row.better === 'normal' ? t('powerAttackSkip')
+                         : t('powerAttackTie');
+            target.innerHTML = `${t('powerAttackVsTarget', { ac, normal: row.normal.toFixed(1), power: row.power.toFixed(1) })} <strong class="pa-advice pa-${row.better}">${advice}</strong>`;
+            target.style.display = '';
+        } else {
+            target.style.display = 'none';
+        }
+
+        // Tira por CA: qué conviene contra cada una
+        const strip = document.getElementById('powerAttackStrip');
+        strip.innerHTML = rows.map(r => `
+            <div class="pa-cell pa-${r.better} ${r.ac === ac ? 'pa-target' : ''}" title="CA ${r.ac}: ${r.normal.toFixed(1)} vs ${r.power.toFixed(1)}">
+                <span class="pa-ac">${r.ac}</span>
+            </div>`).join('');
     }
 
     calculatePowerLevel(dpr, hitChance) {
@@ -2528,9 +2297,9 @@ function addDice() {
     const diceItem = document.createElement('div');
     diceItem.className = 'dice-item';
     diceItem.innerHTML = `
-        <input type="number" class="dice-count" value="1" min="1" max="10">
-        <span>d</span>
-        <select class="dice-sides">
+        <input type="number" class="dice-count" value="1" min="1" max="20" inputmode="numeric" aria-label="Cantidad">
+        <span class="dice-d">d</span>
+        <select class="dice-sides" aria-label="Caras">
             <option value="4">4</option>
             <option value="6" selected>6</option>
             <option value="8">8</option>
@@ -2539,7 +2308,7 @@ function addDice() {
             <option value="20">20</option>
             <option value="100">100</option>
         </select>
-        <button class="btn-remove" onclick="removeDice(this)">×</button>
+        <button type="button" class="btn-remove" onclick="removeDice(this)" aria-label="Quitar dado">×</button>
     `;
 
     diceList.appendChild(diceItem);
@@ -2557,6 +2326,18 @@ function removeDice(button) {
 
     button.parentElement.remove();
     calculator.updateDiceFromInputs();
+}
+
+// Móvil: alterna entre las filas cercanas a la CA objetivo y la tabla completa
+function toggleAllRows() {
+    const table = document.getElementById('resultsTable');
+    const btn = document.getElementById('toggleRows');
+    if (!table) return;
+    const showAll = table.classList.toggle('show-all');
+    if (btn) {
+        btn.setAttribute('data-i18n', showAll ? 'showNearRows' : 'showAllRows');
+        btn.textContent = t(showAll ? 'showNearRows' : 'showAllRows');
+    }
 }
 
 // ========== FUNCIONES DE PERFILES ==========
@@ -2584,7 +2365,7 @@ function saveProfile() {
         // Limpiar input
         if (nameInput) nameInput.value = '';
         // Feedback visual
-        const messageKey = result.updated ? 'profileSaved' : 'profileSaved';
+        const messageKey = result.updated ? 'profileUpdated' : 'profileSaved';
         showProfileFeedback(t(messageKey, { name: result.profile.name }), 'success');
     } else {
         alert(t(result.messageKey));
@@ -2602,7 +2383,7 @@ function editProfile(id) {
         }
     }
     // Scroll to config section
-    document.querySelector('.config-panel')?.scrollIntoView({ behavior: 'smooth' });
+    document.getElementById('config')?.scrollIntoView({ behavior: 'smooth' });
 }
 
 function cancelEditProfile() {
@@ -2618,7 +2399,7 @@ function loadProfile(id) {
     if (result.success) {
         showProfileFeedback(t('profileLoaded', { name: result.profile.name }), 'success');
         // Scroll hacia los resultados
-        document.querySelector('.results-panel')?.scrollIntoView({ behavior: 'smooth' });
+        document.getElementById('results')?.scrollIntoView({ behavior: 'smooth' });
     }
 }
 
@@ -2626,22 +2407,66 @@ function deleteProfile(id) {
     profileManager.deleteProfile(id);
 }
 
+// Descarga los perfiles como archivo JSON
+function exportProfiles() {
+    if (profileManager.profiles.length === 0) {
+        showProfileFeedback(t('exportNoProfiles'), 'error');
+        return;
+    }
+
+    const blob = new Blob([profileManager.exportToJSON()], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = DnDProfilesIO.exportFilename();
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+
+    showProfileFeedback(t('exportDone', { n: profileManager.profiles.length }), 'success');
+}
+
+// Lee el archivo elegido e importa los perfiles válidos
+function importProfilesFromFile(file) {
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+        const result = profileManager.importFromJSON(String(reader.result));
+
+        if (!result.ok) {
+            showProfileFeedback(t(result.errorKey), 'error');
+            return;
+        }
+        const message = result.skipped.length > 0
+            ? t('importDoneWithSkips', { n: result.profiles.length, skipped: result.skipped.length })
+            : t('importDone', { n: result.profiles.length });
+        showProfileFeedback(message, result.skipped.length > 0 ? 'warning' : 'success');
+    };
+    reader.onerror = () => showProfileFeedback(t('importErrorRead'), 'error');
+    reader.readAsText(file);
+}
+
+// Mensaje temporal dentro del panel de perfiles. Reemplaza al mensaje anterior,
+// así dos acciones seguidas no apilan carteles.
 function showProfileFeedback(message, type) {
-    // Crear elemento de feedback temporal
+    const panel = document.querySelector('#profilesPanel .panel-body');
+    if (!panel) return;
+
+    panel.querySelectorAll('.profile-feedback').forEach(el => el.remove());
+
     const feedback = document.createElement('div');
     feedback.className = `profile-feedback ${type}`;
+    feedback.setAttribute('role', type === 'success' ? 'status' : 'alert');
     feedback.textContent = message;
+    panel.appendChild(feedback);
 
-    const profilesSection = document.querySelector('.profiles-section');
-    if (profilesSection) {
-        profilesSection.appendChild(feedback);
-
-        // Remover después de 2 segundos
-        setTimeout(() => {
-            feedback.classList.add('fade-out');
-            setTimeout(() => feedback.remove(), 300);
-        }, 2000);
-    }
+    // Los errores tardan más en leerse que un "guardado"
+    setTimeout(() => {
+        feedback.classList.add('fade-out');
+        setTimeout(() => feedback.remove(), 300);
+    }, type === 'success' ? 2000 : 5000);
 }
 
 // ========== FUNCIONES DE COMPARACIÓN ==========
@@ -2662,7 +2487,7 @@ function runComparison() {
     // Ejecutar comparación
     const comparisonData = profileComparator.compareProfiles(selectedIds, targetAC);
 
-    // Renderizar resultados
+    // Renderizar resultados y llevar la vista hasta ellos
     profileComparator.renderComparison(comparisonData);
 }
 
@@ -2674,47 +2499,37 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize language system first
     initializeLanguage();
 
-    // Setup custom select with flags
-    const customSelect = document.getElementById('languageSelect');
-    if (customSelect) {
-        const selected = customSelect.querySelector('.select-selected');
-        const itemsContainer = customSelect.querySelector('.select-items');
-        const items = itemsContainer.querySelectorAll('div');
+    // Selector de idioma
+    document.querySelectorAll('#languageSelect [data-lang]').forEach(btn => {
+        btn.addEventListener('click', () => setLanguage(btn.dataset.lang));
+    });
 
-        // Toggle dropdown
-        selected.addEventListener('click', (e) => {
-            e.stopPropagation();
-            closeAllSelect(selected);
-            itemsContainer.classList.toggle('select-hide');
-            selected.classList.toggle('select-arrow-active');
+    // Steppers − / + : ajustan el input asociado respetando min/max y disparan 'input'
+    document.querySelectorAll('.step[data-step]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const input = document.getElementById(btn.dataset.step);
+            if (!input) return;
+            const delta = parseInt(btn.dataset.delta, 10) || 0;
+            const min = input.min !== '' ? parseInt(input.min, 10) : -Infinity;
+            const max = input.max !== '' ? parseInt(input.max, 10) : Infinity;
+            const current = parseInt(input.value, 10);
+            const fallback = parseInt(input.defaultValue, 10);
+            // Campo vacío: el primer toque restaura el valor por defecto del input
+            const next = Number.isFinite(current) ? current + delta
+                : Number.isFinite(fallback) ? fallback
+                : (delta > 0 ? min : max);
+            input.value = Math.min(max, Math.max(min, next));
+            input.dispatchEvent(new Event('input', { bubbles: true }));
         });
+    });
 
-        // Handle item selection
-        items.forEach(item => {
-            item.addEventListener('click', (e) => {
-                const lang = item.getAttribute('data-value');
-                selected.innerHTML = item.innerHTML;
-                itemsContainer.classList.add('select-hide');
-                selected.classList.remove('select-arrow-active');
-                setLanguage(lang);
-            });
+    // Importar perfiles desde archivo
+    const importFile = document.getElementById('importFile');
+    if (importFile) {
+        importFile.addEventListener('change', (e) => {
+            importProfilesFromFile(e.target.files[0]);
+            e.target.value = ''; // permite volver a elegir el mismo archivo
         });
-
-        // Close dropdown when clicking outside
-        document.addEventListener('click', () => {
-            closeAllSelect();
-        });
-
-        function closeAllSelect(except) {
-            const items = document.querySelectorAll('.select-items');
-            const selecteds = document.querySelectorAll('.select-selected');
-            items.forEach((item, i) => {
-                if (except !== selecteds[i]) {
-                    item.classList.add('select-hide');
-                    selecteds[i].classList.remove('select-arrow-active');
-                }
-            });
-        }
     }
 
     // Initialize calculator
@@ -2729,100 +2544,39 @@ document.addEventListener('DOMContentLoaded', () => {
     profileComparator = new ProfileComparator(profileManager);
     profileComparator.renderCompareCheckboxes();
 
-    // Initialize mobile panel toggle
-    initMobilePanelToggle();
-
     // Calcular automáticamente al cargar
     calculator.calculate();
+
+    initPWA();
 });
 
-// ========== MOBILE PANEL TOGGLE ==========
+// ========== PWA ==========
 
-// Estado del panel (mobile only)
-let mobileConfigPanelOpen = true; // Default abierto
-
-function initMobilePanelToggle() {
-    // Solo inicializar si estamos en móvil
-    if (window.innerWidth > 768) {
-        return;
+// Registra el service worker (sólo bajo http/https: en file:// no está disponible)
+// y muestra el botón "Instalar" cuando el navegador ofrece la instalación (Chrome/Edge/Android).
+// En iOS no existe ese evento: se instala desde Compartir → "Agregar a inicio".
+function initPWA() {
+    if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
+        navigator.serviceWorker.register('./sw.js').catch(err => console.warn('Service worker:', err));
     }
 
-    // Leer estado guardado
-    const saved = localStorage.getItem('mobileConfigPanelOpen');
-    if (saved !== null) {
-        mobileConfigPanelOpen = saved === 'true';
-    }
+    const installBtn = document.getElementById('installBtn');
+    if (!installBtn) return;
+    let deferredPrompt = null;
 
-    // Aplicar estado inicial
-    updatePanelVisibility();
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        installBtn.hidden = false;
+    });
+
+    installBtn.addEventListener('click', async () => {
+        if (!deferredPrompt) return;
+        installBtn.hidden = true;
+        deferredPrompt.prompt();
+        await deferredPrompt.userChoice;
+        deferredPrompt = null;
+    });
+
+    window.addEventListener('appinstalled', () => { installBtn.hidden = true; });
 }
-
-function closeMobilePanel() {
-    mobileConfigPanelOpen = false;
-    updatePanelVisibility();
-
-    // Scroll suave a resultados
-    setTimeout(() => {
-        const resultsPanel = document.querySelector('.results-panel');
-        if (resultsPanel) {
-            resultsPanel.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }
-    }, 100);
-}
-
-function openMobilePanel() {
-    mobileConfigPanelOpen = true;
-    updatePanelVisibility();
-
-    // Scroll suave al panel
-    setTimeout(() => {
-        const configPanel = document.querySelector('.config-panel');
-        if (configPanel) {
-            configPanel.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }
-    }, 100);
-}
-
-function updatePanelVisibility() {
-    const panel = document.querySelector('.config-panel');
-    const fab = document.querySelector('.mobile-fab-btn');
-
-    if (!panel || !fab) return;
-
-    if (mobileConfigPanelOpen) {
-        panel.classList.remove('mobile-collapsed');
-        fab.style.display = 'none';
-    } else {
-        panel.classList.add('mobile-collapsed');
-        fab.style.display = 'flex';
-    }
-
-    localStorage.setItem('mobileConfigPanelOpen', mobileConfigPanelOpen);
-}
-
-// Auto-cerrar después de calcular (solo móvil)
-function autoClosePanelAfterCalculate() {
-    if (window.innerWidth <= 768 && mobileConfigPanelOpen) {
-        setTimeout(closeMobilePanel, 300);
-    }
-}
-
-// Resetear en resize
-window.addEventListener('resize', () => {
-    if (window.innerWidth > 768) {
-        // Desktop: siempre mostrar panel
-        const panel = document.querySelector('.config-panel');
-        const fab = document.querySelector('.mobile-fab-btn');
-        if (panel) panel.classList.remove('mobile-collapsed');
-        if (fab) fab.style.display = 'none';
-    } else {
-        // Móvil: aplicar estado guardado
-        updatePanelVisibility();
-    }
-});

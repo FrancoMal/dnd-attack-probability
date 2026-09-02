@@ -2,58 +2,153 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <meta name="color-scheme" content="dark">
+    <meta name="theme-color" content="#1b1613">
+    <meta name="description" content="Calculadora de probabilidades de impacto y daño esperado para D&D 5e. Funciona sin conexión.">
     <title>D&D Attack Probability Calculator</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/lipis/flag-icons@7.2.3/css/flag-icons.min.css">
+
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Ataque D&D">
+    <meta name="application-name" content="Ataque D&D">
+
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1 data-i18n="title">⚔️ D&D Attack Probability Calculator</h1>
-            <p class="subtitle" data-i18n="subtitle">Calcula tus probabilidades de impacto y daño esperado</p>
-            <div class="language-selector">
-                <div class="custom-select" id="languageSelect">
-                    <div class="select-selected">
-                        <span class="fi fi-es"></span> Español
+    <a class="skip-link" href="#results" data-i18n="skipToResults">Ir a los resultados</a>
+
+    <header class="topbar">
+        <div class="brand">
+            <span class="brand-mark" aria-hidden="true">⚔</span>
+            <span class="brand-name" data-i18n="appName">Ataque D&D</span>
+        </div>
+        <button type="button" class="btn-ghost btn-sm btn-install" id="installBtn" hidden data-i18n="installApp">Instalar</button>
+        <nav class="lang-switch" id="languageSelect" aria-label="Idioma">
+            <button type="button" data-lang="es" aria-pressed="true">ES</button>
+            <button type="button" data-lang="en">EN</button>
+            <button type="button" data-lang="pt">PT</button>
+            <button type="button" data-lang="de">DE</button>
+        </nav>
+    </header>
+
+    <!-- Barra de resultado siempre visible: CA objetivo + impacto + DPR -->
+    <section class="hero" id="hero" aria-live="polite">
+        <div class="hero-ac">
+            <span class="hero-label" data-i18n="heroTargetAC">CA objetivo</span>
+            <div class="stepper stepper-lg">
+                <button type="button" class="step" data-step="targetAC" data-delta="-1" aria-label="CA −1">−</button>
+                <input type="number" id="targetAC" value="15" min="1" max="30" inputmode="numeric" aria-label="CA objetivo">
+                <button type="button" class="step" data-step="targetAC" data-delta="1" aria-label="CA +1">+</button>
+            </div>
+        </div>
+        <div class="hero-stat">
+            <span class="hero-value" id="heroHit">—</span>
+            <span class="hero-label" data-i18n="heroHit">impacto</span>
+            <span class="hero-sub" id="heroRoll"></span>
+        </div>
+        <div class="hero-stat">
+            <span class="hero-value hero-dpr" id="heroDPR">—</span>
+            <span class="hero-label" data-i18n="heroDPR">daño/turno</span>
+            <span class="hero-sub" id="heroCrit"></span>
+        </div>
+    </section>
+
+    <div class="layout">
+        <!-- ====================== CONFIGURACIÓN ====================== -->
+        <aside class="config" id="config">
+            <h2 class="section-title" data-i18n="configTitle">Configuración de Ataque</h2>
+
+            <div class="field">
+                <label for="attackBonus">
+                    <span data-i18n="attackBonus">Bonificador de Ataque</span>
+                    <span class="tooltip">?<span class="tooltip-text" data-i18n="attackBonusTooltip">Tu modificador de ataque total (ej: +5)</span></span>
+                </label>
+                <div class="stepper">
+                    <button type="button" class="step" data-step="attackBonus" data-delta="-1" aria-label="−1">−</button>
+                    <input type="number" id="attackBonus" value="5" min="-5" max="20" step="1" inputmode="numeric">
+                    <button type="button" class="step" data-step="attackBonus" data-delta="1" aria-label="+1">+</button>
+                </div>
+            </div>
+
+            <div class="field">
+                <label for="damageBonus">
+                    <span data-i18n="damageBonus">Bonificador de Daño</span>
+                    <span class="tooltip">?<span class="tooltip-text" data-i18n="damageBonusTooltip">Modificador que se suma al daño (ej: +3)</span></span>
+                </label>
+                <div class="stepper">
+                    <button type="button" class="step" data-step="damageBonus" data-delta="-1" aria-label="−1">−</button>
+                    <input type="number" id="damageBonus" value="3" min="0" max="30" step="1" inputmode="numeric">
+                    <button type="button" class="step" data-step="damageBonus" data-delta="1" aria-label="+1">+</button>
+                </div>
+            </div>
+
+            <div class="field">
+                <span class="field-label" data-i18n="damageDice">Dados de Daño</span>
+                <div class="dice-builder">
+                    <div id="diceList" class="dice-list">
+                        <div class="dice-item">
+                            <input type="number" class="dice-count" value="1" min="1" max="20" inputmode="numeric" aria-label="Cantidad">
+                            <span class="dice-d">d</span>
+                            <select class="dice-sides" aria-label="Caras">
+                                <option value="4">4</option>
+                                <option value="6">6</option>
+                                <option value="8" selected>8</option>
+                                <option value="10">10</option>
+                                <option value="12">12</option>
+                                <option value="20">20</option>
+                                <option value="100">100</option>
+                            </select>
+                            <button type="button" class="btn-remove" onclick="removeDice(this)" aria-label="Quitar dado">×</button>
+                        </div>
                     </div>
-                    <div class="select-items select-hide">
-                        <div data-value="es"><span class="fi fi-es"></span> Español</div>
-                        <div data-value="en"><span class="fi fi-us"></span> English</div>
-                        <div data-value="pt"><span class="fi fi-pt"></span> Português</div>
-                        <div data-value="de"><span class="fi fi-de"></span> Deutsch</div>
+                    <div class="dice-footer">
+                        <button type="button" class="btn-ghost" onclick="addDice()" data-i18n="addDice">+ Añadir Dado</button>
+                        <output class="dice-notation" id="diceNotation">1d8</output>
                     </div>
                 </div>
             </div>
-        </header>
 
-        <div class="main-layout">
-            <!-- Panel de configuración -->
-            <aside class="config-panel">
-                <!-- Botón cerrar móvil -->
-                <button class="mobile-panel-close" onclick="closeMobilePanel()" aria-label="Cerrar configuración">
-                    <span class="close-icon">▼</span>
-                    <span data-i18n="closeConfig">Cerrar Configuración</span>
-                </button>
-
-                <h2 data-i18n="configTitle">⚙️ Configuración de Ataque</h2>
-
-                <div class="input-group">
-                    <label for="attackBonus">
-                        <span data-i18n="attackBonus">Bonificador de Ataque</span>
-                        <span class="tooltip">?
-                            <span class="tooltip-text" data-i18n="attackBonusTooltip">Tu modificador de ataque total (ej: +5)</span>
-                        </span>
-                    </label>
-                    <input type="number" id="attackBonus" value="5" min="-5" max="20" step="1">
+            <div class="field">
+                <span class="field-label" data-i18n="numberOfAttacks">Número de Ataques</span>
+                <div class="segmented" role="radiogroup" id="attacksGroup" aria-label="Número de ataques">
+                    <label><input type="radio" name="numberOfAttacks" value="1" checked><span>1</span></label>
+                    <label><input type="radio" name="numberOfAttacks" value="2"><span>2</span></label>
+                    <label><input type="radio" name="numberOfAttacks" value="3"><span>3</span></label>
+                    <label><input type="radio" name="numberOfAttacks" value="4"><span>4</span></label>
+                    <label><input type="radio" name="numberOfAttacks" value="5"><span>5</span></label>
+                    <label><input type="radio" name="numberOfAttacks" value="6"><span>6</span></label>
+                    <label><input type="radio" name="numberOfAttacks" value="7"><span>7</span></label>
+                    <label><input type="radio" name="numberOfAttacks" value="8"><span>8</span></label>
                 </div>
+            </div>
 
-                <div class="input-group">
+            <div class="field">
+                <span class="field-label" data-i18n="advantageLabel">Ventaja / Desventaja</span>
+                <div class="segmented segmented-3" role="radiogroup">
+                    <label><input type="radio" name="advantage" value="disadvantage"><span data-i18n="disadvantage">Desventaja</span></label>
+                    <label><input type="radio" name="advantage" value="normal" checked><span data-i18n="normal">Normal</span></label>
+                    <label><input type="radio" name="advantage" value="advantage"><span data-i18n="advantage">Ventaja</span></label>
+                </div>
+            </div>
+
+            <div class="field-row">
+                <div class="field">
+                    <label for="critRange" data-i18n="critRange">Rango Crítico</label>
+                    <select id="critRange">
+                        <option value="20" selected data-i18n="critRange20">Solo 20 (5%)</option>
+                        <option value="19" data-i18n="critRange19">19-20 (10%)</option>
+                        <option value="18" data-i18n="critRange18">18-20 (15%)</option>
+                    </select>
+                </div>
+                <div class="field">
                     <label for="attackDiceBonus">
                         <span data-i18n="attackDiceBonus">Dado Extra al Ataque</span>
-                        <span class="tooltip">?
-                            <span class="tooltip-text" data-i18n="attackDiceBonusTooltip">Dado adicional para tiradas de ataque (ej: Bendición, Inspiración Bárdica)</span>
-                        </span>
                     </label>
                     <select id="attackDiceBonus">
                         <option value="0" selected data-i18n="attackDiceBonusNone">Ninguno</option>
@@ -64,370 +159,222 @@
                         <option value="12" data-i18n="attackDiceBonusBardic12">+1d12 (Inspiración)</option>
                     </select>
                 </div>
+            </div>
 
-                <div class="input-group">
-                    <label for="damageBonus">
-                        <span data-i18n="damageBonus">Bonificador de Daño</span>
-                        <span class="tooltip">?
-                            <span class="tooltip-text" data-i18n="damageBonusTooltip">Modificador que se suma al daño (ej: +3)</span>
-                        </span>
-                    </label>
-                    <input type="number" id="damageBonus" value="3" min="0" max="20" step="1">
+            <div class="field">
+                <label for="sneakAttackDice">
+                    <span data-i18n="sneakAttack">Sneak Attack (d6)</span>
+                    <span class="tooltip">?<span class="tooltip-text" data-i18n="sneakAttackTooltip">Cantidad de d6 de Sneak Attack. Se aplica UNA sola vez por turno y se duplica en crítico (regla oficial de D&D 5e).</span></span>
+                </label>
+                <div class="stepper">
+                    <button type="button" class="step" data-step="sneakAttackDice" data-delta="-1" aria-label="−1">−</button>
+                    <input type="number" id="sneakAttackDice" value="0" min="0" max="12" step="1" inputmode="numeric">
+                    <button type="button" class="step" data-step="sneakAttackDice" data-delta="1" aria-label="+1">+</button>
                 </div>
+            </div>
 
-                <div class="input-group">
-                    <label data-i18n="damageDice">Dados de Daño</label>
-                    <div class="dice-builder">
-                        <div id="diceList" class="dice-list">
-                            <div class="dice-item">
-                                <input type="number" class="dice-count" value="1" min="1" max="10">
-                                <span>d</span>
-                                <select class="dice-sides">
-                                    <option value="4">4</option>
-                                    <option value="6">6</option>
-                                    <option value="8" selected>8</option>
-                                    <option value="10">10</option>
-                                    <option value="12">12</option>
-                                    <option value="20">20</option>
-                                    <option value="100">100</option>
-                                </select>
-                                <button class="btn-remove" onclick="removeDice(this)">×</button>
-                            </div>
-                        </div>
-                        <button class="btn-add" onclick="addDice()" data-i18n="addDice">+ Añadir Dado</button>
-                        <div class="dice-notation" id="diceNotation">1d8</div>
-                    </div>
-                </div>
+            <label class="toggle" for="powerAttack">
+                <input type="checkbox" id="powerAttack">
+                <span class="toggle-track" aria-hidden="true"></span>
+                <span class="toggle-text">
+                    <span data-i18n="powerAttack">Great Weapon Master / Sharpshooter</span>
+                    <small data-i18n="powerAttackTooltip">Muestra hasta qué CA conviene usar el -5 al ataque / +10 al daño.</small>
+                </span>
+            </label>
 
-                <div class="input-group">
-                    <label for="sneakAttackDice">
-                        <span data-i18n="sneakAttack">Sneak Attack (d6)</span>
-                        <span class="tooltip">?
-                            <span class="tooltip-text" data-i18n="sneakAttackTooltip">Cantidad de d6 de Sneak Attack. Se aplica UNA sola vez por turno y se duplica en crítico (regla oficial de D&D 5e).</span>
-                        </span>
-                    </label>
-                    <input type="number" id="sneakAttackDice" value="0" min="0" max="12" step="1">
-                </div>
-
-                <div class="input-group">
-                    <label data-i18n="critRange">Rango Crítico</label>
-                    <select id="critRange">
-                        <option value="20" selected data-i18n="critRange20">Solo 20 (5%)</option>
-                        <option value="19" data-i18n="critRange19">19-20 (10%)</option>
-                        <option value="18" data-i18n="critRange18">18-20 (15%)</option>
-                    </select>
-                </div>
-
-                <div class="input-group">
-                    <label data-i18n="advantageLabel">Ventaja / Desventaja</label>
-                    <div class="radio-group">
-                        <label class="radio-label">
-                            <input type="radio" name="advantage" value="disadvantage">
-                            <span class="radio-custom"></span>
-                            <span data-i18n="disadvantage">Desventaja</span>
-                        </label>
-                        <label class="radio-label">
-                            <input type="radio" name="advantage" value="normal" checked>
-                            <span class="radio-custom"></span>
-                            <span data-i18n="normal">Normal</span>
-                        </label>
-                        <label class="radio-label">
-                            <input type="radio" name="advantage" value="advantage">
-                            <span class="radio-custom"></span>
-                            <span data-i18n="advantage">Ventaja</span>
-                        </label>
-                    </div>
-                </div>
-
-                <div class="input-group">
-                    <label for="numberOfAttacks">
-                        <span data-i18n="numberOfAttacks">Número de Ataques</span>
-                        <span class="attacks-value" id="attacksValue">1</span>
-                    </label>
-                    <input type="range" id="numberOfAttacks" min="1" max="8" value="1" step="1">
-                </div>
-
-                <div class="input-group">
-                    <label for="targetAC">
-                        <span data-i18n="targetAC">CA Objetivo (Opcional)</span>
-                        <span class="tooltip">?
-                            <span class="tooltip-text" data-i18n="targetACTooltip">Clase de Armadura del enemigo específico a destacar</span>
-                        </span>
-                    </label>
-                    <input type="number" id="targetAC" value="" min="1" max="30" data-i18n="targetACPlaceholder" placeholder="Ej: 15">
-                </div>
-
-                <button class="btn-calculate" onclick="calculator.calculate()" data-i18n="calculateButton">
-                    🎲 Calcular Probabilidades
-                </button>
-
-                <!-- Sección de Perfiles -->
-                <div class="profiles-section">
-                    <h3 data-i18n="profilesTitle">📁 Perfiles Guardados</h3>
-
+            <!-- Perfiles -->
+            <details class="panel panel-sub" id="profilesPanel">
+                <summary><span data-i18n="profilesTitle">Perfiles Guardados</span><span class="chev" aria-hidden="true"></span></summary>
+                <div class="panel-body">
                     <div class="save-profile">
-                        <input type="text" id="profileName" data-i18n="profileNamePlaceholder" placeholder="Nombre del perfil...">
-                        <button class="btn-save-profile" onclick="saveProfile()" data-i18n="saveProfileBtn">💾 Guardar Perfil</button>
+                        <input type="text" id="profileName" data-i18n="profileNamePlaceholder" placeholder="Nombre del perfil..." autocomplete="off">
+                        <button type="button" class="btn-primary" onclick="saveProfile()" data-i18n="saveProfileBtn">Guardar</button>
                     </div>
-
-                    <!-- Editing indicator -->
                     <div class="editing-indicator" id="editingIndicator" style="display: none;">
                         <span class="editing-text" id="editingText">Editando: Perfil</span>
-                        <button class="btn-cancel-edit" onclick="cancelEditProfile()" data-i18n="cancelEdit">✖ Cancelar</button>
+                        <button type="button" class="btn-ghost" onclick="cancelEditProfile()" data-i18n="cancelEdit">Cancelar</button>
                     </div>
-
-                    <div class="profiles-list" id="profilesList">
-                        <!-- Perfiles se generan dinámicamente -->
+                    <div class="profiles-list" id="profilesList"></div>
+                    <div class="empty" id="noProfiles" data-i18n="noProfiles">No hay perfiles guardados</div>
+                    <div class="profiles-io">
+                        <button type="button" class="btn-ghost btn-sm" onclick="exportProfiles()" data-i18n="exportProfilesBtn">Exportar JSON</button>
+                        <button type="button" class="btn-ghost btn-sm" onclick="document.getElementById('importFile').click()" data-i18n="importProfilesBtn">Importar JSON</button>
+                        <input type="file" id="importFile" accept="application/json,.json" hidden>
                     </div>
-
-                    <div class="no-profiles" id="noProfiles" data-i18n="noProfiles">No hay perfiles guardados</div>
                 </div>
+            </details>
 
-                <!-- Sección de Comparación de Perfiles -->
-                <div class="compare-section">
-                    <h3 data-i18n="compareTitle">⚔️ Comparar Perfiles</h3>
-
-                    <div class="compare-profiles-selection">
-                        <label data-i18n="compareSelectProfiles">Selecciona perfiles a comparar:</label>
-                        <div class="compare-profiles-list" id="compareProfilesList">
-                            <!-- Checkboxes se generan dinámicamente -->
-                        </div>
-                        <div class="compare-no-profiles" id="compareNoProfiles" data-i18n="compareNoProfiles">Guarda perfiles primero para compararlos</div>
-                    </div>
-
-                    <div class="compare-ac-input">
+            <!-- Comparación -->
+            <details class="panel panel-sub" id="comparePanel">
+                <summary><span data-i18n="compareTitle">Comparar Perfiles</span><span class="chev" aria-hidden="true"></span></summary>
+                <div class="panel-body">
+                    <span class="field-label" data-i18n="compareSelectProfiles">Selecciona perfiles a comparar:</span>
+                    <div class="compare-profiles-list" id="compareProfilesList"></div>
+                    <div class="empty" id="compareNoProfiles" data-i18n="compareNoProfiles">Guarda perfiles primero para compararlos</div>
+                    <div class="field compare-ac">
                         <label for="compareTargetAC" data-i18n="compareTargetAC">CA para comparar</label>
-                        <input type="number" id="compareTargetAC" value="15" min="1" max="30">
+                        <div class="stepper">
+                            <button type="button" class="step" data-step="compareTargetAC" data-delta="-1" aria-label="−1">−</button>
+                            <input type="number" id="compareTargetAC" value="15" min="1" max="30" inputmode="numeric">
+                            <button type="button" class="step" data-step="compareTargetAC" data-delta="1" aria-label="+1">+</button>
+                        </div>
                     </div>
-
-                    <button class="btn-compare" onclick="runComparison()" data-i18n="compareButton">📊 Comparar</button>
+                    <button type="button" class="btn-primary btn-block" onclick="runComparison()" data-i18n="compareButton">Comparar</button>
                 </div>
-            </aside>
+            </details>
+        </aside>
 
-            <!-- Panel de resultados -->
-            <main class="results-panel">
-                <h2 data-i18n="resultsTitle">📊 Tabla de Probabilidades</h2>
+        <!-- ====================== RESULTADOS ====================== -->
+        <main class="results" id="results">
 
-                <!-- Combat Statistics Panel -->
-                <div class="combat-stats-panel" id="combatStatsPanel" style="display: none;">
-                    <h3 data-i18n="combatStatsTitle">📊 Estadísticas de Combate</h3>
-                    <div class="vs-ac-label">
-                        <span data-i18n="vsAC">contra CA</span> <span class="ac-number" id="statsTargetAC">15</span>
+            <!-- Estadísticas de combate -->
+            <section class="panel" id="combatStatsPanel" style="display: none;">
+                <h3 class="panel-title"><span data-i18n="combatStatsTitle">Estadísticas de Combate</span> <span class="muted"><span data-i18n="vsAC">contra CA</span> <span id="statsTargetAC">15</span></span></h3>
+                <div class="stats-grid">
+                    <div class="stat">
+                        <span class="stat-value" id="statDPRTotal">0</span>
+                        <span class="stat-label" data-i18n="statDPRTotal">DPR Total</span>
                     </div>
-
-                    <div class="stats-grid">
-                        <div class="stat-card">
-                            <div class="stat-icon">⚔️</div>
-                            <div class="stat-content">
-                                <div class="stat-label" data-i18n="statDPRTotal">DPR Total</div>
-                                <div class="stat-value" id="statDPRTotal">0</div>
-                                <div class="stat-unit" data-i18n="damagePerRound">daño/turno</div>
-                            </div>
-                        </div>
-
-                        <div class="stat-card">
-                            <div class="stat-icon">🎯</div>
-                            <div class="stat-content">
-                                <div class="stat-label" data-i18n="statHitProb">Prob. Impacto</div>
-                                <div class="stat-value" id="statHitChance">0%</div>
-                            </div>
-                        </div>
-
-                        <div class="stat-card">
-                            <div class="stat-icon">💥</div>
-                            <div class="stat-content">
-                                <div class="stat-label" data-i18n="statDamagePerHit">Daño/Impacto</div>
-                                <div class="stat-value" id="statDamagePerHit">0</div>
-                                <div class="stat-unit" data-i18n="average">promedio</div>
-                            </div>
-                        </div>
-
-                        <div class="stat-card">
-                            <div class="stat-icon">🎲</div>
-                            <div class="stat-content">
-                                <div class="stat-label" data-i18n="statCritsPerRound">Críticos/Turno</div>
-                                <div class="stat-value" id="statCritsPerRound">0</div>
-                            </div>
-                        </div>
-
-                        <div class="stat-card" id="statSneakAttackCard" style="display: none;">
-                            <div class="stat-icon">🗡️</div>
-                            <div class="stat-content">
-                                <div class="stat-label" data-i18n="statSneakAttack">Sneak Attack</div>
-                                <div class="stat-value" id="statSneakAttack">0</div>
-                                <div class="stat-unit" data-i18n="damagePerRound">daño/turno</div>
-                            </div>
-                        </div>
+                    <div class="stat">
+                        <span class="stat-value" id="statHitChance">0%</span>
+                        <span class="stat-label" data-i18n="statHitProb">Prob. Impacto</span>
                     </div>
-
-                    <div class="defeat-times">
-                        <h4 data-i18n="defeatTimesTitle">⏱️ Turnos para Derrotar</h4>
-                        <div class="defeat-list" id="defeatTimesList"></div>
+                    <div class="stat">
+                        <span class="stat-value" id="statDamagePerHit">0</span>
+                        <span class="stat-label" data-i18n="statDamagePerHit">Daño/Impacto</span>
                     </div>
-
-                    <div class="level-estimate">
-                        <div class="level-badge" id="levelBadge">Nivel 1-4</div>
-                        <div class="level-explanation" data-i18n="levelExplanation">Basado en DPR y bonificador de ataque</div>
+                    <div class="stat">
+                        <span class="stat-value" id="statCritsPerRound">0</span>
+                        <span class="stat-label" data-i18n="statCritsPerRound">Críticos/Turno</span>
+                    </div>
+                    <div class="stat stat-sneak" id="statSneakAttackCard" style="display: none;">
+                        <span class="stat-value" id="statSneakAttack">0</span>
+                        <span class="stat-label" data-i18n="statSneakAttack">Sneak Attack</span>
                     </div>
                 </div>
+                <div class="defeat">
+                    <h4 data-i18n="defeatTimesTitle">Turnos para Derrotar</h4>
+                    <div class="defeat-list" id="defeatTimesList"></div>
+                </div>
+                <div class="level-line">
+                    <span class="level-badge" id="levelBadge">Nivel 1-4</span>
+                    <span class="muted" data-i18n="levelExplanation">Basado en DPR y bonificador de ataque</span>
+                </div>
+            </section>
 
-                <div class="roll-requirement" id="rollRequirement"></div>
+            <div class="roll-requirement" id="rollRequirement"></div>
 
+            <!-- Tabla -->
+            <section class="panel panel-table">
+                <div class="table-head">
+                    <h3 class="panel-title" data-i18n="resultsTitle">Tabla de Probabilidades</h3>
+                    <button type="button" class="btn-ghost btn-sm" id="toggleRows" onclick="toggleAllRows()" data-i18n="showAllRows">Ver CA 1–30</button>
+                </div>
                 <div class="table-wrapper">
                     <table class="results-table" id="resultsTable">
                         <thead>
                             <tr>
-                                <th>
-                                    <span data-i18n="tableHeaderAC">CA</span>
-                                    <span class="info-icon" data-i18n-tooltip="tableHeaderACTooltip" data-tooltip="Clase de Armadura del enemigo">ⓘ</span>
-                                </th>
-                                <th>
-                                    <span data-i18n="tableHeaderMiss">Fallo</span>
-                                    <span class="info-icon" data-i18n-tooltip="tableHeaderMissTooltip" data-tooltip="Probabilidad de no impactar (incluso con 1 natural)">ⓘ</span>
-                                </th>
-                                <th>
-                                    <span data-i18n="tableHeaderHit">Impacto</span>
-                                    <span class="info-icon" data-i18n-tooltip="tableHeaderHitTooltip" data-tooltip="Probabilidad de impacto normal (sin crítico)">ⓘ</span>
-                                </th>
-                                <th>
-                                    <span data-i18n="tableHeaderCrit">Crítico</span>
-                                    <span class="info-icon" data-i18n-tooltip="tableHeaderCritTooltip" data-tooltip="Probabilidad de crítico (duplica dados de daño)">ⓘ</span>
-                                </th>
-                                <th>
-                                    <span data-i18n="tableHeaderNormalDmg">Daño Normal</span>
-                                    <span class="info-icon" data-i18n-tooltip="tableHeaderNormalDmgTooltip" data-tooltip="Rango de daño si impactas sin crítico">ⓘ</span>
-                                </th>
-                                <th>
-                                    <span data-i18n="tableHeaderCritDmg">Daño Crítico</span>
-                                    <span class="info-icon" data-i18n-tooltip="tableHeaderCritDmgTooltip" data-tooltip="Rango de daño con impacto crítico">ⓘ</span>
-                                </th>
-                                <th>
-                                    <span data-i18n="tableHeaderDPR">DPR</span>
-                                    <span class="info-icon" data-i18n-tooltip="tableHeaderDPRTooltip" data-tooltip="Damage Per Round: daño promedio esperado por turno considerando todas las probabilidades">ⓘ</span>
-                                </th>
-                                <th data-i18n="tableHeaderViz">Visualización</th>
+                                <th scope="col"><span data-i18n="tableHeaderAC">CA</span></th>
+                                <th scope="col" class="col-miss"><span data-i18n="tableHeaderMiss">Fallo</span></th>
+                                <th scope="col"><span data-i18n="tableHeaderHit">Impacto</span></th>
+                                <th scope="col"><span data-i18n="tableHeaderCrit">Crítico</span></th>
+                                <th scope="col" class="col-dmg"><span data-i18n="tableHeaderNormalDmg">Daño Normal</span></th>
+                                <th scope="col" class="col-dmg"><span data-i18n="tableHeaderCritDmg">Daño Crítico</span></th>
+                                <th scope="col"><span data-i18n="tableHeaderDPR">DPR</span></th>
+                                <th scope="col" class="col-viz" data-i18n="tableHeaderViz">Visualización</th>
                             </tr>
                         </thead>
-                        <tbody id="resultsBody">
-                            <tr>
-                                <td colspan="8" class="no-data" data-i18n="noData">
-                                    Haz clic en "Calcular Probabilidades" para ver los resultados
-                                </td>
-                            </tr>
-                        </tbody>
+                        <tbody id="resultsBody"></tbody>
                     </table>
                 </div>
+                <div class="legend">
+                    <span><i class="swatch miss"></i><span data-i18n="legendMiss">Fallo</span></span>
+                    <span><i class="swatch hit"></i><span data-i18n="legendHit">Impacto Normal</span></span>
+                    <span><i class="swatch crit"></i><span data-i18n="legendCrit">Crítico</span></span>
+                    <span class="muted" data-i18n="legendDPR">DPR = Damage Per Round (daño promedio esperado)</span>
+                </div>
+            </section>
 
-                <!-- Panel de múltiples ataques -->
-                <div class="multi-attack-panel" id="multiAttackPanel" style="display: none;">
-                    <h3 data-i18n="multiAttackTitle">🎯 Distribución de Múltiples Ataques</h3>
+            <!-- Múltiples ataques -->
+            <details class="panel" id="multiAttackPanel" style="display: none;" open>
+                <summary><span data-i18n="multiAttackTitle">Distribución de Múltiples Ataques</span><span class="chev" aria-hidden="true"></span></summary>
+                <div class="panel-body">
                     <div class="multi-attack-info" id="multiAttackInfo"></div>
                     <div id="multiAttackDistribution"></div>
                 </div>
+            </details>
 
-                <!-- Power Level Section -->
-                <div class="power-level-section" id="powerLevelSection" style="display: none;">
-                    <h3 data-i18n="powerLevelTitle">⚡ Nivel de Poder del Personaje</h3>
+            <!-- GWM / Sharpshooter -->
+            <details class="panel panel-accent" id="powerAttackPanel" style="display: none;" open>
+                <summary><span data-i18n="powerAttackTitle">Great Weapon Master / Sharpshooter</span><span class="chev" aria-hidden="true"></span></summary>
+                <div class="panel-body">
+                    <div class="power-attack-verdict" id="powerAttackVerdict"></div>
+                    <div class="power-attack-target" id="powerAttackTarget"></div>
+                    <div class="power-attack-strip" id="powerAttackStrip" aria-label="CA"></div>
+                    <div class="legend">
+                        <span><i class="swatch pa-power"></i><span data-i18n="powerAttackLegendPower">Conviene -5/+10</span></span>
+                        <span><i class="swatch pa-normal"></i><span data-i18n="powerAttackLegendNormal">Conviene ataque normal</span></span>
+                    </div>
+                </div>
+            </details>
 
+            <!-- Power Level -->
+            <details class="panel" id="powerLevelSection" style="display: none;">
+                <summary><span data-i18n="powerLevelTitle">Nivel de Poder del Personaje</span><span class="chev" aria-hidden="true"></span></summary>
+                <div class="panel-body">
                     <div class="power-level-display">
-                        <div class="power-number" id="powerLevelNumber">0</div>
-                        <div class="power-label" data-i18n="powerLevelLabel">Power Level</div>
+                        <span class="power-number" id="powerLevelNumber">0</span>
+                        <span class="muted" data-i18n="powerLevelLabel">Power Level</span>
                     </div>
-
-                    <div class="power-breakdown">
-                        <h4 data-i18n="howCalculated">📊 Cómo se calcula:</h4>
-                        <div class="formula-display">
-                            <div class="formula-line">
-                                <span class="formula-part" data-i18n="statDPRTotal">DPR Total</span>
-                                <span class="formula-value" id="formulaDPR">0</span>
-                            </div>
-                            <div class="formula-operator">×</div>
-                            <div class="formula-line">
-                                <span class="formula-part" data-i18n="statHitProb">Probabilidad de Impacto</span>
-                                <span class="formula-value" id="formulaHit">0%</span>
-                            </div>
-                            <div class="formula-operator">× 10</div>
-                            <div class="formula-result">
-                                <span class="formula-part" data-i18n="powerLevelLabel">= Power Level</span>
-                                <span class="formula-value final" id="formulaResult">0</span>
-                            </div>
-                        </div>
-
-                        <div class="power-explanation">
-                            <p><strong data-i18n="whyTheseFactors">¿Por qué estos factores?</strong></p>
-                            <ul>
-                                <li><strong data-i18n="statDPRTotal">DPR Total:</strong> <span data-i18n="dprTotalExplain">Incluye ventaja, críticos y múltiples ataques</span></li>
-                                <li><strong data-i18n="statHitProb">Probabilidad de Impacto:</strong> <span data-i18n="hitChanceExplain">Penaliza builds poco confiables</span></li>
-                                <li><strong>× 10:</strong> <span data-i18n="scaleExplain">Escala para números comparables</span></li>
-                            </ul>
-                        </div>
+                    <div class="formula">
+                        <div><span data-i18n="statDPRTotal">DPR Total</span><b id="formulaDPR">0</b></div>
+                        <div class="op">×</div>
+                        <div><span data-i18n="statHitProb">Probabilidad de Impacto</span><b id="formulaHit">0%</b></div>
+                        <div class="op">× 10</div>
+                        <div class="res"><span data-i18n="powerLevelLabel">Power Level</span><b id="formulaResult">0</b></div>
                     </div>
+                    <ul class="muted small">
+                        <li><b data-i18n="statDPRTotal">DPR Total:</b> <span data-i18n="dprTotalExplain">Incluye ventaja, críticos y múltiples ataques</span></li>
+                        <li><b data-i18n="statHitProb">Probabilidad de Impacto:</b> <span data-i18n="hitChanceExplain">Penaliza builds poco confiables</span></li>
+                        <li><b>× 10:</b> <span data-i18n="scaleExplain">Escala para números comparables</span></li>
+                    </ul>
                 </div>
+            </details>
 
-                <!-- Panel de Comparación de Perfiles -->
-                <div class="comparison-results-panel" id="comparisonResultsPanel" style="display: none;">
-                    <h3 data-i18n="compareResultsTitle">📊 Comparación de Perfiles</h3>
-                    <div class="comparison-vs-ac">
-                        <span data-i18n="compareVsAC">contra CA</span>
-                        <span class="comparison-ac-number" id="comparisonTargetAC">15</span>
-                    </div>
-
-                    <div class="comparison-table-wrapper">
-                        <table class="comparison-table">
-                            <thead>
-                                <tr>
-                                    <th>Perfil</th>
-                                    <th data-i18n="compareDice">Tiradas</th>
-                                    <th data-i18n="compareAttackBonus">Bono Ataque</th>
-                                    <th data-i18n="compareAttackDice">Dado Extra</th>
-                                    <th data-i18n="compareSneakAttack">Sneak Attack</th>
-                                    <th data-i18n="comparePowerLevel">Power Level</th>
-                                    <th data-i18n="compareRollNeeded">Roll Mínimo</th>
-                                    <th data-i18n="compareHitChance">Prob. Impacto</th>
-                                    <th data-i18n="compareCritChance">Prob. Crítico</th>
-                                    <th data-i18n="compareNormalDmg">Daño Normal</th>
-                                    <th data-i18n="compareCritDmg">Daño Crítico</th>
-                                    <th data-i18n="compareDPR">DPR Total</th>
-                                </tr>
-                            </thead>
-                            <tbody id="comparisonTableBody">
-                                <!-- Filas se generan dinámicamente -->
-                            </tbody>
-                        </table>
-                    </div>
+            <!-- Comparación de perfiles -->
+            <section class="panel" id="comparisonResultsPanel" style="display: none;">
+                <h3 class="panel-title"><span data-i18n="compareResultsTitle">Comparación de Perfiles</span> <span class="muted"><span data-i18n="compareVsAC">contra CA</span> <span id="comparisonTargetAC">15</span></span></h3>
+                <div class="table-wrapper">
+                    <table class="comparison-table">
+                        <thead>
+                            <tr>
+                                <th scope="col">Perfil</th>
+                                <th scope="col" data-i18n="compareDice">Tiradas</th>
+                                <th scope="col" data-i18n="compareAttackBonus">Bono Ataque</th>
+                                <th scope="col" data-i18n="compareAttackDice">Dado Extra</th>
+                                <th scope="col" data-i18n="compareSneakAttack">Sneak Attack</th>
+                                <th scope="col" data-i18n="comparePowerLevel">Power Level</th>
+                                <th scope="col" data-i18n="compareRollNeeded">Roll Mínimo</th>
+                                <th scope="col" data-i18n="compareHitChance">Prob. Impacto</th>
+                                <th scope="col" data-i18n="compareCritChance">Prob. Crítico</th>
+                                <th scope="col" data-i18n="compareNormalDmg">Daño Normal</th>
+                                <th scope="col" data-i18n="compareCritDmg">Daño Crítico</th>
+                                <th scope="col" data-i18n="compareDPR">DPR Total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="comparisonTableBody"></tbody>
+                    </table>
                 </div>
-
-                <!-- Leyenda -->
-                <div class="legend">
-                    <div class="legend-item">
-                        <span class="color-box miss"></span>
-                        <span data-i18n="legendMiss">Fallo</span>
-                    </div>
-                    <div class="legend-item">
-                        <span class="color-box hit"></span>
-                        <span data-i18n="legendHit">Impacto Normal</span>
-                    </div>
-                    <div class="legend-item">
-                        <span class="color-box crit"></span>
-                        <span data-i18n="legendCrit">Crítico</span>
-                    </div>
-                    <div class="legend-item">
-                        <span class="info-text" data-i18n="legendDPR">DPR = Damage Per Round (daño promedio esperado)</span>
-                    </div>
-                </div>
-            </main>
-        </div>
-
-        <footer>
-            <p data-i18n="footerText">Calculadora basada en las reglas de D&D 5e</p>
-        </footer>
+            </section>
+        </main>
     </div>
 
-    <!-- FAB Móvil -->
-    <button class="mobile-fab-btn" onclick="openMobilePanel()" aria-label="Abrir configuración" style="display: none;">
-        <span>⚙️</span>
-    </button>
+    <footer class="foot">
+        <span data-i18n="footerText">Calculadora basada en las reglas de D&D 5e</span>
+    </footer>
 
+    <script src="engine.js"></script>
+    <script src="profiles-io.js"></script>
     <script src="calculator.js"></script>
 </body>
 </html>
