@@ -2522,7 +2522,7 @@ footer {
                     <input type="number" id="targetAC" value="" min="1" max="30" data-i18n="targetACPlaceholder" placeholder="Ej: 15">
                 </div>
 
-                <button class="btn-calculate" onclick="calculator.calculate()" data-i18n="calculateButton">
+                <button class="btn-calculate" onclick="calculator.calculateNow()" data-i18n="calculateButton">
                     🎲 Calcular Probabilidades
                 </button>
 
@@ -4600,22 +4600,39 @@ class DnDCalculator {
             targetAC: null
         };
 
+        this.calcTimer = null;
         this.initializeEventListeners();
+    }
+
+    // Recalcula en vivo tras cualquier cambio de configuración, agrupando ráfagas de input.
+    scheduleCalculate(delay = 150) {
+        clearTimeout(this.calcTimer);
+        this.calcTimer = setTimeout(() => this.calculate(), delay);
+    }
+
+    // Botón "Calcular": recalcula ya y en móvil cierra el panel de configuración.
+    calculateNow() {
+        clearTimeout(this.calcTimer);
+        this.calculate();
+        autoClosePanelAfterCalculate();
     }
 
     initializeEventListeners() {
         // Inputs numéricos
         document.getElementById('attackBonus').addEventListener('input', (e) => {
             this.config.attackBonus = parseInt(e.target.value) || 0;
+            this.scheduleCalculate();
         });
 
         document.getElementById('damageBonus').addEventListener('input', (e) => {
             this.config.damageBonus = parseInt(e.target.value) || 0;
             this.updateDiceNotation();
+            this.scheduleCalculate();
         });
 
         document.getElementById('critRange').addEventListener('change', (e) => {
             this.config.critRange = parseInt(e.target.value);
+            this.scheduleCalculate();
         });
 
         // Attack Dice Bonus (Bless, Bardic Inspiration, etc.)
@@ -4623,6 +4640,7 @@ class DnDCalculator {
         if (attackDiceBonusSelect) {
             attackDiceBonusSelect.addEventListener('change', (e) => {
                 this.config.attackDiceBonus = parseInt(e.target.value) || 0;
+                this.scheduleCalculate();
             });
         }
 
@@ -4632,17 +4650,20 @@ class DnDCalculator {
             sneakAttackInput.addEventListener('input', (e) => {
                 this.config.sneakAttackDice = Math.max(0, parseInt(e.target.value) || 0);
                 this.updateDiceNotation();
+                this.scheduleCalculate();
             });
         }
 
         document.getElementById('targetAC').addEventListener('input', (e) => {
             this.config.targetAC = e.target.value ? parseInt(e.target.value) : null;
+            this.scheduleCalculate();
         });
 
         // Ventaja/Desventaja
         document.querySelectorAll('input[name="advantage"]').forEach(radio => {
             radio.addEventListener('change', (e) => {
                 this.config.advantage = e.target.value;
+                this.scheduleCalculate();
             });
         });
 
@@ -4652,6 +4673,7 @@ class DnDCalculator {
         attacksSlider.addEventListener('input', (e) => {
             this.config.numberOfAttacks = parseInt(e.target.value);
             attacksValue.textContent = e.target.value;
+            this.scheduleCalculate();
         });
 
         // Dados - delegación de eventos
@@ -4671,6 +4693,7 @@ class DnDCalculator {
         });
 
         this.updateDiceNotation();
+        this.scheduleCalculate();
     }
 
     updateDiceNotation() {
@@ -4849,9 +4872,6 @@ class DnDCalculator {
                 powerLevelSection.style.display = 'none';
             }
         }
-
-        // Auto-cerrar panel en móvil después de calcular
-        autoClosePanelAfterCalculate();
     }
 
     renderMultiAttackDistribution() {
@@ -5176,6 +5196,7 @@ function loadProfile(id) {
     const result = profileManager.loadProfile(id);
 
     if (result.success) {
+        calculator.calculateNow();
         showProfileFeedback(t('profileLoaded', { name: result.profile.name }), 'success');
         // Scroll hacia los resultados
         document.querySelector('.results-panel')?.scrollIntoView({ behavior: 'smooth' });
