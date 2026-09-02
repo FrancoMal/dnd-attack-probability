@@ -6,10 +6,22 @@ let currentLanguage = 'es';
 // Translation object with all supported languages
 const translations = {
     es: {
+        // Barra superior / hero / tabla compacta
+        appName: "Ataque D&D",
+        skipToResults: "Ir a los resultados",
+        heroTargetAC: "CA objetivo",
+        heroHit: "impacto",
+        heroDPR: "daño/turno",
+        heroNeed: "necesitás {{roll}}+",
+        heroCritOnly: "solo con crítico",
+        heroAuto: "impacto automático",
+        heroCritShort: "{{crit}} crítico",
+        showAllRows: "Ver CA 1–30",
+        showNearRows: "Ver solo cercanas",
         // GWM / Sharpshooter
         powerAttack: "Great Weapon Master / Sharpshooter",
         powerAttackTooltip: "Muestra hasta qué CA conviene usar el -5 al ataque / +10 al daño.",
-        powerAttackTitle: "🪓 Great Weapon Master / Sharpshooter",
+        powerAttackTitle: "Great Weapon Master / Sharpshooter",
         powerAttackCutoff: "Conviene activar el -5/+10 hasta <strong>CA {{ac}}</strong>",
         powerAttackNever: "El -5/+10 <strong>no conviene</strong> contra ninguna CA: tu daño base ya es alto.",
         powerAttackAlways: "El -5/+10 <strong>conviene siempre</strong> (hasta CA 30).",
@@ -20,11 +32,11 @@ const translations = {
         powerAttackLegendPower: "Conviene -5/+10",
         powerAttackLegendNormal: "Conviene ataque normal",
         // Header
-        title: "⚔️ Calculadora de Probabilidades de Ataque D&D",
+        title: "Calculadora de Probabilidades de Ataque D&D",
         subtitle: "Calcula tus probabilidades de impacto y daño esperado",
 
         // Config panel
-        configTitle: "⚙️ Configuración de Ataque",
+        configTitle: "Configuración de Ataque",
         closeConfig: "Cerrar Configuración",
         attackBonus: "Bonificador de Ataque",
         attackBonusTooltip: "Tu modificador de ataque total (ej: +5)",
@@ -34,8 +46,8 @@ const translations = {
         addDice: "+ Añadir Dado",
         critRange: "Rango Crítico",
         critRange20: "Solo 20 (5%)",
-        critRange19: "19-20 (10%)",
-        critRange18: "18-20 (15%)",
+        critRange19: "-20 (10%)",
+        critRange18: "-20 (15%)",
         advantageLabel: "Ventaja / Desventaja",
         disadvantage: "Desventaja",
         normal: "Normal",
@@ -44,10 +56,10 @@ const translations = {
         targetAC: "CA Objetivo (Opcional)",
         targetACTooltip: "Clase de Armadura del enemigo específico a destacar",
         targetACPlaceholder: "Ej: 15",
-        calculateButton: "🎲 Calcular Probabilidades",
+        calculateButton: "Calcular Probabilidades",
 
         // Results panel
-        resultsTitle: "📊 Tabla de Probabilidades",
+        resultsTitle: "Tabla de Probabilidades",
         tableHeaderAC: "CA",
         tableHeaderACTooltip: "Clase de Armadura del enemigo",
         tableHeaderMiss: "Fallo",
@@ -74,7 +86,7 @@ const translations = {
         damageCrit: "<br><strong>Daño crítico:</strong> {{min}}-{{max}} (promedio {{avg}})",
 
         // Multi-attack panel
-        multiAttackTitle: "🎯 Distribución de Múltiples Ataques",
+        multiAttackTitle: "Distribución de Múltiples Ataques",
         multiAttackWith: "Contra CA {{ac}} con {{n}} ataques",
         multiAttackAdvantage: " <strong style=\"color: var(--color-hit);\">(CON VENTAJA)</strong>",
         multiAttackDisadvantage: " <strong style=\"color: var(--color-miss);\">(CON DESVENTAJA)</strong>",
@@ -110,7 +122,7 @@ const translations = {
         alertMinDice: "Debes tener al menos un dado de daño",
 
         // Combat Statistics
-        combatStatsTitle: "📊 Estadísticas de Combate",
+        combatStatsTitle: "Estadísticas de Combate",
         vsAC: "contra CA",
         statDPRTotal: "DPR Total",
         statHitProb: "Prob. Impacto",
@@ -118,7 +130,7 @@ const translations = {
         statCritsPerRound: "Críticos/Turno",
         damagePerRound: "daño/turno",
         average: "promedio",
-        defeatTimesTitle: "⏱️ Turnos para Derrotar",
+        defeatTimesTitle: "Turnos para Derrotar",
         enemyWeak: "Enemigo débil (20 HP)",
         enemyNormal: "Enemigo normal (50 HP)",
         enemyStrong: "Enemigo fuerte (100 HP)",
@@ -128,18 +140,18 @@ const translations = {
         levelRange: "Nivel",
 
         // Power Level
-        powerLevelTitle: "⚡ Nivel de Poder del Personaje",
+        powerLevelTitle: "Nivel de Poder del Personaje",
         powerLevelLabel: "Power Level",
-        howCalculated: "📊 Cómo se calcula:",
+        howCalculated: "Cómo se calcula:",
         whyTheseFactors: "¿Por qué estos factores?",
         dprTotalExplain: "Incluye ventaja, críticos y múltiples ataques",
         hitChanceExplain: "Penaliza builds poco confiables",
         scaleExplain: "Escala para números comparables",
 
         // Profiles
-        profilesTitle: "📁 Perfiles Guardados",
+        profilesTitle: "Perfiles Guardados",
         profileNamePlaceholder: "Nombre del perfil...",
-        saveProfileBtn: "💾 Guardar Perfil",
+        saveProfileBtn: "Guardar Perfil",
         loadProfileTooltip: "Cargar este perfil",
         deleteProfileTooltip: "Eliminar este perfil",
         noProfiles: "No hay perfiles guardados",
@@ -154,13 +166,13 @@ const translations = {
         profileAttacks: "{{n}} ataques",
 
         // Profile Comparison
-        compareTitle: "⚔️ Comparar Perfiles",
+        compareTitle: "Comparar Perfiles",
         compareSelectProfiles: "Selecciona perfiles a comparar:",
         compareTargetAC: "CA para comparar",
-        compareButton: "📊 Comparar",
+        compareButton: "Comparar",
         compareMinSelect: "Selecciona al menos 2 perfiles para comparar",
         compareNoProfiles: "Guarda perfiles primero para compararlos",
-        compareResultsTitle: "📊 Comparación de Perfiles",
+        compareResultsTitle: "Comparación de Perfiles",
         compareVsAC: "contra CA",
         comparePowerLevel: "Power Level",
         compareHitChance: "Prob. Impacto",
@@ -207,10 +219,22 @@ const translations = {
     },
 
     en: {
+        // Barra superior / hero / tabla compacta
+        appName: "D&D Attack",
+        skipToResults: "Skip to results",
+        heroTargetAC: "Target AC",
+        heroHit: "to hit",
+        heroDPR: "damage/turn",
+        heroNeed: "need {{roll}}+",
+        heroCritOnly: "crit only",
+        heroAuto: "auto hit",
+        heroCritShort: "{{crit}} crit",
+        showAllRows: "Show AC 1–30",
+        showNearRows: "Show nearby only",
         // GWM / Sharpshooter
         powerAttack: "Great Weapon Master / Sharpshooter",
         powerAttackTooltip: "Shows up to which AC the -5 to hit / +10 damage is worth it.",
-        powerAttackTitle: "🪓 Great Weapon Master / Sharpshooter",
+        powerAttackTitle: "Great Weapon Master / Sharpshooter",
         powerAttackCutoff: "Use -5/+10 up to <strong>AC {{ac}}</strong>",
         powerAttackNever: "-5/+10 is <strong>never worth it</strong>: your base damage is already high.",
         powerAttackAlways: "-5/+10 is <strong>always worth it</strong> (up to AC 30).",
@@ -221,11 +245,11 @@ const translations = {
         powerAttackLegendPower: "-5/+10 is better",
         powerAttackLegendNormal: "Normal attack is better",
         // Header
-        title: "⚔️ D&D Attack Probability Calculator",
+        title: "D&D Attack Probability Calculator",
         subtitle: "Calculate your hit probabilities and expected damage",
 
         // Config panel
-        configTitle: "⚙️ Attack Configuration",
+        configTitle: "Attack Configuration",
         closeConfig: "Close Configuration",
         attackBonus: "Attack Bonus",
         attackBonusTooltip: "Your total attack modifier (e.g., +5)",
@@ -235,8 +259,8 @@ const translations = {
         addDice: "+ Add Die",
         critRange: "Critical Range",
         critRange20: "Only 20 (5%)",
-        critRange19: "19-20 (10%)",
-        critRange18: "18-20 (15%)",
+        critRange19: "-20 (10%)",
+        critRange18: "-20 (15%)",
         advantageLabel: "Advantage / Disadvantage",
         disadvantage: "Disadvantage",
         normal: "Normal",
@@ -245,10 +269,10 @@ const translations = {
         targetAC: "Target AC (Optional)",
         targetACTooltip: "Armor Class of specific enemy to highlight",
         targetACPlaceholder: "e.g., 15",
-        calculateButton: "🎲 Calculate Probabilities",
+        calculateButton: "Calculate Probabilities",
 
         // Results panel
-        resultsTitle: "📊 Probability Table",
+        resultsTitle: "Probability Table",
         tableHeaderAC: "AC",
         tableHeaderACTooltip: "Enemy Armor Class",
         tableHeaderMiss: "Miss",
@@ -275,7 +299,7 @@ const translations = {
         damageCrit: "<br><strong>Critical damage:</strong> {{min}}-{{max}} (average {{avg}})",
 
         // Multi-attack panel
-        multiAttackTitle: "🎯 Multiple Attacks Distribution",
+        multiAttackTitle: "Multiple Attacks Distribution",
         multiAttackWith: "Against AC {{ac}} with {{n}} attacks",
         multiAttackAdvantage: " <strong style=\"color: var(--color-hit);\">(WITH ADVANTAGE)</strong>",
         multiAttackDisadvantage: " <strong style=\"color: var(--color-miss);\">(WITH DISADVANTAGE)</strong>",
@@ -311,7 +335,7 @@ const translations = {
         alertMinDice: "You must have at least one damage die",
 
         // Combat Statistics
-        combatStatsTitle: "📊 Combat Statistics",
+        combatStatsTitle: "Combat Statistics",
         vsAC: "vs AC",
         statDPRTotal: "Total DPR",
         statHitProb: "Hit Prob.",
@@ -319,7 +343,7 @@ const translations = {
         statCritsPerRound: "Crits/Round",
         damagePerRound: "damage/round",
         average: "average",
-        defeatTimesTitle: "⏱️ Turns to Defeat",
+        defeatTimesTitle: "Turns to Defeat",
         enemyWeak: "Weak enemy (20 HP)",
         enemyNormal: "Normal enemy (50 HP)",
         enemyStrong: "Strong enemy (100 HP)",
@@ -329,18 +353,18 @@ const translations = {
         levelRange: "Level",
 
         // Power Level
-        powerLevelTitle: "⚡ Character Power Level",
+        powerLevelTitle: "Character Power Level",
         powerLevelLabel: "Power Level",
-        howCalculated: "📊 How it's calculated:",
+        howCalculated: "How it's calculated:",
         whyTheseFactors: "Why these factors?",
         dprTotalExplain: "Includes advantage, crits, and multiple attacks",
         hitChanceExplain: "Penalizes unreliable builds",
         scaleExplain: "Scale for comparable numbers",
 
         // Profiles
-        profilesTitle: "📁 Saved Profiles",
+        profilesTitle: "Saved Profiles",
         profileNamePlaceholder: "Profile name...",
-        saveProfileBtn: "💾 Save Profile",
+        saveProfileBtn: "Save Profile",
         loadProfileTooltip: "Load this profile",
         deleteProfileTooltip: "Delete this profile",
         noProfiles: "No saved profiles",
@@ -355,13 +379,13 @@ const translations = {
         profileAttacks: "{{n}} attacks",
 
         // Profile Comparison
-        compareTitle: "⚔️ Compare Profiles",
+        compareTitle: "Compare Profiles",
         compareSelectProfiles: "Select profiles to compare:",
         compareTargetAC: "AC to compare",
-        compareButton: "📊 Compare",
+        compareButton: "Compare",
         compareMinSelect: "Select at least 2 profiles to compare",
         compareNoProfiles: "Save profiles first to compare them",
-        compareResultsTitle: "📊 Profile Comparison",
+        compareResultsTitle: "Profile Comparison",
         compareVsAC: "vs AC",
         comparePowerLevel: "Power Level",
         compareHitChance: "Hit Prob.",
@@ -408,10 +432,22 @@ const translations = {
     },
 
     pt: {
+        // Barra superior / hero / tabla compacta
+        appName: "Ataque D&D",
+        skipToResults: "Ir para os resultados",
+        heroTargetAC: "CA alvo",
+        heroHit: "acerto",
+        heroDPR: "dano/turno",
+        heroNeed: "precisa {{roll}}+",
+        heroCritOnly: "só com crítico",
+        heroAuto: "acerto automático",
+        heroCritShort: "{{crit}} crítico",
+        showAllRows: "Ver CA 1–30",
+        showNearRows: "Ver só próximas",
         // GWM / Sharpshooter
         powerAttack: "Great Weapon Master / Sharpshooter",
         powerAttackTooltip: "Mostra até qual CA vale a pena usar o -5 no ataque / +10 no dano.",
-        powerAttackTitle: "🪓 Great Weapon Master / Sharpshooter",
+        powerAttackTitle: "Great Weapon Master / Sharpshooter",
         powerAttackCutoff: "Vale usar o -5/+10 até <strong>CA {{ac}}</strong>",
         powerAttackNever: "O -5/+10 <strong>nunca vale a pena</strong>: seu dano base já é alto.",
         powerAttackAlways: "O -5/+10 <strong>sempre vale a pena</strong> (até CA 30).",
@@ -422,11 +458,11 @@ const translations = {
         powerAttackLegendPower: "Melhor -5/+10",
         powerAttackLegendNormal: "Melhor ataque normal",
         // Header
-        title: "⚔️ Calculadora de Probabilidade de Ataque D&D",
+        title: "Calculadora de Probabilidade de Ataque D&D",
         subtitle: "Calcule suas probabilidades de acerto e dano esperado",
 
         // Config panel
-        configTitle: "⚙️ Configuração de Ataque",
+        configTitle: "Configuração de Ataque",
         closeConfig: "Fechar Configuração",
         attackBonus: "Bônus de Ataque",
         attackBonusTooltip: "Seu modificador total de ataque (ex: +5)",
@@ -436,8 +472,8 @@ const translations = {
         addDice: "+ Adicionar Dado",
         critRange: "Alcance Crítico",
         critRange20: "Apenas 20 (5%)",
-        critRange19: "19-20 (10%)",
-        critRange18: "18-20 (15%)",
+        critRange19: "-20 (10%)",
+        critRange18: "-20 (15%)",
         advantageLabel: "Vantagem / Desvantagem",
         disadvantage: "Desvantagem",
         normal: "Normal",
@@ -446,10 +482,10 @@ const translations = {
         targetAC: "CA Alvo (Opcional)",
         targetACTooltip: "Classe de Armadura do inimigo específico para destacar",
         targetACPlaceholder: "Ex: 15",
-        calculateButton: "🎲 Calcular Probabilidades",
+        calculateButton: "Calcular Probabilidades",
 
         // Results panel
-        resultsTitle: "📊 Tabela de Probabilidades",
+        resultsTitle: "Tabela de Probabilidades",
         tableHeaderAC: "CA",
         tableHeaderACTooltip: "Classe de Armadura do inimigo",
         tableHeaderMiss: "Erro",
@@ -476,7 +512,7 @@ const translations = {
         damageCrit: "<br><strong>Dano crítico:</strong> {{min}}-{{max}} (média {{avg}})",
 
         // Multi-attack panel
-        multiAttackTitle: "🎯 Distribuição de Múltiplos Ataques",
+        multiAttackTitle: "Distribuição de Múltiplos Ataques",
         multiAttackWith: "Contra CA {{ac}} com {{n}} ataques",
         multiAttackAdvantage: " <strong style=\"color: var(--color-hit);\">(COM VANTAGEM)</strong>",
         multiAttackDisadvantage: " <strong style=\"color: var(--color-miss);\">(COM DESVANTAGEM)</strong>",
@@ -512,7 +548,7 @@ const translations = {
         alertMinDice: "Você deve ter pelo menos um dado de dano",
 
         // Combat Statistics
-        combatStatsTitle: "📊 Estatísticas de Combate",
+        combatStatsTitle: "Estatísticas de Combate",
         vsAC: "contra CA",
         statDPRTotal: "DPR Total",
         statHitProb: "Prob. Acerto",
@@ -520,7 +556,7 @@ const translations = {
         statCritsPerRound: "Críticos/Turno",
         damagePerRound: "dano/rodada",
         average: "média",
-        defeatTimesTitle: "⏱️ Turnos para Derrotar",
+        defeatTimesTitle: "Turnos para Derrotar",
         enemyWeak: "Inimigo fraco (20 HP)",
         enemyNormal: "Inimigo normal (50 HP)",
         enemyStrong: "Inimigo forte (100 HP)",
@@ -530,18 +566,18 @@ const translations = {
         levelRange: "Nível",
 
         // Power Level
-        powerLevelTitle: "⚡ Nível de Poder do Personagem",
+        powerLevelTitle: "Nível de Poder do Personagem",
         powerLevelLabel: "Power Level",
-        howCalculated: "📊 Como é calculado:",
+        howCalculated: "Como é calculado:",
         whyTheseFactors: "Por que esses fatores?",
         dprTotalExplain: "Inclui vantagem, críticos e múltiplos ataques",
         hitChanceExplain: "Penaliza builds pouco confiáveis",
         scaleExplain: "Escala para números comparáveis",
 
         // Profiles
-        profilesTitle: "📁 Perfis Salvos",
+        profilesTitle: "Perfis Salvos",
         profileNamePlaceholder: "Nome do perfil...",
-        saveProfileBtn: "💾 Salvar Perfil",
+        saveProfileBtn: "Salvar Perfil",
         loadProfileTooltip: "Carregar este perfil",
         deleteProfileTooltip: "Excluir este perfil",
         noProfiles: "Nenhum perfil salvo",
@@ -556,13 +592,13 @@ const translations = {
         profileAttacks: "{{n}} ataques",
 
         // Profile Comparison
-        compareTitle: "⚔️ Comparar Perfis",
+        compareTitle: "Comparar Perfis",
         compareSelectProfiles: "Selecione perfis para comparar:",
         compareTargetAC: "CA para comparar",
-        compareButton: "📊 Comparar",
+        compareButton: "Comparar",
         compareMinSelect: "Selecione pelo menos 2 perfis para comparar",
         compareNoProfiles: "Salve perfis primeiro para compará-los",
-        compareResultsTitle: "📊 Comparação de Perfis",
+        compareResultsTitle: "Comparação de Perfis",
         compareVsAC: "contra CA",
         comparePowerLevel: "Power Level",
         compareHitChance: "Prob. Acerto",
@@ -609,10 +645,22 @@ const translations = {
     },
 
     de: {
+        // Barra superior / hero / tabla compacta
+        appName: "D&D Angriff",
+        skipToResults: "Zu den Ergebnissen",
+        heroTargetAC: "Ziel-RK",
+        heroHit: "Treffer",
+        heroDPR: "Schaden/Runde",
+        heroNeed: "brauchst {{roll}}+",
+        heroCritOnly: "nur krit.",
+        heroAuto: "automatischer Treffer",
+        heroCritShort: "{{crit}} krit.",
+        showAllRows: "RK 1–30 zeigen",
+        showNearRows: "Nur nahe zeigen",
         // GWM / Sharpshooter
         powerAttack: "Great Weapon Master / Sharpshooter",
         powerAttackTooltip: "Zeigt, bis zu welcher RK sich -5 auf den Angriff / +10 Schaden lohnt.",
-        powerAttackTitle: "🪓 Great Weapon Master / Sharpshooter",
+        powerAttackTitle: "Great Weapon Master / Sharpshooter",
         powerAttackCutoff: "-5/+10 lohnt sich bis <strong>RK {{ac}}</strong>",
         powerAttackNever: "-5/+10 lohnt sich <strong>nie</strong>: dein Grundschaden ist bereits hoch.",
         powerAttackAlways: "-5/+10 lohnt sich <strong>immer</strong> (bis RK 30).",
@@ -623,11 +671,11 @@ const translations = {
         powerAttackLegendPower: "-5/+10 ist besser",
         powerAttackLegendNormal: "Normaler Angriff ist besser",
         // Header
-        title: "⚔️ D&D Angriffwahrscheinlichkeits-Rechner",
+        title: "D&D Angriffwahrscheinlichkeits-Rechner",
         subtitle: "Berechne deine Trefferwahrscheinlichkeiten und erwarteten Schaden",
 
         // Config panel
-        configTitle: "⚙️ Angriffskonfiguration",
+        configTitle: "Angriffskonfiguration",
         closeConfig: "Konfiguration schließen",
         attackBonus: "Angriffsbonus",
         attackBonusTooltip: "Dein gesamter Angriffsmodifikator (z.B. +5)",
@@ -637,8 +685,8 @@ const translations = {
         addDice: "+ Würfel hinzufügen",
         critRange: "Kritischer Bereich",
         critRange20: "Nur 20 (5%)",
-        critRange19: "19-20 (10%)",
-        critRange18: "18-20 (15%)",
+        critRange19: "-20 (10%)",
+        critRange18: "-20 (15%)",
         advantageLabel: "Vorteil / Nachteil",
         disadvantage: "Nachteil",
         normal: "Normal",
@@ -647,10 +695,10 @@ const translations = {
         targetAC: "Ziel-RK (Optional)",
         targetACTooltip: "Rüstungsklasse des spezifischen Feindes zum Hervorheben",
         targetACPlaceholder: "z.B. 15",
-        calculateButton: "🎲 Wahrscheinlichkeiten berechnen",
+        calculateButton: "Wahrscheinlichkeiten berechnen",
 
         // Results panel
-        resultsTitle: "📊 Wahrscheinlichkeitstabelle",
+        resultsTitle: "Wahrscheinlichkeitstabelle",
         tableHeaderAC: "RK",
         tableHeaderACTooltip: "Rüstungsklasse des Feindes",
         tableHeaderMiss: "Fehlschlag",
@@ -677,7 +725,7 @@ const translations = {
         damageCrit: "<br><strong>Kritischer Schaden:</strong> {{min}}-{{max}} (Durchschnitt {{avg}})",
 
         // Multi-attack panel
-        multiAttackTitle: "🎯 Verteilung mehrerer Angriffe",
+        multiAttackTitle: "Verteilung mehrerer Angriffe",
         multiAttackWith: "Gegen RK {{ac}} mit {{n}} Angriffen",
         multiAttackAdvantage: " <strong style=\"color: var(--color-hit);\">(MIT VORTEIL)</strong>",
         multiAttackDisadvantage: " <strong style=\"color: var(--color-miss);\">(MIT NACHTEIL)</strong>",
@@ -713,7 +761,7 @@ const translations = {
         alertMinDice: "Du musst mindestens einen Schadenswürfel haben",
 
         // Combat Statistics
-        combatStatsTitle: "📊 Kampfstatistiken",
+        combatStatsTitle: "Kampfstatistiken",
         vsAC: "gegen RK",
         statDPRTotal: "Gesamt-SPR",
         statHitProb: "Trefferwahrsch.",
@@ -721,7 +769,7 @@ const translations = {
         statCritsPerRound: "Kritische/Runde",
         damagePerRound: "schaden/runde",
         average: "durchschnitt",
-        defeatTimesTitle: "⏱️ Runden zum Besiegen",
+        defeatTimesTitle: "Runden zum Besiegen",
         enemyWeak: "Schwacher Gegner (20 TP)",
         enemyNormal: "Normaler Gegner (50 TP)",
         enemyStrong: "Starker Gegner (100 TP)",
@@ -731,18 +779,18 @@ const translations = {
         levelRange: "Stufe",
 
         // Power Level
-        powerLevelTitle: "⚡ Charakter-Machtstufe",
+        powerLevelTitle: "Charakter-Machtstufe",
         powerLevelLabel: "Power Level",
-        howCalculated: "📊 Wie wird es berechnet:",
+        howCalculated: "Wie wird es berechnet:",
         whyTheseFactors: "Warum diese Faktoren?",
         dprTotalExplain: "Beinhaltet Vorteil, Kritische und mehrere Angriffe",
         hitChanceExplain: "Bestraft unzuverlässige Builds",
         scaleExplain: "Skala für vergleichbare Zahlen",
 
         // Profiles
-        profilesTitle: "📁 Gespeicherte Profile",
+        profilesTitle: "Gespeicherte Profile",
         profileNamePlaceholder: "Profilname...",
-        saveProfileBtn: "💾 Profil Speichern",
+        saveProfileBtn: "Profil Speichern",
         loadProfileTooltip: "Dieses Profil laden",
         deleteProfileTooltip: "Dieses Profil löschen",
         noProfiles: "Keine gespeicherten Profile",
@@ -757,13 +805,13 @@ const translations = {
         profileAttacks: "{{n}} Angriffe",
 
         // Profile Comparison
-        compareTitle: "⚔️ Profile Vergleichen",
+        compareTitle: "Profile Vergleichen",
         compareSelectProfiles: "Profile zum Vergleichen auswählen:",
         compareTargetAC: "RK zum Vergleichen",
-        compareButton: "📊 Vergleichen",
+        compareButton: "Vergleichen",
         compareMinSelect: "Wähle mindestens 2 Profile zum Vergleichen",
         compareNoProfiles: "Speichere zuerst Profile zum Vergleichen",
-        compareResultsTitle: "📊 Profil-Vergleich",
+        compareResultsTitle: "Profil-Vergleich",
         compareVsAC: "gegen RK",
         comparePowerLevel: "Power Level",
         compareHitChance: "Trefferwahrsch.",
@@ -870,9 +918,17 @@ function setLanguage(lang) {
         }
     });
 
+    document.documentElement.lang = lang;
+    document.querySelectorAll('#languageSelect [data-lang]').forEach(btn => {
+        btn.setAttribute('aria-pressed', String(btn.dataset.lang === lang));
+    });
+
     // Re-calculate to update dynamic texts
     if (typeof calculator !== 'undefined' && calculator) {
         calculator.calculate();
+    }
+    if (typeof profileManager !== 'undefined' && profileManager) {
+        profileManager.renderProfiles();
     }
 }
 
@@ -897,19 +953,6 @@ function initializeLanguage() {
                 currentLanguage = langPrefix;
             }
         }
-    }
-
-    // Set the initial language in custom selector
-    const selector = document.getElementById('languageSelect');
-    if (selector) {
-        const selected = selector.querySelector('.select-selected');
-        const items = selector.querySelectorAll('.select-items div');
-
-        items.forEach(item => {
-            if (item.getAttribute('data-value') === currentLanguage) {
-                selected.innerHTML = item.innerHTML;
-            }
-        });
     }
 
     // Apply language
@@ -1132,8 +1175,9 @@ class ProfileManager {
         document.getElementById('attackBonus').value = cfg.attackBonus;
         document.getElementById('damageBonus').value = cfg.damageBonus;
         document.getElementById('critRange').value = cfg.critRange;
-        document.getElementById('numberOfAttacks').value = cfg.numberOfAttacks;
-        document.getElementById('attacksValue').textContent = cfg.numberOfAttacks;
+        document.querySelectorAll('input[name="numberOfAttacks"]').forEach(radio => {
+            radio.checked = parseInt(radio.value, 10) === cfg.numberOfAttacks;
+        });
         const powerAttackInput = document.getElementById('powerAttack');
         if (powerAttackInput) powerAttackInput.checked = !!cfg.powerAttack;
 
@@ -1168,9 +1212,9 @@ class ProfileManager {
             const diceItem = document.createElement('div');
             diceItem.className = 'dice-item';
             diceItem.innerHTML = `
-                <input type="number" class="dice-count" value="${die.count}" min="1" max="10">
-                <span>d</span>
-                <select class="dice-sides">
+                <input type="number" class="dice-count" value="${die.count}" min="1" max="20" inputmode="numeric" aria-label="Cantidad">
+                <span class="dice-d">d</span>
+                <select class="dice-sides" aria-label="Caras">
                     <option value="4"${die.sides === 4 ? ' selected' : ''}>4</option>
                     <option value="6"${die.sides === 6 ? ' selected' : ''}>6</option>
                     <option value="8"${die.sides === 8 ? ' selected' : ''}>8</option>
@@ -1179,7 +1223,7 @@ class ProfileManager {
                     <option value="20"${die.sides === 20 ? ' selected' : ''}>20</option>
                     <option value="100"${die.sides === 100 ? ' selected' : ''}>100</option>
                 </select>
-                <button class="btn-remove" onclick="removeDice(this)">×</button>
+                <button type="button" class="btn-remove" onclick="removeDice(this)" aria-label="Quitar dado">×</button>
             `;
             diceList.appendChild(diceItem);
         });
@@ -1587,7 +1631,7 @@ class DnDCalculator {
             advantage: 'normal',
             critRange: 20,
             numberOfAttacks: 1,
-            targetAC: null,
+            targetAC: 15,
             powerAttack: false // mostrar análisis de GWM / Sharpshooter (-5/+10)
         };
 
@@ -1601,11 +1645,9 @@ class DnDCalculator {
         this.calcTimer = setTimeout(() => this.calculate(), delay);
     }
 
-    // Botón "Calcular": recalcula ya y en móvil cierra el panel de configuración.
     calculateNow() {
         clearTimeout(this.calcTimer);
         this.calculate();
-        autoClosePanelAfterCalculate();
     }
 
     initializeEventListeners() {
@@ -1666,13 +1708,12 @@ class DnDCalculator {
             });
         });
 
-        // Número de ataques
-        const attacksSlider = document.getElementById('numberOfAttacks');
-        const attacksValue = document.getElementById('attacksValue');
-        attacksSlider.addEventListener('input', (e) => {
-            this.config.numberOfAttacks = parseInt(e.target.value);
-            attacksValue.textContent = e.target.value;
-            this.scheduleCalculate();
+        // Número de ataques (control segmentado)
+        document.querySelectorAll('input[name="numberOfAttacks"]').forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                this.config.numberOfAttacks = parseInt(e.target.value, 10);
+                this.scheduleCalculate(0);
+            });
         });
 
         // Dados - delegación de eventos
@@ -1781,9 +1822,12 @@ class DnDCalculator {
 
             const row = document.createElement('tr');
 
-            // Destacar CA objetivo
+            // Destacar CA objetivo; en móvil sólo se muestran las filas cercanas (±5)
             if (this.config.targetAC && ac === this.config.targetAC) {
                 row.classList.add('highlighted');
+            }
+            if (this.config.targetAC && Math.abs(ac - this.config.targetAC) > 5) {
+                row.classList.add('row-far');
             }
 
             row.innerHTML = `
@@ -1805,6 +1849,8 @@ class DnDCalculator {
 
             resultsBody.appendChild(row);
         }
+
+        this.renderHero();
 
         // Mostrar información del roll requerido
         if (this.config.targetAC) {
@@ -1874,6 +1920,36 @@ class DnDCalculator {
                 powerLevelSection.style.display = 'none';
             }
         }
+    }
+
+    // Barra pegajosa: CA objetivo, % de impacto y daño por turno siempre a la vista
+    renderHero() {
+        const hitEl = document.getElementById('heroHit');
+        const dprEl = document.getElementById('heroDPR');
+        const rollEl = document.getElementById('heroRoll');
+        const critEl = document.getElementById('heroCrit');
+        if (!hitEl || !dprEl) return;
+
+        const ac = this.config.targetAC;
+        if (!ac) {
+            hitEl.textContent = '—';
+            dprEl.textContent = '—';
+            if (rollEl) rollEl.textContent = '';
+            if (critEl) critEl.textContent = '';
+            return;
+        }
+
+        const { hit, crit } = this.calculateHitChance(ac);
+        hitEl.textContent = Math.round(hit * 100) + '%';
+        dprEl.textContent = this.calculateTotalDPR(ac).toFixed(1);
+
+        const targetRoll = ac - this.config.attackBonus;
+        if (rollEl) {
+            rollEl.textContent = targetRoll <= 1 ? t('heroAuto')
+                : targetRoll >= 21 ? t('heroCritOnly')
+                : t('heroNeed', { roll: targetRoll });
+        }
+        if (critEl) critEl.textContent = t('heroCritShort', { crit: (crit * 100).toFixed(1) + '%' });
     }
 
     renderMultiAttackDistribution() {
@@ -2151,9 +2227,9 @@ function addDice() {
     const diceItem = document.createElement('div');
     diceItem.className = 'dice-item';
     diceItem.innerHTML = `
-        <input type="number" class="dice-count" value="1" min="1" max="10">
-        <span>d</span>
-        <select class="dice-sides">
+        <input type="number" class="dice-count" value="1" min="1" max="20" inputmode="numeric" aria-label="Cantidad">
+        <span class="dice-d">d</span>
+        <select class="dice-sides" aria-label="Caras">
             <option value="4">4</option>
             <option value="6" selected>6</option>
             <option value="8">8</option>
@@ -2162,7 +2238,7 @@ function addDice() {
             <option value="20">20</option>
             <option value="100">100</option>
         </select>
-        <button class="btn-remove" onclick="removeDice(this)">×</button>
+        <button type="button" class="btn-remove" onclick="removeDice(this)" aria-label="Quitar dado">×</button>
     `;
 
     diceList.appendChild(diceItem);
@@ -2180,6 +2256,18 @@ function removeDice(button) {
 
     button.parentElement.remove();
     calculator.updateDiceFromInputs();
+}
+
+// Móvil: alterna entre las filas cercanas a la CA objetivo y la tabla completa
+function toggleAllRows() {
+    const table = document.getElementById('resultsTable');
+    const btn = document.getElementById('toggleRows');
+    if (!table) return;
+    const showAll = table.classList.toggle('show-all');
+    if (btn) {
+        btn.setAttribute('data-i18n', showAll ? 'showNearRows' : 'showAllRows');
+        btn.textContent = t(showAll ? 'showNearRows' : 'showAllRows');
+    }
 }
 
 // ========== FUNCIONES DE PERFILES ==========
@@ -2225,7 +2313,7 @@ function editProfile(id) {
         }
     }
     // Scroll to config section
-    document.querySelector('.config-panel')?.scrollIntoView({ behavior: 'smooth' });
+    document.getElementById('config')?.scrollIntoView({ behavior: 'smooth' });
 }
 
 function cancelEditProfile() {
@@ -2241,7 +2329,7 @@ function loadProfile(id) {
     if (result.success) {
         showProfileFeedback(t('profileLoaded', { name: result.profile.name }), 'success');
         // Scroll hacia los resultados
-        document.querySelector('.results-panel')?.scrollIntoView({ behavior: 'smooth' });
+        document.getElementById('results')?.scrollIntoView({ behavior: 'smooth' });
     }
 }
 
@@ -2285,7 +2373,7 @@ function runComparison() {
     // Ejecutar comparación
     const comparisonData = profileComparator.compareProfiles(selectedIds, targetAC);
 
-    // Renderizar resultados
+    // Renderizar resultados y llevar la vista hasta ellos
     profileComparator.renderComparison(comparisonData);
 }
 
@@ -2297,48 +2385,25 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize language system first
     initializeLanguage();
 
-    // Setup custom select with flags
-    const customSelect = document.getElementById('languageSelect');
-    if (customSelect) {
-        const selected = customSelect.querySelector('.select-selected');
-        const itemsContainer = customSelect.querySelector('.select-items');
-        const items = itemsContainer.querySelectorAll('div');
+    // Selector de idioma
+    document.querySelectorAll('#languageSelect [data-lang]').forEach(btn => {
+        btn.addEventListener('click', () => setLanguage(btn.dataset.lang));
+    });
 
-        // Toggle dropdown
-        selected.addEventListener('click', (e) => {
-            e.stopPropagation();
-            closeAllSelect(selected);
-            itemsContainer.classList.toggle('select-hide');
-            selected.classList.toggle('select-arrow-active');
+    // Steppers − / + : ajustan el input asociado respetando min/max y disparan 'input'
+    document.querySelectorAll('.step[data-step]').forEach(btn => {
+        btn.addEventListener('click', () => {
+            const input = document.getElementById(btn.dataset.step);
+            if (!input) return;
+            const delta = parseInt(btn.dataset.delta, 10) || 0;
+            const min = input.min !== '' ? parseInt(input.min, 10) : -Infinity;
+            const max = input.max !== '' ? parseInt(input.max, 10) : Infinity;
+            const current = parseInt(input.value, 10);
+            const base = Number.isFinite(current) ? current : (delta > 0 ? min - 1 : max + 1);
+            input.value = Math.min(max, Math.max(min, base + delta));
+            input.dispatchEvent(new Event('input', { bubbles: true }));
         });
-
-        // Handle item selection
-        items.forEach(item => {
-            item.addEventListener('click', (e) => {
-                const lang = item.getAttribute('data-value');
-                selected.innerHTML = item.innerHTML;
-                itemsContainer.classList.add('select-hide');
-                selected.classList.remove('select-arrow-active');
-                setLanguage(lang);
-            });
-        });
-
-        // Close dropdown when clicking outside
-        document.addEventListener('click', () => {
-            closeAllSelect();
-        });
-
-        function closeAllSelect(except) {
-            const items = document.querySelectorAll('.select-items');
-            const selecteds = document.querySelectorAll('.select-selected');
-            items.forEach((item, i) => {
-                if (except !== selecteds[i]) {
-                    item.classList.add('select-hide');
-                    selecteds[i].classList.remove('select-arrow-active');
-                }
-            });
-        }
-    }
+    });
 
     // Initialize calculator
     calculator = new DnDCalculator();
@@ -2352,100 +2417,6 @@ document.addEventListener('DOMContentLoaded', () => {
     profileComparator = new ProfileComparator(profileManager);
     profileComparator.renderCompareCheckboxes();
 
-    // Initialize mobile panel toggle
-    initMobilePanelToggle();
-
     // Calcular automáticamente al cargar
     calculator.calculate();
-});
-
-// ========== MOBILE PANEL TOGGLE ==========
-
-// Estado del panel (mobile only)
-let mobileConfigPanelOpen = true; // Default abierto
-
-function initMobilePanelToggle() {
-    // Solo inicializar si estamos en móvil
-    if (window.innerWidth > 768) {
-        return;
-    }
-
-    // Leer estado guardado
-    const saved = localStorage.getItem('mobileConfigPanelOpen');
-    if (saved !== null) {
-        mobileConfigPanelOpen = saved === 'true';
-    }
-
-    // Aplicar estado inicial
-    updatePanelVisibility();
-}
-
-function closeMobilePanel() {
-    mobileConfigPanelOpen = false;
-    updatePanelVisibility();
-
-    // Scroll suave a resultados
-    setTimeout(() => {
-        const resultsPanel = document.querySelector('.results-panel');
-        if (resultsPanel) {
-            resultsPanel.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }
-    }, 100);
-}
-
-function openMobilePanel() {
-    mobileConfigPanelOpen = true;
-    updatePanelVisibility();
-
-    // Scroll suave al panel
-    setTimeout(() => {
-        const configPanel = document.querySelector('.config-panel');
-        if (configPanel) {
-            configPanel.scrollIntoView({
-                behavior: 'smooth',
-                block: 'start'
-            });
-        }
-    }, 100);
-}
-
-function updatePanelVisibility() {
-    const panel = document.querySelector('.config-panel');
-    const fab = document.querySelector('.mobile-fab-btn');
-
-    if (!panel || !fab) return;
-
-    if (mobileConfigPanelOpen) {
-        panel.classList.remove('mobile-collapsed');
-        fab.style.display = 'none';
-    } else {
-        panel.classList.add('mobile-collapsed');
-        fab.style.display = 'flex';
-    }
-
-    localStorage.setItem('mobileConfigPanelOpen', mobileConfigPanelOpen);
-}
-
-// Auto-cerrar después de calcular (solo móvil)
-function autoClosePanelAfterCalculate() {
-    if (window.innerWidth <= 768 && mobileConfigPanelOpen) {
-        setTimeout(closeMobilePanel, 300);
-    }
-}
-
-// Resetear en resize
-window.addEventListener('resize', () => {
-    if (window.innerWidth > 768) {
-        // Desktop: siempre mostrar panel
-        const panel = document.querySelector('.config-panel');
-        const fab = document.querySelector('.mobile-fab-btn');
-        if (panel) panel.classList.remove('mobile-collapsed');
-        if (fab) fab.style.display = 'none';
-    } else {
-        // Móvil: aplicar estado guardado
-        updatePanelVisibility();
-    }
 });
