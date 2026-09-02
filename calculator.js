@@ -132,6 +132,7 @@ const translations = {
         noProfiles: "No hay perfiles guardados",
         confirmDeleteProfile: "¿Eliminar el perfil '{{name}}'?",
         profileSaved: "Perfil '{{name}}' guardado",
+        profileUpdated: "Perfil '{{name}}' actualizado",
         profileLoaded: "Perfil '{{name}}' cargado",
         profileDeleted: "Perfil eliminado",
         profileNameRequired: "Ingresa un nombre para el perfil",
@@ -319,6 +320,7 @@ const translations = {
         noProfiles: "No saved profiles",
         confirmDeleteProfile: "Delete profile '{{name}}'?",
         profileSaved: "Profile '{{name}}' saved",
+        profileUpdated: "Profile '{{name}}' updated",
         profileLoaded: "Profile '{{name}}' loaded",
         profileDeleted: "Profile deleted",
         profileNameRequired: "Enter a profile name",
@@ -506,6 +508,7 @@ const translations = {
         noProfiles: "Nenhum perfil salvo",
         confirmDeleteProfile: "Excluir o perfil '{{name}}'?",
         profileSaved: "Perfil '{{name}}' salvo",
+        profileUpdated: "Perfil '{{name}}' atualizado",
         profileLoaded: "Perfil '{{name}}' carregado",
         profileDeleted: "Perfil excluído",
         profileNameRequired: "Digite um nome para o perfil",
@@ -693,6 +696,7 @@ const translations = {
         noProfiles: "Keine gespeicherten Profile",
         confirmDeleteProfile: "Profil '{{name}}' löschen?",
         profileSaved: "Profil '{{name}}' gespeichert",
+        profileUpdated: "Profil '{{name}}' aktualisiert",
         profileLoaded: "Profil '{{name}}' geladen",
         profileDeleted: "Profil gelöscht",
         profileNameRequired: "Gib einen Profilnamen ein",
@@ -1540,6 +1544,7 @@ class DnDCalculator {
 
         document.getElementById('damageBonus').addEventListener('input', (e) => {
             this.config.damageBonus = parseInt(e.target.value) || 0;
+            this.updateDiceNotation();
         });
 
         document.getElementById('critRange').addEventListener('change', (e) => {
@@ -1646,13 +1651,6 @@ class DnDCalculator {
         return DnDEngine.damageRange(this.engineConfig(), isCrit, includeSneak);
     }
 
-    // Daño esperado de UN ataque dadas sus probabilidades
-    calculateExpectedDPR(hitChance, critChance, includeSneak = true) {
-        const normalDmg = this.calculateAverageDamage(false, includeSneak);
-        const critDmg = this.calculateAverageDamage(true, includeSneak);
-        return (hitChance - critChance) * normalDmg + critChance * critDmg;
-    }
-
     // Sneak Attack esperado POR TURNO (1 vez, duplicado si hubo crítico)
     calculateExpectedSneakAttack(ac) {
         return DnDEngine.sneakAttackPerTurn(this.engineConfig(), ac);
@@ -1680,14 +1678,17 @@ class DnDCalculator {
         // Calcular para CAs del 1 al 30
         const minAC = 1;
         const maxAC = 30;
+        const includeSneakPerHit = this.config.numberOfAttacks === 1;
 
         for (let ac = minAC; ac <= maxAC; ac++) {
             const { hit, crit, miss } = this.calculateHitChance(ac);
-            const dpr = this.calculateExpectedDPR(hit, crit);
+            // DPR por TURNO (arma × nº de ataques + Sneak Attack una vez), igual que el panel de stats
+            const dpr = this.calculateTotalDPR(ac);
 
-            // Calcular rangos de daño
-            const normalRange = this.calculateDamageRange(false);
-            const critRange = this.calculateDamageRange(true);
+            // Rangos de daño de UN impacto. El SA se incluye solo si hay un único ataque
+            // (con varios ataques se aplica una vez por turno y se muestra aparte).
+            const normalRange = this.calculateDamageRange(false, includeSneakPerHit);
+            const critRange = this.calculateDamageRange(true, includeSneakPerHit);
 
             const row = document.createElement('tr');
 
@@ -1729,10 +1730,10 @@ class DnDCalculator {
                 requirementText = t('rollReqNormal', { ac: this.config.targetAC, roll: targetRoll });
             }
 
-            const normalDmg = this.calculateAverageDamage(false);
-            const critDmg = this.calculateAverageDamage(true);
-            const normalRange = this.calculateDamageRange(false);
-            const critRange = this.calculateDamageRange(true);
+            const normalDmg = this.calculateAverageDamage(false, includeSneakPerHit);
+            const critDmg = this.calculateAverageDamage(true, includeSneakPerHit);
+            const normalRange = this.calculateDamageRange(false, includeSneakPerHit);
+            const critRange = this.calculateDamageRange(true, includeSneakPerHit);
 
             requirementText += t('damageNormal', {
                 min: normalRange.min,
@@ -1959,10 +1960,10 @@ class DnDCalculator {
         const defeatList = document.getElementById('defeatTimesList');
         if (defeatList) {
             defeatList.innerHTML = enemies.map(enemy => {
-                const turns = Math.ceil(enemy.hp / dpr);
+                const turns = dpr > 0 ? `~${Math.ceil(enemy.hp / dpr)}` : '∞';
                 return `<div class="defeat-item">
                     <span class="defeat-enemy">${t(enemy.key)}</span>
-                    <span class="defeat-turns">~${turns} ${t('turnsLabel')}</span>
+                    <span class="defeat-turns">${turns} ${t('turnsLabel')}</span>
                 </div>`;
             }).join('');
         }
@@ -2076,7 +2077,7 @@ function saveProfile() {
         // Limpiar input
         if (nameInput) nameInput.value = '';
         // Feedback visual
-        const messageKey = result.updated ? 'profileSaved' : 'profileSaved';
+        const messageKey = result.updated ? 'profileUpdated' : 'profileSaved';
         showProfileFeedback(t(messageKey, { name: result.profile.name }), 'success');
     } else {
         alert(t(result.messageKey));
