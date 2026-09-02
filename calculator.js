@@ -6,6 +6,16 @@ let currentLanguage = 'es';
 // Translation object with all supported languages
 const translations = {
     es: {
+        turnsLabelSingular: "turno",
+        ariaHelp: "Ayuda",
+        // Etiquetas accesibles (botones que sólo muestran un ícono)
+        bestValue: "Mejor",
+        ariaRemoveDice: "Quitar dado",
+        ariaDiceCount: "Cantidad de dados",
+        ariaDiceSides: "Caras del dado",
+        ariaExpand: "Ver desglose de críticos",
+        ariaStepUp: "Sumar 1 a {{field}}",
+        ariaStepDown: "Restar 1 a {{field}}",
         // Power Level
         powerLevelFormula: "DPR promedio vs CA",
         powerLevelBulletDPR: "DPR promedio",
@@ -112,7 +122,7 @@ const translations = {
         multiAttackDisadvantage: " <strong style=\"color: var(--color-miss);\">(CON DESVENTAJA)</strong>",
         multiAttackHitProb: "Probabilidad de impacto por ataque: {{prob}}%",
         multiAttackCritProb: "Probabilidad de crítico por ataque: {{prob}}%",
-        multiAttackSummary: "<strong style=\"color: var(--color-crit);\">📊 Resumen de daño total:</strong>",
+        multiAttackSummary: "<strong class=\"summary-title\">Resumen de daño total:</strong>",
         multiAttackAllNormal: "• Si todos impactan (sin críticos): <strong style=\"color: var(--color-hit);\">{{min}}-{{max}} daño</strong>",
         multiAttackAllCrit: "• Si todos impactan con críticos: <strong style=\"color: var(--color-crit);\">{{min}}-{{max}} daño</strong>",
         multiAttackRange: "• Rango total posible: <strong style=\"color: var(--text-primary);\">0-{{max}} daño</strong>",
@@ -239,6 +249,16 @@ const translations = {
     },
 
     en: {
+        turnsLabelSingular: "turn",
+        ariaHelp: "Help",
+        // Etiquetas accesibles (botones que sólo muestran un ícono)
+        bestValue: "Best",
+        ariaRemoveDice: "Remove die",
+        ariaDiceCount: "Number of dice",
+        ariaDiceSides: "Die sides",
+        ariaExpand: "Show critical breakdown",
+        ariaStepUp: "Add 1 to {{field}}",
+        ariaStepDown: "Subtract 1 from {{field}}",
         // Power Level
         powerLevelFormula: "Average DPR vs AC",
         powerLevelBulletDPR: "Average DPR",
@@ -345,7 +365,7 @@ const translations = {
         multiAttackDisadvantage: " <strong style=\"color: var(--color-miss);\">(WITH DISADVANTAGE)</strong>",
         multiAttackHitProb: "Hit probability per attack: {{prob}}%",
         multiAttackCritProb: "Critical probability per attack: {{prob}}%",
-        multiAttackSummary: "<strong style=\"color: var(--color-crit);\">📊 Total damage summary:</strong>",
+        multiAttackSummary: "<strong class=\"summary-title\">Total damage summary:</strong>",
         multiAttackAllNormal: "• If all hit (no crits): <strong style=\"color: var(--color-hit);\">{{min}}-{{max}} damage</strong>",
         multiAttackAllCrit: "• If all hit critically: <strong style=\"color: var(--color-crit);\">{{min}}-{{max}} damage</strong>",
         multiAttackRange: "• Total possible range: <strong style=\"color: var(--text-primary);\">0-{{max}} damage</strong>",
@@ -472,6 +492,16 @@ const translations = {
     },
 
     pt: {
+        turnsLabelSingular: "turno",
+        ariaHelp: "Ajuda",
+        // Etiquetas accesibles (botones que sólo muestran un ícono)
+        bestValue: "Melhor",
+        ariaRemoveDice: "Remover dado",
+        ariaDiceCount: "Quantidade de dados",
+        ariaDiceSides: "Faces do dado",
+        ariaExpand: "Ver detalhe de críticos",
+        ariaStepUp: "Somar 1 a {{field}}",
+        ariaStepDown: "Subtrair 1 de {{field}}",
         // Power Level
         powerLevelFormula: "DPR médio vs CA",
         powerLevelBulletDPR: "DPR médio",
@@ -578,7 +608,7 @@ const translations = {
         multiAttackDisadvantage: " <strong style=\"color: var(--color-miss);\">(COM DESVANTAGEM)</strong>",
         multiAttackHitProb: "Probabilidade de acerto por ataque: {{prob}}%",
         multiAttackCritProb: "Probabilidade de crítico por ataque: {{prob}}%",
-        multiAttackSummary: "<strong style=\"color: var(--color-crit);\">📊 Resumo de dano total:</strong>",
+        multiAttackSummary: "<strong class=\"summary-title\">Resumo de dano total:</strong>",
         multiAttackAllNormal: "• Se todos acertarem (sem críticos): <strong style=\"color: var(--color-hit);\">{{min}}-{{max}} dano</strong>",
         multiAttackAllCrit: "• Se todos acertarem criticamente: <strong style=\"color: var(--color-crit);\">{{min}}-{{max}} dano</strong>",
         multiAttackRange: "• Alcance total possível: <strong style=\"color: var(--text-primary);\">0-{{max}} dano</strong>",
@@ -705,6 +735,16 @@ const translations = {
     },
 
     de: {
+        turnsLabelSingular: "Runde",
+        ariaHelp: "Hilfe",
+        // Etiquetas accesibles (botones que sólo muestran un ícono)
+        bestValue: "Bester",
+        ariaRemoveDice: "Würfel entfernen",
+        ariaDiceCount: "Anzahl der Würfel",
+        ariaDiceSides: "Würfelseiten",
+        ariaExpand: "Kritische Treffer aufschlüsseln",
+        ariaStepUp: "1 zu {{field}} addieren",
+        ariaStepDown: "1 von {{field}} abziehen",
         // Power Level
         powerLevelFormula: "Durchschnittlicher DPR vs RK",
         powerLevelBulletDPR: "Durchschnittlicher DPR",
@@ -811,7 +851,7 @@ const translations = {
         multiAttackDisadvantage: " <strong style=\"color: var(--color-miss);\">(MIT NACHTEIL)</strong>",
         multiAttackHitProb: "Trefferwahrscheinlichkeit pro Angriff: {{prob}}%",
         multiAttackCritProb: "Kritische Wahrscheinlichkeit pro Angriff: {{prob}}%",
-        multiAttackSummary: "<strong style=\"color: var(--color-crit);\">📊 Gesamtschadenszusammenfassung:</strong>",
+        multiAttackSummary: "<strong class=\"summary-title\">Gesamtschadenszusammenfassung:</strong>",
         multiAttackAllNormal: "• Wenn alle treffen (keine Kritischen): <strong style=\"color: var(--color-hit);\">{{min}}-{{max}} Schaden</strong>",
         multiAttackAllCrit: "• Wenn alle kritisch treffen: <strong style=\"color: var(--color-crit);\">{{min}}-{{max}} Schaden</strong>",
         multiAttackRange: "• Gesamtmöglicher Bereich: <strong style=\"color: var(--text-primary);\">0-{{max}} Schaden</strong>",
@@ -982,6 +1022,19 @@ function setLanguage(lang) {
         }
     });
 
+    // Etiquetas accesibles de los botones que sólo muestran un ícono
+    document.querySelectorAll('[data-i18n-aria]').forEach(el => {
+        const key = el.getAttribute('data-i18n-aria');
+        if (translations[currentLanguage][key]) el.setAttribute('aria-label', translations[currentLanguage][key]);
+    });
+    updateStepperLabels();
+
+    // El botón "?" se anuncia con el texto de ayuda que muestra, no con un genérico
+    document.querySelectorAll('.tooltip').forEach(tip => {
+        const texto = tip.querySelector('.tooltip-text');
+        if (texto) tip.setAttribute('aria-label', texto.textContent.trim());
+    });
+
     // Update tooltips
     document.querySelectorAll('[data-i18n-tooltip]').forEach(el => {
         const key = el.getAttribute('data-i18n-tooltip');
@@ -1010,6 +1063,19 @@ function setLanguage(lang) {
     if (typeof profileManager !== 'undefined' && profileManager) {
         profileManager.renderProfiles();
     }
+}
+
+// Los − / + no dicen a qué campo pertenecen: se les arma el nombre con el del campo.
+function updateStepperLabels() {
+    document.querySelectorAll('.step[data-step]').forEach(btn => {
+        const input = document.getElementById(btn.dataset.step);
+        if (!input) return;
+        const label = document.querySelector(`label[for="${input.id}"]`);
+        const source = label ? (label.querySelector('[data-i18n]') || label) : null;
+        const field = (source ? source.textContent : input.getAttribute('aria-label') || '').trim();
+        const key = parseInt(btn.dataset.delta, 10) > 0 ? 'ariaStepUp' : 'ariaStepDown';
+        btn.setAttribute('aria-label', t(key, { field }));
+    });
 }
 
 // Initialize language on page load
@@ -1277,9 +1343,9 @@ class ProfileManager {
             const diceItem = document.createElement('div');
             diceItem.className = 'dice-item';
             diceItem.innerHTML = `
-                <input type="number" class="dice-count" value="${die.count}" min="1" max="20" inputmode="numeric" aria-label="Cantidad">
+                <input type="number" class="dice-count" value="${die.count}" min="1" max="20" inputmode="numeric" aria-label="${t('ariaDiceCount')}">
                 <span class="dice-d">d</span>
-                <select class="dice-sides" aria-label="Caras">
+                <select class="dice-sides" aria-label="${t('ariaDiceSides')}">
                     <option value="4"${die.sides === 4 ? ' selected' : ''}>4</option>
                     <option value="6"${die.sides === 6 ? ' selected' : ''}>6</option>
                     <option value="8"${die.sides === 8 ? ' selected' : ''}>8</option>
@@ -1288,7 +1354,7 @@ class ProfileManager {
                     <option value="20"${die.sides === 20 ? ' selected' : ''}>20</option>
                     <option value="100"${die.sides === 100 ? ' selected' : ''}>100</option>
                 </select>
-                <button type="button" class="btn-remove" onclick="removeDice(this)" aria-label="Quitar dado">×</button>
+                <button type="button" class="btn-remove" onclick="removeDice(this)" aria-label="${t('ariaRemoveDice')}"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-close"/></svg></button>
             `;
             diceList.appendChild(diceItem);
         });
@@ -1350,9 +1416,9 @@ class ProfileManager {
                         <span class="profile-preview">${this.formatProfilePreview(profile.config)}</span>
                     </div>
                     <div class="profile-actions">
-                        <button class="btn-edit" onclick="editProfile('${profile.id}')" title="${t('editProfile')}">✏️</button>
-                        <button class="btn-load" onclick="loadProfile('${profile.id}')" title="${t('loadProfileTooltip')}">📥</button>
-                        <button class="btn-delete" onclick="deleteProfile('${profile.id}')" title="${t('deleteProfileTooltip')}">🗑️</button>
+                        <button type="button" class="btn-edit" onclick="editProfile('${profile.id}')" title="${t('editProfile')}" aria-label="${t('editProfile')}: ${this.escapeHtml(profile.name)}"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-pencil"/></svg></button>
+                        <button type="button" class="btn-load" onclick="loadProfile('${profile.id}')" title="${t('loadProfileTooltip')}" aria-label="${t('loadProfileTooltip')}: ${this.escapeHtml(profile.name)}"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-load"/></svg></button>
+                        <button type="button" class="btn-delete" onclick="deleteProfile('${profile.id}')" title="${t('deleteProfileTooltip')}" aria-label="${t('deleteProfileTooltip')}: ${this.escapeHtml(profile.name)}"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-trash"/></svg></button>
                     </div>
                 </div>
             `}).join('');
@@ -1545,6 +1611,7 @@ class ProfileComparator {
         tableBody.innerHTML = results.map(r => {
             const s = r.stats;
             const isBest = (metric) => bests[metric]?.ids.includes(r.id);
+            const bestBadge = `<span class="best-badge" role="img" aria-label="${t('bestValue')}"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></span>`;
 
             // Formatear roll needed
             let rollDisplay;
@@ -1591,31 +1658,31 @@ class ProfileComparator {
                     </td>
                     <td class="${isBest('powerLevel') ? 'best-value' : ''}">
                         <span class="value-number">${s.powerLevel}</span>
-                        ${isBest('powerLevel') ? '<span class="best-badge">🏆</span>' : ''}
+                        ${isBest('powerLevel') ? bestBadge : ''}
                     </td>
                     <td class="${isBest('rollNeeded') ? 'best-value' : ''}">
                         <span class="value-number">${rollDisplay}</span>
-                        ${isBest('rollNeeded') ? '<span class="best-badge">🏆</span>' : ''}
+                        ${isBest('rollNeeded') ? bestBadge : ''}
                     </td>
                     <td class="${isBest('hitChance') ? 'best-value' : ''}">
                         <span class="value-number">${(s.hitChance * 100).toFixed(1)}%</span>
-                        ${isBest('hitChance') ? '<span class="best-badge">🏆</span>' : ''}
+                        ${isBest('hitChance') ? bestBadge : ''}
                     </td>
                     <td class="${isBest('critChance') ? 'best-value' : ''}">
                         <span class="value-number">${(s.critChance * 100).toFixed(1)}%</span>
-                        ${isBest('critChance') ? '<span class="best-badge">🏆</span>' : ''}
+                        ${isBest('critChance') ? bestBadge : ''}
                     </td>
                     <td class="${isBest('normalDamageMax') ? 'best-value' : ''}">
                         <span class="value-number">${s.normalDamage.min}-${s.normalDamage.max}</span>
-                        ${isBest('normalDamageMax') ? '<span class="best-badge">🏆</span>' : ''}
+                        ${isBest('normalDamageMax') ? bestBadge : ''}
                     </td>
                     <td class="${isBest('critDamageMax') ? 'best-value' : ''}">
                         <span class="value-number">${s.critDamage.min}-${s.critDamage.max}</span>
-                        ${isBest('critDamageMax') ? '<span class="best-badge">🏆</span>' : ''}
+                        ${isBest('critDamageMax') ? bestBadge : ''}
                     </td>
                     <td class="${isBest('totalDPR') ? 'best-value' : ''}">
                         <span class="value-number">${s.totalDPR.toFixed(1)}</span>
-                        ${isBest('totalDPR') ? '<span class="best-badge">🏆</span>' : ''}
+                        ${isBest('totalDPR') ? bestBadge : ''}
                     </td>
                 </tr>
             `;
@@ -2039,7 +2106,7 @@ class DnDCalculator {
             ${t('multiAttackHitProb', { prob: (pHit * 100).toFixed(1) })}<br>
             ${t('multiAttackCritProb', { prob: (pCrit * 100).toFixed(1) })}<br>
             <br>
-            ${t('multiAttackSummary')}<br>
+            <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-chart"/></svg>${t('multiAttackSummary')}<br>
             <span style="color: var(--text-secondary);">
                 ${t('multiAttackAllNormal', { min: allNormalsMin, max: allNormalsMax })}<br>
                 ${t('multiAttackAllCrit', { min: allCritsMin, max: allCritsMax })}<br>
@@ -2066,7 +2133,7 @@ class DnDCalculator {
             header.innerHTML = `
                 <span class="dist-hits">${totalHits} ${hitsLabel}</span>
                 <span class="dist-total-prob">${(totalProbability * 100).toFixed(1)}%</span>
-                <button class="expand-btn">▼</button>
+                <button type="button" class="expand-btn" aria-expanded="false" aria-label="${t('ariaExpand')}"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-chevron"/></svg></button>
             `;
 
             // Detalles expandibles (combinaciones de críticos)
@@ -2104,8 +2171,9 @@ class DnDCalculator {
             // Event listener para expandir/colapsar
             header.addEventListener('click', () => {
                 const btn = header.querySelector('.expand-btn');
-                details.classList.toggle('expanded');
-                btn.classList.toggle('expanded');
+                const abierto = details.classList.toggle('expanded');
+                btn.classList.toggle('expanded', abierto);
+                btn.setAttribute('aria-expanded', String(abierto));
             });
 
             group.appendChild(header);
@@ -2181,10 +2249,12 @@ class DnDCalculator {
         const defeatList = document.getElementById('defeatTimesList');
         if (defeatList) {
             defeatList.innerHTML = enemies.map(enemy => {
-                const turns = dpr > 0 ? `~${Math.ceil(enemy.hp / dpr)}` : '∞';
+                const n = dpr > 0 ? Math.ceil(enemy.hp / dpr) : null;
+                const turns = n === null ? '∞' : `~${n}`;
+                const label = n === 1 ? t('turnsLabelSingular') : t('turnsLabel');
                 return `<div class="defeat-item">
                     <span class="defeat-enemy">${t(enemy.key)}</span>
-                    <span class="defeat-turns">${turns} ${t('turnsLabel')}</span>
+                    <span class="defeat-turns">${turns} ${label}</span>
                 </div>`;
             }).join('');
         }
@@ -2268,9 +2338,9 @@ function addDice() {
     const diceItem = document.createElement('div');
     diceItem.className = 'dice-item';
     diceItem.innerHTML = `
-        <input type="number" class="dice-count" value="1" min="1" max="20" inputmode="numeric" aria-label="Cantidad">
+        <input type="number" class="dice-count" value="1" min="1" max="20" inputmode="numeric" aria-label="${t('ariaDiceCount')}">
         <span class="dice-d">d</span>
-        <select class="dice-sides" aria-label="Caras">
+        <select class="dice-sides" aria-label="${t('ariaDiceSides')}">
             <option value="4">4</option>
             <option value="6" selected>6</option>
             <option value="8">8</option>
@@ -2279,7 +2349,7 @@ function addDice() {
             <option value="20">20</option>
             <option value="100">100</option>
         </select>
-        <button type="button" class="btn-remove" onclick="removeDice(this)" aria-label="Quitar dado">×</button>
+        <button type="button" class="btn-remove" onclick="removeDice(this)" aria-label="${t('ariaRemoveDice')}"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-close"/></svg></button>
     `;
 
     diceList.appendChild(diceItem);
@@ -2469,6 +2539,17 @@ let calculator;
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize language system first
     initializeLanguage();
+
+    // Tooltips: en móvil no hay hover, así que se abren al tocarlos.
+    // Van dentro de <label>, de ahí el preventDefault: si no, el toque enfocaría el input.
+    document.addEventListener('click', (e) => {
+        const tip = e.target.closest('.tooltip');
+        document.querySelectorAll('.tooltip.open').forEach(el => { if (el !== tip) el.classList.remove('open'); });
+        if (tip) {
+            e.preventDefault();
+            tip.classList.toggle('open');
+        }
+    });
 
     // Selector de idioma
     document.querySelectorAll('#languageSelect [data-lang]').forEach(btn => {

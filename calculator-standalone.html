@@ -31,7 +31,7 @@
     /* Texto: hueso */
     --ink: #efe6d8;
     --ink-2: #bfb2a0;
-    --ink-3: #85786a;
+    --ink-3: #9a8d7d;   /* 5.1:1 sobre --bg-elev: AA para texto chico */
 
     /* Semánticos — son los únicos acentos de la interfaz */
     --miss: #b0413e;
@@ -94,6 +94,22 @@ b, strong { font-weight: 650; }
 }
 .skip-link:focus { left: 8px; }
 
+/* ---------- Íconos ----------
+   Un único tamaño y grosor de trazo; el color siempre sale de currentColor,
+   así heredan el estado (hover, activo, deshabilitado) del elemento que los contiene. */
+.icon-sprite { display: none; }
+.icon {
+    width: 1em; height: 1em;
+    flex: 0 0 auto;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.75;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    vertical-align: -0.135em;
+    overflow: visible;
+}
+
 /* ---------- Barra superior ---------- */
 .topbar {
     display: flex; align-items: center; justify-content: space-between;
@@ -103,15 +119,17 @@ b, strong { font-weight: 650; }
 }
 /* El nombre nunca se parte: si no entra todo, el botón Instalar baja a su propia línea */
 .brand { display: flex; align-items: baseline; gap: 8px; font-family: var(--font-display); white-space: nowrap; flex: 0 0 auto; }
-.brand-mark { color: var(--crit); font-size: 1.3em; line-height: 1; }
+.brand-mark { color: var(--crit); width: 1.25em; height: 1.25em; }
 .brand-name { font-size: 1.15em; font-weight: 600; }
 
 .lang-switch { display: flex; gap: 2px; background: var(--bg-elev); border: 1px solid var(--line); border-radius: 999px; padding: 2px; }
 .lang-switch button {
     border: 0; background: transparent; color: var(--ink-3);
-    min-width: 40px; min-height: 32px; border-radius: 999px;
+    min-width: 44px; min-height: 44px; border-radius: 999px;
     font-size: 0.8em; font-weight: 650; letter-spacing: 0.04em;
+    transition: color 0.15s, background 0.15s;
 }
+.lang-switch button:hover { color: var(--ink); }
 .lang-switch button[aria-pressed="true"] { background: var(--bg-elev-2); color: var(--ink); }
 
 .btn-install { order: 3; flex: 1 0 100%; border-color: var(--crit); color: var(--crit); }
@@ -171,6 +189,7 @@ input:focus, select:focus { border-color: var(--line-strong); }
     border: 0; background: var(--bg-elev-2); color: var(--ink); font-size: 1.4em; line-height: 1;
     min-height: var(--tap); user-select: none; touch-action: manipulation;
 }
+.stepper .step:hover { background: var(--line); }
 .stepper .step:active { background: var(--line-strong); }
 .stepper-lg { --tap: 48px; width: 150px; }
 .stepper-lg input { font-family: var(--font-display); font-size: 1.6em; font-weight: 700; }
@@ -184,7 +203,9 @@ input:focus, select:focus { border-color: var(--line-strong); }
     border-radius: 4px; color: var(--ink-2); font-weight: 600; font-variant-numeric: tabular-nums; font-size: 0.95em;
     transition: background 0.15s, color 0.15s;
 }
+.segmented label:hover span { color: var(--ink); background: rgba(255, 255, 255, 0.04); }
 .segmented input:checked + span { background: var(--bg-elev-2); color: var(--ink); box-shadow: 0 1px 0 rgba(255,255,255,0.04) inset, 0 2px 6px rgba(0,0,0,0.35); }
+.segmented label:hover input:checked + span { background: var(--line); }
 .segmented input:focus-visible + span { outline: 2px solid var(--focus); outline-offset: -2px; }
 .segmented-3 input[value="disadvantage"]:checked + span { color: #f0a8a5; }
 .segmented-3 input[value="advantage"]:checked + span { color: #b9dba6; }
@@ -194,6 +215,8 @@ input:focus, select:focus { border-color: var(--line-strong); }
 .toggle input { position: absolute; opacity: 0; width: 0; height: 0; }
 .toggle-track { position: relative; width: 44px; height: 26px; border-radius: 999px; background: var(--bg-input); border: 1px solid var(--line-strong); transition: background 0.2s; }
 .toggle-track::after { content: ''; position: absolute; top: 2px; left: 2px; width: 20px; height: 20px; border-radius: 50%; background: var(--ink-2); transition: transform 0.2s, background 0.2s; }
+.toggle:hover { border-color: var(--line-strong); }
+.toggle:hover .toggle-track { border-color: var(--ink-3); }
 .toggle input:checked ~ .toggle-track { background: var(--crit); border-color: var(--crit); }
 .toggle input:checked ~ .toggle-track::after { transform: translateX(18px); background: var(--crit-ink); }
 .toggle input:focus-visible ~ .toggle-track { outline: 2px solid var(--focus); outline-offset: 2px; }
@@ -201,29 +224,47 @@ input:focus, select:focus { border-color: var(--line-strong); }
 .toggle-text small { color: var(--ink-3); font-size: 0.78em; }
 
 /* Tooltip (?) */
-.tooltip { position: relative; display: inline-flex; align-items: center; justify-content: center; width: 20px; height: 20px; border-radius: 50%; background: var(--bg-elev-2); color: var(--ink-3); font-size: 0.75em; font-weight: 700; cursor: help; }
+.tooltip {
+    position: relative; display: inline-flex; align-items: center; justify-content: center;
+    width: 24px; height: 24px; padding: 0; border: 0; border-radius: 50%;
+    background: var(--bg-elev-2); color: var(--ink-2);
+    font-size: 0.75em; font-weight: 700; cursor: help;
+    transition: color 0.15s, background 0.15s;
+}
+/* El círculo mide 24 px por diseño; el área táctil se amplía a 44 sin cambiar el aspecto */
+.tooltip::before { content: ''; position: absolute; inset: -10px; border-radius: 50%; }
+.tooltip:hover, .tooltip.open { background: var(--line-strong); color: var(--ink); }
 .tooltip-text { display: none; position: absolute; left: 0; top: 130%; z-index: 20; width: 240px; padding: 8px 10px; background: var(--bg-elev-2); border: 1px solid var(--line-strong); border-radius: var(--radius-sm); color: var(--ink); font-size: 0.85rem; font-weight: 400; line-height: 1.35; box-shadow: var(--shadow); }
-.tooltip:hover .tooltip-text, .tooltip:focus-within .tooltip-text { display: block; }
+.tooltip:hover .tooltip-text, .tooltip:focus-visible .tooltip-text, .tooltip.open .tooltip-text { display: block; }
 
 /* Dados */
 .dice-builder { display: flex; flex-direction: column; gap: 8px; }
 .dice-list { display: flex; flex-direction: column; gap: 6px; }
 .dice-item { display: grid; grid-template-columns: 72px auto 1fr var(--tap); gap: 6px; align-items: center; }
 .dice-d { color: var(--ink-3); font-weight: 700; font-family: var(--font-display); }
-.btn-remove { min-height: var(--tap); border: 1px solid var(--line); border-radius: var(--radius-sm); background: var(--bg-elev); color: var(--miss); font-size: 1.3em; }
+.btn-remove {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-height: var(--tap); border: 1px solid var(--line); border-radius: var(--radius-sm);
+    background: var(--bg-elev); color: var(--ink-3); font-size: 1.15em;
+    transition: color 0.15s, border-color 0.15s;
+}
+.btn-remove:hover { color: var(--miss); border-color: var(--miss); }
 .dice-footer { display: flex; align-items: center; justify-content: space-between; gap: 10px; }
 .dice-notation { font-family: var(--font-num); font-size: 0.95em; color: var(--crit); text-align: right; }
 
 /* Botones */
 .btn-primary, .btn-ghost {
+    display: inline-flex; align-items: center; justify-content: center; gap: 8px;
     min-height: var(--tap); padding: 0 16px; border-radius: var(--radius-sm); font-weight: 650;
 }
 .btn-primary { border: 1px solid var(--crit); background: var(--crit); color: var(--crit-ink); }
-.btn-primary:active { filter: brightness(0.92); }
+.btn-primary:hover { filter: brightness(1.08); }
+.btn-primary:active { filter: brightness(0.9); }
 .btn-ghost { border: 1px solid var(--line-strong); background: transparent; color: var(--ink); }
-.btn-ghost:active { background: var(--bg-elev-2); }
+.btn-ghost:hover { background: var(--bg-elev-2); border-color: var(--ink-3); }
+.btn-ghost:active { background: var(--line); }
 .btn-block { width: 100%; }
-.btn-sm { min-height: 36px; padding: 0 12px; font-size: 0.85em; }
+.btn-sm { min-height: 44px; padding: 0 14px; font-size: 0.85em; }
 
 /* ---------- Paneles ---------- */
 .panel { background: var(--bg-elev); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); scroll-margin-top: calc(var(--hero-h) + 8px); }
@@ -239,6 +280,8 @@ details.panel > summary {
     font-family: var(--font-display); font-weight: 600; font-size: 1.05em;
 }
 details.panel > summary::-webkit-details-marker { display: none; }
+details.panel > summary:hover { color: var(--ink); }
+details.panel > summary:hover .chev { border-color: var(--ink); }
 .chev { width: 10px; height: 10px; border-right: 2px solid var(--ink-3); border-bottom: 2px solid var(--ink-3); transform: rotate(45deg); transition: transform 0.2s; flex: 0 0 auto; margin-right: 4px; }
 details[open] > summary .chev { transform: rotate(-135deg); }
 details.panel > .panel-body { padding: 0 14px 14px; display: flex; flex-direction: column; gap: 12px; }
@@ -251,6 +294,7 @@ details.panel > .panel-body { padding: 0 14px 14px; display: flex; flex-directio
 .stat:nth-child(1) .stat-value { color: var(--crit); }
 .stat:nth-child(2) .stat-value { color: var(--hit); }
 .stat-sneak .stat-value { color: var(--crit); }
+.stat-sneak { grid-column: 1 / -1; }   /* es la quinta: ocupa la fila entera en vez de dejar un hueco */
 .stat-label { font-size: 0.75em; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.06em; }
 
 .defeat { margin-top: 12px; }
@@ -305,11 +349,19 @@ details.panel > .panel-body { padding: 0 14px 14px; display: flex; flex-directio
 
 /* ---------- Multiataque ---------- */
 .multi-attack-info { font-size: 0.9em; color: var(--ink-2); line-height: 1.5; }
+.multi-attack-info .icon { color: var(--crit); margin-right: 4px; }
+.summary-title { color: var(--crit); }
 .distribution-group { border: 1px solid var(--line); border-radius: var(--radius-sm); margin-bottom: 6px; overflow: hidden; }
-.dist-header { display: grid; grid-template-columns: 1fr auto var(--tap); align-items: center; gap: 8px; padding: 0 0 0 12px; min-height: var(--tap); cursor: pointer; background: var(--bg-elev-2); }
+.dist-header { display: grid; grid-template-columns: 1fr auto var(--tap); align-items: center; gap: 8px; padding: 0 0 0 12px; min-height: var(--tap); cursor: pointer; background: var(--bg-elev-2); transition: background 0.15s; }
+.dist-header:hover { background: var(--line); }
 .dist-hits { font-weight: 650; }
 .dist-total-prob { font-family: var(--font-display); font-size: 1.15em; font-weight: 700; color: var(--crit); font-variant-numeric: tabular-nums; }
-.expand-btn { border: 0; background: transparent; color: var(--ink-3); min-height: var(--tap); transition: transform 0.2s; }
+.expand-btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    border: 0; background: transparent; color: var(--ink-3);
+    min-height: var(--tap); font-size: 1.1em; transition: transform 0.2s, color 0.15s;
+}
+.dist-header:hover .expand-btn { color: var(--ink); }
 .expand-btn.expanded { transform: rotate(180deg); }
 .dist-details { display: none; padding: 8px 12px 10px; background: var(--bg-input); }
 .dist-details.expanded { display: block; }
@@ -350,13 +402,22 @@ details.panel > .panel-body { padding: 0 14px 14px; display: flex; flex-directio
 .editing-indicator { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding: 8px 10px; background: rgba(224, 160, 58, 0.12); border: 1px solid rgba(224, 160, 58, 0.4); border-radius: var(--radius-sm); font-size: 0.9em; }
 .profiles-list { display: flex; flex-direction: column; gap: 6px; }
 .profile-card { display: grid; grid-template-columns: 1fr auto; gap: 8px; align-items: center; padding: 8px 10px; background: var(--bg-elev-2); border: 1px solid var(--line); border-radius: var(--radius-sm); }
+.profile-card:hover { border-color: var(--line-strong); }
 .profile-card.editing { border-color: var(--crit); }
 .profile-info { display: flex; flex-direction: column; min-width: 0; }
 .profile-name { font-weight: 650; }
 .profile-preview { font-size: 0.78em; color: var(--ink-3); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .profile-actions { display: flex; gap: 2px; }
-.profile-actions button { min-width: 44px; min-height: 44px; border: 0; background: transparent; border-radius: var(--radius-sm); font-size: 1.1em; }
-.profile-actions button:active { background: var(--bg-input); }
+.profile-actions button {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-width: 44px; min-height: 44px;
+    border: 0; background: transparent; border-radius: var(--radius-sm);
+    color: var(--ink-2); font-size: 1.15em;
+    transition: color 0.15s, background 0.15s;
+}
+.profile-actions button:hover { color: var(--ink); background: var(--bg-input); }
+.profile-actions button:active { background: var(--line); }
+.btn-delete:hover { color: var(--miss); }
 .profiles-io { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 4px; }
 .profile-feedback { margin-top: 8px; padding: 8px 10px; border-radius: var(--radius-sm); font-size: 0.9em; background: rgba(95, 143, 76, 0.2); border: 1px solid var(--hit); transition: opacity 0.3s; }
 .profile-feedback.error { background: rgba(176, 65, 62, 0.2); border-color: var(--miss); }
@@ -364,7 +425,8 @@ details.panel > .panel-body { padding: 0 14px 14px; display: flex; flex-directio
 .profile-feedback.fade-out { opacity: 0; }
 
 .compare-profiles-list { display: flex; flex-direction: column; gap: 6px; }
-.compare-checkbox-item { display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: center; padding: 8px 10px; border: 1px solid var(--line); border-radius: var(--radius-sm); cursor: pointer; min-height: var(--tap); }
+.compare-checkbox-item { display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: center; padding: 8px 10px; border: 1px solid var(--line); border-radius: var(--radius-sm); cursor: pointer; min-height: var(--tap); transition: border-color 0.15s; }
+.compare-checkbox-item:hover { border-color: var(--line-strong); }
 .compare-checkbox-item input { position: absolute; opacity: 0; width: 0; height: 0; }
 .checkbox-custom { width: 20px; height: 20px; border: 2px solid var(--line-strong); border-radius: 5px; position: relative; }
 .compare-checkbox-item input:checked + .checkbox-custom { background: var(--crit); border-color: var(--crit); }
@@ -379,9 +441,14 @@ details.panel > .panel-body { padding: 0 14px 14px; display: flex; flex-directio
 /* Tabla de comparación */
 .comparison-table { width: 100%; border-collapse: collapse; font-size: 0.85em; font-variant-numeric: tabular-nums; margin-top: 10px; }
 .comparison-table th, .comparison-table td { padding: 8px 10px; text-align: right; white-space: nowrap; border-top: 1px solid var(--line); }
-.comparison-table th:first-child, .comparison-table td:first-child { text-align: left; }
+.comparison-table th:first-child, .comparison-table td:first-child {
+    text-align: left;
+    position: sticky; left: 0; z-index: 1;
+    background: var(--bg-elev);
+    box-shadow: 6px 0 8px -6px rgba(0, 0, 0, 0.65);
+}
 .comparison-table th { font-size: 0.8em; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-3); border-top: 0; }
-.best-badge { color: var(--crit); }
+.best-badge { color: var(--crit); display: inline-flex; vertical-align: middle; margin-left: 4px; font-size: 0.95em; }
 .adv-badge, .attacks-badge { display: inline-block; padding: 1px 6px; border-radius: 999px; font-size: 0.8em; background: var(--bg-input); margin-left: 4px; }
 .adv-badge.advantage { color: #9fcf8b; } .adv-badge.disadvantage { color: #d98a87; }
 
@@ -426,11 +493,42 @@ details.panel > .panel-body { padding: 0 14px 14px; display: flex; flex-directio
     </style>
 </head>
 <body>
+    <!-- Íconos: un solo sprite, trazo monocromático que hereda currentColor -->
+    <svg class="icon-sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+        <symbol id="i-sword" viewBox="0 0 24 24">
+            <path d="M20 4 10.5 13.5"/><path d="M8.5 11 13 15.5"/><path d="M10.5 13.5 6 18"/><circle cx="4.8" cy="19.2" r="1.3"/>
+        </symbol>
+        <symbol id="i-pencil" viewBox="0 0 24 24">
+            <path d="M4 20h4L20 8l-4-4L4 16v4Z"/><path d="M14 6l4 4"/>
+        </symbol>
+        <symbol id="i-load" viewBox="0 0 24 24">
+            <path d="M12 3v11"/><path d="M8 10l4 4 4-4"/><path d="M4 17v3h16v-3"/>
+        </symbol>
+        <symbol id="i-export" viewBox="0 0 24 24">
+            <path d="M12 15V4"/><path d="M8 8l4-4 4 4"/><path d="M4 17v3h16v-3"/>
+        </symbol>
+        <symbol id="i-trash" viewBox="0 0 24 24">
+            <path d="M4 7h16"/><path d="M9.5 7V4h5v3"/><path d="M6 7l1 13h10l1-13"/><path d="M10 11v5M14 11v5"/>
+        </symbol>
+        <symbol id="i-star" viewBox="0 0 24 24">
+            <path d="M12 3.5l2.6 5.3 5.9.9-4.25 4.15 1 5.85L12 16.9l-5.25 2.8 1-5.85L3.5 9.7l5.9-.9Z"/>
+        </symbol>
+        <symbol id="i-chart" viewBox="0 0 24 24">
+            <path d="M5 20V11"/><path d="M12 20V4"/><path d="M19 20v-6"/>
+        </symbol>
+        <symbol id="i-close" viewBox="0 0 24 24">
+            <path d="M6 6l12 12"/><path d="M18 6 6 18"/>
+        </symbol>
+        <symbol id="i-chevron" viewBox="0 0 24 24">
+            <path d="M6 9l6 6 6-6"/>
+        </symbol>
+    </svg>
+
     <a class="skip-link" href="#results" data-i18n="skipToResults">Ir a los resultados</a>
 
     <header class="topbar">
         <div class="brand">
-            <span class="brand-mark" aria-hidden="true">⚔</span>
+            <svg class="icon brand-mark" aria-hidden="true" focusable="false"><use href="#i-sword"/></svg>
             <span class="brand-name" data-i18n="appName">Ataque D&D</span>
         </div>
         <button type="button" class="btn-ghost btn-sm btn-install" id="installBtn" hidden data-i18n="installApp">Instalar</button>
@@ -447,9 +545,9 @@ details.panel > .panel-body { padding: 0 14px 14px; display: flex; flex-directio
         <div class="hero-ac">
             <span class="hero-label" data-i18n="heroTargetAC">CA objetivo</span>
             <div class="stepper stepper-lg">
-                <button type="button" class="step" data-step="targetAC" data-delta="-1" aria-label="CA −1">−</button>
-                <input type="number" id="targetAC" value="15" min="1" max="30" inputmode="numeric" aria-label="CA objetivo">
-                <button type="button" class="step" data-step="targetAC" data-delta="1" aria-label="CA +1">+</button>
+                <button type="button" class="step" data-step="targetAC" data-delta="-1">−</button>
+                <input type="number" id="targetAC" value="15" min="1" max="30" inputmode="numeric" data-i18n-aria="heroTargetAC" aria-label="CA objetivo">
+                <button type="button" class="step" data-step="targetAC" data-delta="1">+</button>
             </div>
         </div>
         <div class="hero-stat">
@@ -472,24 +570,24 @@ details.panel > .panel-body { padding: 0 14px 14px; display: flex; flex-directio
             <div class="field">
                 <label for="attackBonus">
                     <span data-i18n="attackBonus">Bonificador de Ataque</span>
-                    <span class="tooltip">?<span class="tooltip-text" data-i18n="attackBonusTooltip">Tu modificador de ataque total (ej: +5)</span></span>
+                    <button type="button" class="tooltip">?<span class="tooltip-text" data-i18n="attackBonusTooltip">Tu modificador de ataque total (ej: +5)</span></button>
                 </label>
                 <div class="stepper">
-                    <button type="button" class="step" data-step="attackBonus" data-delta="-1" aria-label="−1">−</button>
+                    <button type="button" class="step" data-step="attackBonus" data-delta="-1">−</button>
                     <input type="number" id="attackBonus" value="5" min="-5" max="20" step="1" inputmode="numeric">
-                    <button type="button" class="step" data-step="attackBonus" data-delta="1" aria-label="+1">+</button>
+                    <button type="button" class="step" data-step="attackBonus" data-delta="1">+</button>
                 </div>
             </div>
 
             <div class="field">
                 <label for="damageBonus">
                     <span data-i18n="damageBonus">Bonificador de Daño</span>
-                    <span class="tooltip">?<span class="tooltip-text" data-i18n="damageBonusTooltip">Modificador que se suma al daño (ej: +3)</span></span>
+                    <button type="button" class="tooltip">?<span class="tooltip-text" data-i18n="damageBonusTooltip">Modificador que se suma al daño (ej: +3)</span></button>
                 </label>
                 <div class="stepper">
-                    <button type="button" class="step" data-step="damageBonus" data-delta="-1" aria-label="−1">−</button>
+                    <button type="button" class="step" data-step="damageBonus" data-delta="-1">−</button>
                     <input type="number" id="damageBonus" value="3" min="0" max="30" step="1" inputmode="numeric">
-                    <button type="button" class="step" data-step="damageBonus" data-delta="1" aria-label="+1">+</button>
+                    <button type="button" class="step" data-step="damageBonus" data-delta="1">+</button>
                 </div>
             </div>
 
@@ -498,9 +596,9 @@ details.panel > .panel-body { padding: 0 14px 14px; display: flex; flex-directio
                 <div class="dice-builder">
                     <div id="diceList" class="dice-list">
                         <div class="dice-item">
-                            <input type="number" class="dice-count" value="1" min="1" max="20" inputmode="numeric" aria-label="Cantidad">
+                            <input type="number" class="dice-count" value="1" min="1" max="20" inputmode="numeric" data-i18n-aria="ariaDiceCount" aria-label="Cantidad">
                             <span class="dice-d">d</span>
-                            <select class="dice-sides" aria-label="Caras">
+                            <select class="dice-sides" data-i18n-aria="ariaDiceSides" aria-label="Caras">
                                 <option value="4">4</option>
                                 <option value="6">6</option>
                                 <option value="8" selected>8</option>
@@ -509,7 +607,7 @@ details.panel > .panel-body { padding: 0 14px 14px; display: flex; flex-directio
                                 <option value="20">20</option>
                                 <option value="100">100</option>
                             </select>
-                            <button type="button" class="btn-remove" onclick="removeDice(this)" aria-label="Quitar dado">×</button>
+                            <button type="button" class="btn-remove" onclick="removeDice(this)" data-i18n-aria="ariaRemoveDice" aria-label="Quitar dado"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-close"/></svg></button>
                         </div>
                     </div>
                     <div class="dice-footer">
@@ -569,12 +667,12 @@ details.panel > .panel-body { padding: 0 14px 14px; display: flex; flex-directio
             <div class="field">
                 <label for="sneakAttackDice">
                     <span data-i18n="sneakAttack">Sneak Attack (d6)</span>
-                    <span class="tooltip">?<span class="tooltip-text" data-i18n="sneakAttackTooltip">Cantidad de d6 de Sneak Attack. Se aplica UNA sola vez por turno y se duplica en crítico (regla oficial de D&D 5e).</span></span>
+                    <button type="button" class="tooltip">?<span class="tooltip-text" data-i18n="sneakAttackTooltip">Cantidad de d6 de Sneak Attack. Se aplica UNA sola vez por turno y se duplica en crítico (regla oficial de D&D 5e).</span></button>
                 </label>
                 <div class="stepper">
-                    <button type="button" class="step" data-step="sneakAttackDice" data-delta="-1" aria-label="−1">−</button>
+                    <button type="button" class="step" data-step="sneakAttackDice" data-delta="-1">−</button>
                     <input type="number" id="sneakAttackDice" value="0" min="0" max="12" step="1" inputmode="numeric">
-                    <button type="button" class="step" data-step="sneakAttackDice" data-delta="1" aria-label="+1">+</button>
+                    <button type="button" class="step" data-step="sneakAttackDice" data-delta="1">+</button>
                 </div>
             </div>
 
@@ -602,8 +700,8 @@ details.panel > .panel-body { padding: 0 14px 14px; display: flex; flex-directio
                     <div class="profiles-list" id="profilesList"></div>
                     <div class="empty" id="noProfiles" data-i18n="noProfiles">No hay perfiles guardados</div>
                     <div class="profiles-io">
-                        <button type="button" class="btn-ghost btn-sm" onclick="exportProfiles()" data-i18n="exportProfilesBtn">Exportar JSON</button>
-                        <button type="button" class="btn-ghost btn-sm" onclick="document.getElementById('importFile').click()" data-i18n="importProfilesBtn">Importar JSON</button>
+                        <button type="button" class="btn-ghost btn-sm" onclick="exportProfiles()"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-export"/></svg><span data-i18n="exportProfilesBtn">Exportar JSON</span></button>
+                        <button type="button" class="btn-ghost btn-sm" onclick="document.getElementById('importFile').click()"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-load"/></svg><span data-i18n="importProfilesBtn">Importar JSON</span></button>
                         <input type="file" id="importFile" accept="application/json,.json" hidden>
                     </div>
                 </div>
@@ -619,9 +717,9 @@ details.panel > .panel-body { padding: 0 14px 14px; display: flex; flex-directio
                     <div class="field compare-ac">
                         <label for="compareTargetAC" data-i18n="compareTargetAC">CA para comparar</label>
                         <div class="stepper">
-                            <button type="button" class="step" data-step="compareTargetAC" data-delta="-1" aria-label="−1">−</button>
+                            <button type="button" class="step" data-step="compareTargetAC" data-delta="-1">−</button>
                             <input type="number" id="compareTargetAC" value="15" min="1" max="30" inputmode="numeric">
-                            <button type="button" class="step" data-step="compareTargetAC" data-delta="1" aria-label="+1">+</button>
+                            <button type="button" class="step" data-step="compareTargetAC" data-delta="1">+</button>
                         </div>
                     </div>
                     <button type="button" class="btn-primary btn-block" onclick="runComparison()" data-i18n="compareButton">Comparar</button>
@@ -1339,6 +1437,16 @@ let currentLanguage = 'es';
 // Translation object with all supported languages
 const translations = {
     es: {
+        turnsLabelSingular: "turno",
+        ariaHelp: "Ayuda",
+        // Etiquetas accesibles (botones que sólo muestran un ícono)
+        bestValue: "Mejor",
+        ariaRemoveDice: "Quitar dado",
+        ariaDiceCount: "Cantidad de dados",
+        ariaDiceSides: "Caras del dado",
+        ariaExpand: "Ver desglose de críticos",
+        ariaStepUp: "Sumar 1 a {{field}}",
+        ariaStepDown: "Restar 1 a {{field}}",
         // Power Level
         powerLevelFormula: "DPR promedio vs CA",
         powerLevelBulletDPR: "DPR promedio",
@@ -1445,7 +1553,7 @@ const translations = {
         multiAttackDisadvantage: " <strong style=\"color: var(--color-miss);\">(CON DESVENTAJA)</strong>",
         multiAttackHitProb: "Probabilidad de impacto por ataque: {{prob}}%",
         multiAttackCritProb: "Probabilidad de crítico por ataque: {{prob}}%",
-        multiAttackSummary: "<strong style=\"color: var(--color-crit);\">📊 Resumen de daño total:</strong>",
+        multiAttackSummary: "<strong class=\"summary-title\">Resumen de daño total:</strong>",
         multiAttackAllNormal: "• Si todos impactan (sin críticos): <strong style=\"color: var(--color-hit);\">{{min}}-{{max}} daño</strong>",
         multiAttackAllCrit: "• Si todos impactan con críticos: <strong style=\"color: var(--color-crit);\">{{min}}-{{max}} daño</strong>",
         multiAttackRange: "• Rango total posible: <strong style=\"color: var(--text-primary);\">0-{{max}} daño</strong>",
@@ -1572,6 +1680,16 @@ const translations = {
     },
 
     en: {
+        turnsLabelSingular: "turn",
+        ariaHelp: "Help",
+        // Etiquetas accesibles (botones que sólo muestran un ícono)
+        bestValue: "Best",
+        ariaRemoveDice: "Remove die",
+        ariaDiceCount: "Number of dice",
+        ariaDiceSides: "Die sides",
+        ariaExpand: "Show critical breakdown",
+        ariaStepUp: "Add 1 to {{field}}",
+        ariaStepDown: "Subtract 1 from {{field}}",
         // Power Level
         powerLevelFormula: "Average DPR vs AC",
         powerLevelBulletDPR: "Average DPR",
@@ -1678,7 +1796,7 @@ const translations = {
         multiAttackDisadvantage: " <strong style=\"color: var(--color-miss);\">(WITH DISADVANTAGE)</strong>",
         multiAttackHitProb: "Hit probability per attack: {{prob}}%",
         multiAttackCritProb: "Critical probability per attack: {{prob}}%",
-        multiAttackSummary: "<strong style=\"color: var(--color-crit);\">📊 Total damage summary:</strong>",
+        multiAttackSummary: "<strong class=\"summary-title\">Total damage summary:</strong>",
         multiAttackAllNormal: "• If all hit (no crits): <strong style=\"color: var(--color-hit);\">{{min}}-{{max}} damage</strong>",
         multiAttackAllCrit: "• If all hit critically: <strong style=\"color: var(--color-crit);\">{{min}}-{{max}} damage</strong>",
         multiAttackRange: "• Total possible range: <strong style=\"color: var(--text-primary);\">0-{{max}} damage</strong>",
@@ -1805,6 +1923,16 @@ const translations = {
     },
 
     pt: {
+        turnsLabelSingular: "turno",
+        ariaHelp: "Ajuda",
+        // Etiquetas accesibles (botones que sólo muestran un ícono)
+        bestValue: "Melhor",
+        ariaRemoveDice: "Remover dado",
+        ariaDiceCount: "Quantidade de dados",
+        ariaDiceSides: "Faces do dado",
+        ariaExpand: "Ver detalhe de críticos",
+        ariaStepUp: "Somar 1 a {{field}}",
+        ariaStepDown: "Subtrair 1 de {{field}}",
         // Power Level
         powerLevelFormula: "DPR médio vs CA",
         powerLevelBulletDPR: "DPR médio",
@@ -1911,7 +2039,7 @@ const translations = {
         multiAttackDisadvantage: " <strong style=\"color: var(--color-miss);\">(COM DESVANTAGEM)</strong>",
         multiAttackHitProb: "Probabilidade de acerto por ataque: {{prob}}%",
         multiAttackCritProb: "Probabilidade de crítico por ataque: {{prob}}%",
-        multiAttackSummary: "<strong style=\"color: var(--color-crit);\">📊 Resumo de dano total:</strong>",
+        multiAttackSummary: "<strong class=\"summary-title\">Resumo de dano total:</strong>",
         multiAttackAllNormal: "• Se todos acertarem (sem críticos): <strong style=\"color: var(--color-hit);\">{{min}}-{{max}} dano</strong>",
         multiAttackAllCrit: "• Se todos acertarem criticamente: <strong style=\"color: var(--color-crit);\">{{min}}-{{max}} dano</strong>",
         multiAttackRange: "• Alcance total possível: <strong style=\"color: var(--text-primary);\">0-{{max}} dano</strong>",
@@ -2038,6 +2166,16 @@ const translations = {
     },
 
     de: {
+        turnsLabelSingular: "Runde",
+        ariaHelp: "Hilfe",
+        // Etiquetas accesibles (botones que sólo muestran un ícono)
+        bestValue: "Bester",
+        ariaRemoveDice: "Würfel entfernen",
+        ariaDiceCount: "Anzahl der Würfel",
+        ariaDiceSides: "Würfelseiten",
+        ariaExpand: "Kritische Treffer aufschlüsseln",
+        ariaStepUp: "1 zu {{field}} addieren",
+        ariaStepDown: "1 von {{field}} abziehen",
         // Power Level
         powerLevelFormula: "Durchschnittlicher DPR vs RK",
         powerLevelBulletDPR: "Durchschnittlicher DPR",
@@ -2144,7 +2282,7 @@ const translations = {
         multiAttackDisadvantage: " <strong style=\"color: var(--color-miss);\">(MIT NACHTEIL)</strong>",
         multiAttackHitProb: "Trefferwahrscheinlichkeit pro Angriff: {{prob}}%",
         multiAttackCritProb: "Kritische Wahrscheinlichkeit pro Angriff: {{prob}}%",
-        multiAttackSummary: "<strong style=\"color: var(--color-crit);\">📊 Gesamtschadenszusammenfassung:</strong>",
+        multiAttackSummary: "<strong class=\"summary-title\">Gesamtschadenszusammenfassung:</strong>",
         multiAttackAllNormal: "• Wenn alle treffen (keine Kritischen): <strong style=\"color: var(--color-hit);\">{{min}}-{{max}} Schaden</strong>",
         multiAttackAllCrit: "• Wenn alle kritisch treffen: <strong style=\"color: var(--color-crit);\">{{min}}-{{max}} Schaden</strong>",
         multiAttackRange: "• Gesamtmöglicher Bereich: <strong style=\"color: var(--text-primary);\">0-{{max}} Schaden</strong>",
@@ -2315,6 +2453,19 @@ function setLanguage(lang) {
         }
     });
 
+    // Etiquetas accesibles de los botones que sólo muestran un ícono
+    document.querySelectorAll('[data-i18n-aria]').forEach(el => {
+        const key = el.getAttribute('data-i18n-aria');
+        if (translations[currentLanguage][key]) el.setAttribute('aria-label', translations[currentLanguage][key]);
+    });
+    updateStepperLabels();
+
+    // El botón "?" se anuncia con el texto de ayuda que muestra, no con un genérico
+    document.querySelectorAll('.tooltip').forEach(tip => {
+        const texto = tip.querySelector('.tooltip-text');
+        if (texto) tip.setAttribute('aria-label', texto.textContent.trim());
+    });
+
     // Update tooltips
     document.querySelectorAll('[data-i18n-tooltip]').forEach(el => {
         const key = el.getAttribute('data-i18n-tooltip');
@@ -2343,6 +2494,19 @@ function setLanguage(lang) {
     if (typeof profileManager !== 'undefined' && profileManager) {
         profileManager.renderProfiles();
     }
+}
+
+// Los − / + no dicen a qué campo pertenecen: se les arma el nombre con el del campo.
+function updateStepperLabels() {
+    document.querySelectorAll('.step[data-step]').forEach(btn => {
+        const input = document.getElementById(btn.dataset.step);
+        if (!input) return;
+        const label = document.querySelector(`label[for="${input.id}"]`);
+        const source = label ? (label.querySelector('[data-i18n]') || label) : null;
+        const field = (source ? source.textContent : input.getAttribute('aria-label') || '').trim();
+        const key = parseInt(btn.dataset.delta, 10) > 0 ? 'ariaStepUp' : 'ariaStepDown';
+        btn.setAttribute('aria-label', t(key, { field }));
+    });
 }
 
 // Initialize language on page load
@@ -2610,9 +2774,9 @@ class ProfileManager {
             const diceItem = document.createElement('div');
             diceItem.className = 'dice-item';
             diceItem.innerHTML = `
-                <input type="number" class="dice-count" value="${die.count}" min="1" max="20" inputmode="numeric" aria-label="Cantidad">
+                <input type="number" class="dice-count" value="${die.count}" min="1" max="20" inputmode="numeric" aria-label="${t('ariaDiceCount')}">
                 <span class="dice-d">d</span>
-                <select class="dice-sides" aria-label="Caras">
+                <select class="dice-sides" aria-label="${t('ariaDiceSides')}">
                     <option value="4"${die.sides === 4 ? ' selected' : ''}>4</option>
                     <option value="6"${die.sides === 6 ? ' selected' : ''}>6</option>
                     <option value="8"${die.sides === 8 ? ' selected' : ''}>8</option>
@@ -2621,7 +2785,7 @@ class ProfileManager {
                     <option value="20"${die.sides === 20 ? ' selected' : ''}>20</option>
                     <option value="100"${die.sides === 100 ? ' selected' : ''}>100</option>
                 </select>
-                <button type="button" class="btn-remove" onclick="removeDice(this)" aria-label="Quitar dado">×</button>
+                <button type="button" class="btn-remove" onclick="removeDice(this)" aria-label="${t('ariaRemoveDice')}"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-close"/></svg></button>
             `;
             diceList.appendChild(diceItem);
         });
@@ -2683,9 +2847,9 @@ class ProfileManager {
                         <span class="profile-preview">${this.formatProfilePreview(profile.config)}</span>
                     </div>
                     <div class="profile-actions">
-                        <button class="btn-edit" onclick="editProfile('${profile.id}')" title="${t('editProfile')}">✏️</button>
-                        <button class="btn-load" onclick="loadProfile('${profile.id}')" title="${t('loadProfileTooltip')}">📥</button>
-                        <button class="btn-delete" onclick="deleteProfile('${profile.id}')" title="${t('deleteProfileTooltip')}">🗑️</button>
+                        <button type="button" class="btn-edit" onclick="editProfile('${profile.id}')" title="${t('editProfile')}" aria-label="${t('editProfile')}: ${this.escapeHtml(profile.name)}"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-pencil"/></svg></button>
+                        <button type="button" class="btn-load" onclick="loadProfile('${profile.id}')" title="${t('loadProfileTooltip')}" aria-label="${t('loadProfileTooltip')}: ${this.escapeHtml(profile.name)}"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-load"/></svg></button>
+                        <button type="button" class="btn-delete" onclick="deleteProfile('${profile.id}')" title="${t('deleteProfileTooltip')}" aria-label="${t('deleteProfileTooltip')}: ${this.escapeHtml(profile.name)}"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-trash"/></svg></button>
                     </div>
                 </div>
             `}).join('');
@@ -2878,6 +3042,7 @@ class ProfileComparator {
         tableBody.innerHTML = results.map(r => {
             const s = r.stats;
             const isBest = (metric) => bests[metric]?.ids.includes(r.id);
+            const bestBadge = `<span class="best-badge" role="img" aria-label="${t('bestValue')}"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-star"/></svg></span>`;
 
             // Formatear roll needed
             let rollDisplay;
@@ -2924,31 +3089,31 @@ class ProfileComparator {
                     </td>
                     <td class="${isBest('powerLevel') ? 'best-value' : ''}">
                         <span class="value-number">${s.powerLevel}</span>
-                        ${isBest('powerLevel') ? '<span class="best-badge">🏆</span>' : ''}
+                        ${isBest('powerLevel') ? bestBadge : ''}
                     </td>
                     <td class="${isBest('rollNeeded') ? 'best-value' : ''}">
                         <span class="value-number">${rollDisplay}</span>
-                        ${isBest('rollNeeded') ? '<span class="best-badge">🏆</span>' : ''}
+                        ${isBest('rollNeeded') ? bestBadge : ''}
                     </td>
                     <td class="${isBest('hitChance') ? 'best-value' : ''}">
                         <span class="value-number">${(s.hitChance * 100).toFixed(1)}%</span>
-                        ${isBest('hitChance') ? '<span class="best-badge">🏆</span>' : ''}
+                        ${isBest('hitChance') ? bestBadge : ''}
                     </td>
                     <td class="${isBest('critChance') ? 'best-value' : ''}">
                         <span class="value-number">${(s.critChance * 100).toFixed(1)}%</span>
-                        ${isBest('critChance') ? '<span class="best-badge">🏆</span>' : ''}
+                        ${isBest('critChance') ? bestBadge : ''}
                     </td>
                     <td class="${isBest('normalDamageMax') ? 'best-value' : ''}">
                         <span class="value-number">${s.normalDamage.min}-${s.normalDamage.max}</span>
-                        ${isBest('normalDamageMax') ? '<span class="best-badge">🏆</span>' : ''}
+                        ${isBest('normalDamageMax') ? bestBadge : ''}
                     </td>
                     <td class="${isBest('critDamageMax') ? 'best-value' : ''}">
                         <span class="value-number">${s.critDamage.min}-${s.critDamage.max}</span>
-                        ${isBest('critDamageMax') ? '<span class="best-badge">🏆</span>' : ''}
+                        ${isBest('critDamageMax') ? bestBadge : ''}
                     </td>
                     <td class="${isBest('totalDPR') ? 'best-value' : ''}">
                         <span class="value-number">${s.totalDPR.toFixed(1)}</span>
-                        ${isBest('totalDPR') ? '<span class="best-badge">🏆</span>' : ''}
+                        ${isBest('totalDPR') ? bestBadge : ''}
                     </td>
                 </tr>
             `;
@@ -3372,7 +3537,7 @@ class DnDCalculator {
             ${t('multiAttackHitProb', { prob: (pHit * 100).toFixed(1) })}<br>
             ${t('multiAttackCritProb', { prob: (pCrit * 100).toFixed(1) })}<br>
             <br>
-            ${t('multiAttackSummary')}<br>
+            <svg class="icon" aria-hidden="true" focusable="false"><use href="#i-chart"/></svg>${t('multiAttackSummary')}<br>
             <span style="color: var(--text-secondary);">
                 ${t('multiAttackAllNormal', { min: allNormalsMin, max: allNormalsMax })}<br>
                 ${t('multiAttackAllCrit', { min: allCritsMin, max: allCritsMax })}<br>
@@ -3399,7 +3564,7 @@ class DnDCalculator {
             header.innerHTML = `
                 <span class="dist-hits">${totalHits} ${hitsLabel}</span>
                 <span class="dist-total-prob">${(totalProbability * 100).toFixed(1)}%</span>
-                <button class="expand-btn">▼</button>
+                <button type="button" class="expand-btn" aria-expanded="false" aria-label="${t('ariaExpand')}"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-chevron"/></svg></button>
             `;
 
             // Detalles expandibles (combinaciones de críticos)
@@ -3437,8 +3602,9 @@ class DnDCalculator {
             // Event listener para expandir/colapsar
             header.addEventListener('click', () => {
                 const btn = header.querySelector('.expand-btn');
-                details.classList.toggle('expanded');
-                btn.classList.toggle('expanded');
+                const abierto = details.classList.toggle('expanded');
+                btn.classList.toggle('expanded', abierto);
+                btn.setAttribute('aria-expanded', String(abierto));
             });
 
             group.appendChild(header);
@@ -3514,10 +3680,12 @@ class DnDCalculator {
         const defeatList = document.getElementById('defeatTimesList');
         if (defeatList) {
             defeatList.innerHTML = enemies.map(enemy => {
-                const turns = dpr > 0 ? `~${Math.ceil(enemy.hp / dpr)}` : '∞';
+                const n = dpr > 0 ? Math.ceil(enemy.hp / dpr) : null;
+                const turns = n === null ? '∞' : `~${n}`;
+                const label = n === 1 ? t('turnsLabelSingular') : t('turnsLabel');
                 return `<div class="defeat-item">
                     <span class="defeat-enemy">${t(enemy.key)}</span>
-                    <span class="defeat-turns">${turns} ${t('turnsLabel')}</span>
+                    <span class="defeat-turns">${turns} ${label}</span>
                 </div>`;
             }).join('');
         }
@@ -3601,9 +3769,9 @@ function addDice() {
     const diceItem = document.createElement('div');
     diceItem.className = 'dice-item';
     diceItem.innerHTML = `
-        <input type="number" class="dice-count" value="1" min="1" max="20" inputmode="numeric" aria-label="Cantidad">
+        <input type="number" class="dice-count" value="1" min="1" max="20" inputmode="numeric" aria-label="${t('ariaDiceCount')}">
         <span class="dice-d">d</span>
-        <select class="dice-sides" aria-label="Caras">
+        <select class="dice-sides" aria-label="${t('ariaDiceSides')}">
             <option value="4">4</option>
             <option value="6" selected>6</option>
             <option value="8">8</option>
@@ -3612,7 +3780,7 @@ function addDice() {
             <option value="20">20</option>
             <option value="100">100</option>
         </select>
-        <button type="button" class="btn-remove" onclick="removeDice(this)" aria-label="Quitar dado">×</button>
+        <button type="button" class="btn-remove" onclick="removeDice(this)" aria-label="${t('ariaRemoveDice')}"><svg class="icon" aria-hidden="true" focusable="false"><use href="#i-close"/></svg></button>
     `;
 
     diceList.appendChild(diceItem);
@@ -3802,6 +3970,17 @@ let calculator;
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize language system first
     initializeLanguage();
+
+    // Tooltips: en móvil no hay hover, así que se abren al tocarlos.
+    // Van dentro de <label>, de ahí el preventDefault: si no, el toque enfocaría el input.
+    document.addEventListener('click', (e) => {
+        const tip = e.target.closest('.tooltip');
+        document.querySelectorAll('.tooltip.open').forEach(el => { if (el !== tip) el.classList.remove('open'); });
+        if (tip) {
+            e.preventDefault();
+            tip.classList.toggle('open');
+        }
+    });
 
     // Selector de idioma
     document.querySelectorAll('#languageSelect [data-lang]').forEach(btn => {
