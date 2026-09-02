@@ -30,6 +30,10 @@ Una calculadora de probabilidades de combate para Dungeons & Dragons 5e. Calcula
 - **Distribución de críticos**: Ve cuántos de tus impactos serán críticos
 - **Rangos de daño**: Muestra daño mínimo-máximo para cada escenario
 - **Great Weapon Master / Sharpshooter**: te dice hasta qué CA conviene el -5/+10, y qué hacer contra la CA objetivo
+- **Estilo de Combate: Arma Grande (GWF)**: relanza los 1 y 2 de los dados del arma (un d8 pasa de 4.5 a 5.25 de promedio)
+- **Resistencia y vulnerabilidad**: dividí o duplicá el daño contra el objetivo que tenés enfrente
+- **¿Lo mato este turno?**: probabilidad exacta de bajar a un enemigo con X PV, no sólo el daño promedio
+- **Curva de DPR contra el rango de CA**: compará builds sobre CA 10–25 y mirá dónde una pasa a la otra
 - **Recálculo en vivo**: todo se actualiza al instante al cambiar cualquier valor
 - **Pensada para el celular**: barra pegajosa con la CA objetivo, % de impacto y daño por turno siempre a la vista; controles grandes para usarla con una mano en la mesa
 - **Instalable y offline (PWA)**: agregala a la pantalla de inicio y funciona sin internet
@@ -52,7 +56,7 @@ Una calculadora de probabilidades de combate para Dungeons & Dragons 5e. Calcula
   - `calculator.js`: interfaz, perfiles, comparador, i18n
 - **`manifest.webmanifest`**, **`sw.js`**, **`icons/`**: PWA (instalación y caché offline)
 - **`calculator-standalone.html`**: todo en un solo archivo, **generado** desde los fuentes (no editar a mano)
-- **`tests/`**: tests del motor (contra un oráculo de fuerza bruta) y del import/export
+- **`tests/`**: tests del motor y del daño (cada uno contra su oráculo de fuerza bruta), del import/export y de las traducciones
 
 ### Desarrollo
 
@@ -84,6 +88,10 @@ Utiliza distribución multinomial para cálculos precisos:
 - **Dado extra al ataque** (Bendición, Inspiración): enumeración exacta de todas las combinaciones de dados
 - **Invariantes de 5e**: el 1 natural siempre falla; el crítico siempre impacta (aunque necesites más de lo que muestra el rango crítico)
 - **GWM / Sharpshooter**: DPR por turno con y sin -5/+10 para cada CA; la "CA de corte" es la mayor CA hasta la que conviene de forma contigua desde CA 1
+- **GWF**: las caras 1 y 2 pasan a valer el promedio del dado; el mínimo no cambia (el relanzamiento puede volver a salir 1) y no se aplica al Sneak Attack, que no es un dado del arma
+- **Resistencia / vulnerabilidad**: multiplicador ×0.5 o ×2. Los promedios se multiplican sin redondear; los valores que son una tirada concreta (mínimos, máximos y la distribución exacta) redondean hacia abajo como en 5e
+- **Probabilidad de matar**: distribución exacta del daño del turno por convolución de los dados, recorriendo los ataques con tres estados (sin impactos / con impacto / con crítico) para resolver el Sneak Attack, que depende del turno entero. Después se acumula P(daño ≥ PV)
+- **Curva de DPR**: DPR por turno para cada CA del rango, y los cruces son las CAs donde cambia quién va ganando
 - **Power Level**: round(DPR_por_turno promediado sobre CA 13–20 × 10)
   - No multiplica por la probabilidad de impacto: el DPR ya la incorpora, y volver a
     multiplicarla penalizaba dos veces a las builds imprecisas
@@ -123,6 +131,10 @@ A combat probability calculator for Dungeons & Dragons 5e. It calculates exact p
 - **Critical distribution**: See how many of your hits will be critical
 - **Damage ranges**: Shows minimum-maximum damage for each scenario
 - **Great Weapon Master / Sharpshooter**: tells you up to which AC the -5/+10 is worth it, and what to do against your target AC
+- **Great Weapon Fighting**: rerolls 1s and 2s on the weapon damage dice (a d8 goes from 4.5 to 5.25 average)
+- **Resistance and vulnerability**: halve or double the damage against the target in front of you
+- **Can I kill it this turn?**: exact probability of dropping an enemy with X HP, not just average damage
+- **DPR curve across the AC range**: compare builds over AC 10–25 and see where one overtakes the other
 - **Live recalculation**: everything updates instantly as you change any value
 - **Built for phones**: sticky bar with target AC, hit chance and damage per turn always visible; large one-handed controls for use at the table
 - **Installable and offline (PWA)**: add it to your home screen and it works with no internet

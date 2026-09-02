@@ -6,6 +6,25 @@ let currentLanguage = 'es';
 // Translation object with all supported languages
 const translations = {
     es: {
+        curveLeaderStart: "Hasta CA {{ac}} gana {{name}}.",
+        // Resistencia, GWF, probabilidad de matar y curva de DPR
+        gwf: "Estilo de Combate: Arma Grande",
+        gwfHint: "Relanza los 1 y 2 de los dados del arma. Sube el promedio (un d8 pasa de 4.5 a 5.25), no el mínimo.",
+        damageMultiplierLabel: "Daño contra el objetivo",
+        damageMultiplierTooltip: "Resistencia divide el daño a la mitad (redondeando hacia abajo) y vulnerabilidad lo duplica. No cambia la probabilidad de impactar.",
+        damageTargetResistant: "Resistente",
+        damageTargetNormal: "Normal",
+        damageTargetVulnerable: "Vulnerable",
+        killTitle: "¿Lo mato este turno?",
+        enemyHPLabel: "PV del enemigo",
+        killChanceCaption: "de matarlo este turno",
+        killChanceUnavailable: "La build es demasiado grande para calcular la distribución exacta",
+        killListChance: "lo mato",
+        curveTitle: "DPR contra el rango de CA",
+        curveNoCrossing: "{{name}} gana en todo el rango.",
+        curveCrossing: "Desde CA {{ac}} pasa a ganar {{to}}.",
+        curveNeedsTwo: "Elegí dos o más perfiles para ver dónde se cruzan.",
+        curveAria: "Curva de daño por turno de cada perfil contra CA {{min}} a {{max}}.",
         turnsLabelSingular: "turno",
         ariaHelp: "Ayuda",
         // Etiquetas accesibles (botones que sólo muestran un ícono)
@@ -249,6 +268,25 @@ const translations = {
     },
 
     en: {
+        curveLeaderStart: "Up to AC {{ac}}, {{name}} wins.",
+        // Resistencia, GWF, probabilidad de matar y curva de DPR
+        gwf: "Great Weapon Fighting",
+        gwfHint: "Rerolls 1s and 2s on the weapon damage dice. Raises the average (a d8 goes from 4.5 to 5.25), not the minimum.",
+        damageMultiplierLabel: "Damage against the target",
+        damageMultiplierTooltip: "Resistance halves the damage (rounding down) and vulnerability doubles it. It does not change the chance to hit.",
+        damageTargetResistant: "Resistant",
+        damageTargetNormal: "Normal",
+        damageTargetVulnerable: "Vulnerable",
+        killTitle: "Can I kill it this turn?",
+        enemyHPLabel: "Enemy HP",
+        killChanceCaption: "to kill it this turn",
+        killChanceUnavailable: "The build is too large to compute the exact distribution",
+        killListChance: "kill it",
+        curveTitle: "DPR across the AC range",
+        curveNoCrossing: "{{name}} wins across the whole range.",
+        curveCrossing: "From AC {{ac}} on, {{to}} takes the lead.",
+        curveNeedsTwo: "Pick two or more profiles to see where they cross.",
+        curveAria: "Damage per turn curve for each profile against AC {{min}} to {{max}}.",
         turnsLabelSingular: "turn",
         ariaHelp: "Help",
         // Etiquetas accesibles (botones que sólo muestran un ícono)
@@ -492,6 +530,25 @@ const translations = {
     },
 
     pt: {
+        curveLeaderStart: "Até CA {{ac}} ganha {{name}}.",
+        // Resistencia, GWF, probabilidad de matar y curva de DPR
+        gwf: "Estilo de Combate: Arma Grande",
+        gwfHint: "Relança os 1 e 2 dos dados da arma. Aumenta a média (um d8 passa de 4.5 a 5.25), não o mínimo.",
+        damageMultiplierLabel: "Dano contra o alvo",
+        damageMultiplierTooltip: "Resistência divide o dano pela metade (arredondando para baixo) e vulnerabilidade o dobra. Não muda a chance de acertar.",
+        damageTargetResistant: "Resistente",
+        damageTargetNormal: "Normal",
+        damageTargetVulnerable: "Vulnerável",
+        killTitle: "Mato ele neste turno?",
+        enemyHPLabel: "PV do inimigo",
+        killChanceCaption: "de matá-lo neste turno",
+        killChanceUnavailable: "A build é grande demais para calcular a distribuição exata",
+        killListChance: "mato ele",
+        curveTitle: "DPR ao longo do intervalo de CA",
+        curveNoCrossing: "{{name}} ganha em todo o intervalo.",
+        curveCrossing: "A partir de CA {{ac}}, {{to}} passa a ganhar.",
+        curveNeedsTwo: "Escolha dois ou mais perfis para ver onde se cruzam.",
+        curveAria: "Curva de dano por turno de cada perfil contra CA {{min}} a {{max}}.",
         turnsLabelSingular: "turno",
         ariaHelp: "Ajuda",
         // Etiquetas accesibles (botones que sólo muestran un ícono)
@@ -735,6 +792,25 @@ const translations = {
     },
 
     de: {
+        curveLeaderStart: "Bis RK {{ac}} gewinnt {{name}}.",
+        // Resistencia, GWF, probabilidad de matar y curva de DPR
+        gwf: "Kampfstil: Großer Waffenkampf",
+        gwfHint: "Wirft 1en und 2en der Waffenschadenswürfel neu. Hebt den Durchschnitt (ein W8 steigt von 4.5 auf 5.25), nicht das Minimum.",
+        damageMultiplierLabel: "Schaden gegen das Ziel",
+        damageMultiplierTooltip: "Resistenz halbiert den Schaden (abgerundet), Verwundbarkeit verdoppelt ihn. Die Trefferchance ändert sich nicht.",
+        damageTargetResistant: "Resistent",
+        damageTargetNormal: "Normal",
+        damageTargetVulnerable: "Verwundbar",
+        killTitle: "Töte ich es diese Runde?",
+        enemyHPLabel: "TP des Gegners",
+        killChanceCaption: "es diese Runde zu töten",
+        killChanceUnavailable: "Der Build ist zu groß für die exakte Verteilung",
+        killListChance: "töte ich",
+        curveTitle: "DPR über die RK-Spanne",
+        curveNoCrossing: "{{name}} gewinnt über die ganze Spanne.",
+        curveCrossing: "Ab RK {{ac}} übernimmt {{to}} die Führung.",
+        curveNeedsTwo: "Wähle zwei oder mehr Profile, um den Schnittpunkt zu sehen.",
+        curveAria: "Schaden-pro-Runde-Kurve jedes Profils gegen RK {{min}} bis {{max}}.",
         turnsLabelSingular: "Runde",
         ariaHelp: "Hilfe",
         // Etiquetas accesibles (botones que sólo muestran un ícono)
@@ -1184,6 +1260,25 @@ class ProfileManager {
         return this.profiles.find(p => p.id === this.editingProfileId);
     }
 
+    // Foto de la configuración actual para guardar en un perfil.
+    snapshotConfig() {
+        const cfg = this.calculator.config;
+        return {
+            attackBonus: cfg.attackBonus,
+            damageBonus: cfg.damageBonus,
+            damageDice: cfg.damageDice.map(d => ({ ...d })),
+            attackDiceBonus: cfg.attackDiceBonus,
+            sneakAttackDice: cfg.sneakAttackDice,
+            advantage: cfg.advantage,
+            critRange: cfg.critRange,
+            numberOfAttacks: cfg.numberOfAttacks,
+            targetAC: cfg.targetAC,
+            powerAttack: !!cfg.powerAttack,
+            damageMultiplier: cfg.damageMultiplier,
+            greatWeaponFighting: !!cfg.greatWeaponFighting
+        };
+    }
+
     saveProfile(name) {
         if (!name || !name.trim()) {
             return { success: false, messageKey: 'profileNameRequired' };
@@ -1197,18 +1292,7 @@ class ProfileManager {
                     ...this.profiles[index],
                     name: name.trim(),
                     updatedAt: Date.now(),
-                    config: {
-                        attackBonus: this.calculator.config.attackBonus,
-                        damageBonus: this.calculator.config.damageBonus,
-                        damageDice: this.calculator.config.damageDice.map(d => ({ ...d })),
-                        attackDiceBonus: this.calculator.config.attackDiceBonus,
-                        sneakAttackDice: this.calculator.config.sneakAttackDice,
-                        advantage: this.calculator.config.advantage,
-                        critRange: this.calculator.config.critRange,
-                        numberOfAttacks: this.calculator.config.numberOfAttacks,
-                        targetAC: this.calculator.config.targetAC,
-                        powerAttack: !!this.calculator.config.powerAttack
-                    }
+                    config: this.snapshotConfig()
                 };
                 const updatedProfile = this.profiles[index];
                 this.editingProfileId = null;
@@ -1224,18 +1308,7 @@ class ProfileManager {
             id: this.generateId(),
             name: name.trim(),
             createdAt: Date.now(),
-            config: {
-                attackBonus: this.calculator.config.attackBonus,
-                damageBonus: this.calculator.config.damageBonus,
-                damageDice: this.calculator.config.damageDice.map(d => ({ ...d })),
-                attackDiceBonus: this.calculator.config.attackDiceBonus,
-                sneakAttackDice: this.calculator.config.sneakAttackDice,
-                advantage: this.calculator.config.advantage,
-                critRange: this.calculator.config.critRange,
-                numberOfAttacks: this.calculator.config.numberOfAttacks,
-                targetAC: this.calculator.config.targetAC,
-                        powerAttack: !!this.calculator.config.powerAttack
-            }
+            config: this.snapshotConfig()
         };
 
         this.profiles.unshift(profile); // Más reciente primero
@@ -1262,6 +1335,8 @@ class ProfileManager {
         this.calculator.config.attackDiceBonus = cfg.attackDiceBonus || 0;
         this.calculator.config.sneakAttackDice = cfg.sneakAttackDice || 0;
         this.calculator.config.powerAttack = !!cfg.powerAttack;
+        this.calculator.config.damageMultiplier = DnDEngine.normalizeConfig(cfg).damageMultiplier;
+        this.calculator.config.greatWeaponFighting = !!cfg.greatWeaponFighting;
 
         // Actualizar UI inputs
         this.updateUIFromConfig();
@@ -1311,6 +1386,13 @@ class ProfileManager {
         });
         const powerAttackInput = document.getElementById('powerAttack');
         if (powerAttackInput) powerAttackInput.checked = !!cfg.powerAttack;
+
+        const gwfInput = document.getElementById('greatWeaponFighting');
+        if (gwfInput) gwfInput.checked = !!cfg.greatWeaponFighting;
+
+        document.querySelectorAll('input[name="damageMultiplier"]').forEach(radio => {
+            radio.checked = parseFloat(radio.value) === (cfg.damageMultiplier || 1);
+        });
 
         if (cfg.targetAC) {
             document.getElementById('targetAC').value = cfg.targetAC;
@@ -1387,6 +1469,13 @@ class ProfileManager {
         if (config.numberOfAttacks > 1) {
             parts.push(t('profileAttacks', { n: config.numberOfAttacks }));
         }
+
+        if (config.greatWeaponFighting) {
+            parts.push('↻1,2');
+        }
+
+        if (config.damageMultiplier === 0.5) parts.push('÷2');
+        if (config.damageMultiplier === 2) parts.push('×2');
 
         if (config.targetAC) {
             parts.push(`CA: ${config.targetAC}`);
@@ -1688,8 +1777,104 @@ class ProfileComparator {
             `;
         }).join('');
 
+        this.renderDprCurve(results);
+
         // Scroll a los resultados
         panel.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    /**
+     * Curva de DPR de cada perfil contra el rango de CA, con los puntos donde una build
+     * pasa a la otra. Una sola CA no alcanza para decidir: la comparación cambia según
+     * contra quién estés peleando, y el cruce es justo el dato que falta.
+     *
+     * El SVG se arma a mano: sin librerías, sin red y sin romper el modo offline.
+     */
+    renderDprCurve(results) {
+        const chart = document.getElementById('dprCurve');
+        const legendEl = document.getElementById('curveLegend');
+        const noteEl = document.getElementById('curveCrossings');
+        const rangeEl = document.getElementById('curveRange');
+        if (!chart) return;
+
+        const acMin = DnDEngine.DPR_CURVE_AC_MIN;
+        const acMax = DnDEngine.DPR_CURVE_AC_MAX;
+        const curves = results.map(r => DnDEngine.dprCurve(DnDEngine.normalizeConfig(r.config), acMin, acMax));
+
+        if (rangeEl) rangeEl.textContent = `${acMin}–${acMax}`;
+        if (!curves.length) {
+            chart.innerHTML = '';
+            if (legendEl) legendEl.innerHTML = '';
+            if (noteEl) noteEl.textContent = '';
+            return;
+        }
+
+        // Geometría en coordenadas del viewBox; el SVG escala solo al ancho disponible.
+        const W = 320, H = 190, padL = 34, padR = 10, padT = 12, padB = 26;
+        const points = curves[0].length;
+        const maxDpr = Math.max(1, ...curves.flat().map(p => p.dpr));
+        const x = (i) => padL + (W - padL - padR) * (points === 1 ? 0 : i / (points - 1));
+        const y = (v) => padT + (H - padT - padB) * (1 - v / maxDpr);
+        const round = (n) => Math.round(n * 10) / 10;
+
+        // Rejilla horizontal con tres referencias de daño
+        const yTicks = [0, maxDpr / 2, maxDpr];
+        const grid = yTicks.map(v => `
+            <line class="curve-grid" x1="${padL}" y1="${round(y(v))}" x2="${W - padR}" y2="${round(y(v))}" />
+            <text class="curve-tick" x="${padL - 5}" y="${round(y(v)) + 3}" text-anchor="end">${v.toFixed(0)}</text>`).join('');
+
+        // Etiquetas de CA cada 5 puntos
+        const xLabels = curves[0].map((p, i) => (p.ac % 5 === 0
+            ? `<text class="curve-tick" x="${round(x(i))}" y="${H - 8}" text-anchor="middle">${p.ac}</text>`
+            : '')).join('');
+
+        // CA de comparación elegida: línea vertical de referencia
+        const targetIndex = curves[0].findIndex(p => p.ac === parseInt(document.getElementById('compareTargetAC')?.value, 10));
+        const targetLine = targetIndex >= 0
+            ? `<line class="curve-target" x1="${round(x(targetIndex))}" y1="${padT}" x2="${round(x(targetIndex))}" y2="${H - padB}" />`
+            : '';
+
+        const lines = curves.map((curve, c) => {
+            const d = curve.map((p, i) => `${round(x(i))},${round(y(p.dpr))}`).join(' ');
+            return `<polyline class="curve-line curve-c${c % 5}" points="${d}" />`;
+        }).join('');
+
+        // Cruces: un punto marcado justo donde cambia quién va ganando
+        const changes = DnDEngine.curveLeadChanges(curves);
+        const marks = changes.map(change => {
+            const i = curves[0].findIndex(p => p.ac === change.ac);
+            return `<circle class="curve-cross curve-c${change.to % 5}" cx="${round(x(i))}" cy="${round(y(curves[change.to][i].dpr))}" r="4" />`;
+        }).join('');
+
+        chart.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${this.escapeHtml(t('curveAria', { min: acMin, max: acMax }))}" preserveAspectRatio="xMidYMid meet">
+            ${grid}${targetLine}${lines}${marks}${xLabels}
+        </svg>`;
+
+        if (legendEl) {
+            legendEl.innerHTML = results.map((r, c) =>
+                `<span class="curve-key"><i class="curve-swatch curve-c${c % 5}"></i>${this.escapeHtml(r.name)}</span>`).join('');
+        }
+
+        if (noteEl) {
+            noteEl.textContent = this.describeCrossings(results, curves, changes);
+        }
+    }
+
+    // Texto de los cruces: es lo que se lee de verdad en la mesa, el dibujo sólo acompaña.
+    describeCrossings(results, curves, changes) {
+        if (results.length < 2) return t('curveNeedsTwo');
+
+        if (changes.length === 0) {
+            let leader = 0;
+            for (let c = 1; c < curves.length; c++) {
+                if (curves[c][0].dpr > curves[leader][0].dpr) leader = c;
+            }
+            return t('curveNoCrossing', { name: results[leader].name });
+        }
+
+        const frases = [t('curveLeaderStart', { ac: changes[0].ac - 1, name: results[changes[0].from].name })];
+        for (const change of changes) frases.push(t('curveCrossing', { ac: change.ac, to: results[change.to].name }));
+        return frases.join(' ');
     }
 
     escapeHtml(text) {
@@ -1765,8 +1950,14 @@ class DnDCalculator {
             critRange: 20,
             numberOfAttacks: 1,
             targetAC: 15,
-            powerAttack: false // mostrar análisis de GWM / Sharpshooter (-5/+10)
+            powerAttack: false, // mostrar análisis de GWM / Sharpshooter (-5/+10)
+            damageMultiplier: 1, // 0.5 = objetivo resistente, 2 = vulnerable
+            greatWeaponFighting: false // relanzar 1 y 2 en los dados del arma
         };
+
+        // PV del enemigo para "¿lo mato este turno?". No es parte de la build: describe
+        // al enemigo que tenés enfrente, así que no se guarda en los perfiles.
+        this.enemyHP = 10;
 
         this.calcTimer = null;
         this.initializeEventListeners();
@@ -1828,6 +2019,31 @@ class DnDCalculator {
             });
         }
 
+        const gwfInput = document.getElementById('greatWeaponFighting');
+        if (gwfInput) {
+            gwfInput.addEventListener('change', (e) => {
+                this.config.greatWeaponFighting = e.target.checked;
+                this.updateDiceNotation();
+                this.scheduleCalculate(0);
+            });
+        }
+
+        document.querySelectorAll('input[name="damageMultiplier"]').forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                this.config.damageMultiplier = parseFloat(e.target.value);
+                this.updateDiceNotation();
+                this.scheduleCalculate(0);
+            });
+        });
+
+        const enemyHPInput = document.getElementById('enemyHP');
+        if (enemyHPInput) {
+            enemyHPInput.addEventListener('input', (e) => {
+                this.enemyHP = Math.max(1, parseInt(e.target.value, 10) || 1);
+                this.scheduleCalculate();
+            });
+        }
+
         document.getElementById('targetAC').addEventListener('input', (e) => {
             this.config.targetAC = e.target.value ? parseInt(e.target.value) : null;
             this.scheduleCalculate();
@@ -1882,6 +2098,11 @@ class DnDCalculator {
         if (this.config.sneakAttackDice > 0) {
             fullNotation += ` + ${this.config.sneakAttackDice}d6 ${t('sneakNotation')}`;
         }
+
+        // Marcas sin texto para que se entiendan en cualquier idioma
+        if (this.config.greatWeaponFighting) fullNotation += ' ↻1,2';
+        if (this.config.damageMultiplier === 0.5) fullNotation = `(${fullNotation}) ÷2`;
+        if (this.config.damageMultiplier === 2) fullNotation = `(${fullNotation}) ×2`;
 
         document.getElementById('diceNotation').textContent = fullNotation;
     }
@@ -2245,7 +2466,28 @@ class DnDCalculator {
             }
         }
 
-        // Actualizar turnos para derrotar
+        // Probabilidad de matar este turno. Se calcula la distribución exacta del daño
+        // UNA sola vez y se reutiliza para los PV escritos a mano y para cada enemigo tipo.
+        const cfg = this.engineConfig();
+        const distribution = DnDEngine.turnDamageDistribution(cfg, ac);
+        const killChance = (hp) => DnDEngine.killProbability(cfg, ac, hp, distribution);
+        // Una chance chiquita pero real no debería verse igual que un cero redondo.
+        const formatKill = (p) => {
+            if (p === null) return '—';
+            if (p > 0 && p < 0.001) return '<0.1%';
+            return (p * 100).toFixed(1) + '%';
+        };
+
+        const killValue = document.getElementById('killChanceValue');
+        const killCaption = document.getElementById('killChanceCaption');
+        if (killValue) {
+            killValue.textContent = formatKill(killChance(this.enemyHP));
+            // Sin distribución no hay número: se avisa en vez de mostrar un guión mudo.
+            killValue.title = distribution ? '' : t('killChanceUnavailable');
+            if (killCaption) killCaption.textContent = distribution ? t('killChanceCaption') : t('killChanceUnavailable');
+        }
+
+        // Enemigos tipo: cuánto tardo y qué chance tengo de resolverlo en un turno
         const defeatList = document.getElementById('defeatTimesList');
         if (defeatList) {
             defeatList.innerHTML = enemies.map(enemy => {
@@ -2254,6 +2496,7 @@ class DnDCalculator {
                 const label = n === 1 ? t('turnsLabelSingular') : t('turnsLabel');
                 return `<div class="defeat-item">
                     <span class="defeat-enemy">${t(enemy.key)}</span>
+                    <span class="defeat-kill">${formatKill(killChance(enemy.hp))} ${t('killListChance')}</span>
                     <span class="defeat-turns">${turns} ${label}</span>
                 </div>`;
             }).join('');
