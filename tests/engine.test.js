@@ -204,3 +204,49 @@ test('B1: la distribución multiataque nunca produce probabilidades negativas', 
         }
     }
 });
+
+// ---------- Great Weapon Master / Sharpshooter (-5 al ataque, +10 al daño) ----------
+
+test('withPowerAttack: -5 al ataque y +10 al daño, sin mutar la config original', () => {
+    const cfg = base();
+    const pa = engine.withPowerAttack(cfg);
+    assert.equal(pa.attackBonus, 0);
+    assert.equal(pa.damageBonus, 13);
+    assert.equal(cfg.attackBonus, 5);
+    assert.equal(cfg.damageBonus, 3);
+});
+
+test('powerAttackComparison: DPR normal vs -5/+10 para cada CA (1d8+3, +5)', () => {
+    const rows = engine.powerAttackComparison(base(), 10, 18);
+    assert.equal(rows.length, 9);
+    const at = (ac) => rows.find(r => r.ac === ac);
+    close(at(10).normal, 6.225, 'normal CA10');
+    close(at(10).power, 9.85, 'GWM CA10');
+    assert.equal(at(10).better, 'power');
+    close(at(17).normal, 3.6, 'normal CA17');
+    close(at(17).power, 3.725, 'GWM CA17');
+    assert.equal(at(17).better, 'power');
+    assert.equal(at(18).better, 'normal');
+});
+
+test('powerAttackCutoff: mayor CA hasta la que -5/+10 conviene de forma contigua desde CA 1', () => {
+    assert.equal(engine.powerAttackCutoff(base()), 17);
+    // Con +10 al ataque el corte sube 5 puntos (mismo roll necesario)
+    assert.equal(engine.powerAttackCutoff(base({ attackBonus: 10 })), 22);
+    // Con un arma enorme (2d6+5, +8, ventaja) el +10 pesa menos en proporción: sigue habiendo corte pero distinto
+    const gwm = engine.powerAttackCutoff(base({ damageDice: [{ count: 2, sides: 6 }], damageBonus: 5, attackBonus: 8, advantage: 'advantage' }));
+    assert.ok(gwm >= 18 && gwm <= 30, `corte razonable con ventaja: ${gwm}`);
+});
+
+test('powerAttackCutoff devuelve null si -5/+10 nunca conviene desde CA 1', () => {
+    // Daño base gigante (10d10+50): +10 es irrelevante y el -5 siempre duele
+    const cfg = base({ damageDice: [{ count: 10, sides: 10 }], damageBonus: 50, attackBonus: 0 });
+    assert.equal(engine.powerAttackCutoff(cfg), null);
+});
+
+test('powerAttackComparison usa DPR por turno (respeta nº de ataques y Sneak Attack)', () => {
+    const cfg = base({ numberOfAttacks: 2 });
+    const row = engine.powerAttackComparison(cfg, 15, 15)[0];
+    close(row.normal, engine.dprPerTurn(cfg, 15), 'normal 2 ataques');
+    close(row.power, engine.dprPerTurn(engine.withPowerAttack(cfg), 15), 'GWM 2 ataques');
+});

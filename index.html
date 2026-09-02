@@ -110,6 +110,17 @@
                 </div>
 
                 <div class="input-group">
+                    <label class="checkbox-label" for="powerAttack">
+                        <input type="checkbox" id="powerAttack">
+                        <span class="checkbox-custom"></span>
+                        <span data-i18n="powerAttack">Great Weapon Master / Sharpshooter</span>
+                        <span class="tooltip">?
+                            <span class="tooltip-text" data-i18n="powerAttackTooltip">Muestra hasta qué CA conviene usar el -5 al ataque / +10 al daño.</span>
+                        </span>
+                    </label>
+                </div>
+
+                <div class="input-group">
                     <label data-i18n="critRange">Rango Crítico</label>
                     <select id="critRange">
                         <option value="20" selected data-i18n="critRange20">Solo 20 (5%)</option>
@@ -323,6 +334,18 @@
                     <h3 data-i18n="multiAttackTitle">🎯 Distribución de Múltiples Ataques</h3>
                     <div class="multi-attack-info" id="multiAttackInfo"></div>
                     <div id="multiAttackDistribution"></div>
+                </div>
+
+                <!-- GWM / Sharpshooter -->
+                <div class="power-attack-panel" id="powerAttackPanel" style="display: none;">
+                    <h3 data-i18n="powerAttackTitle">🪓 Great Weapon Master / Sharpshooter</h3>
+                    <div class="power-attack-verdict" id="powerAttackVerdict"></div>
+                    <div class="power-attack-target" id="powerAttackTarget"></div>
+                    <div class="power-attack-strip" id="powerAttackStrip" aria-label="CA"></div>
+                    <div class="power-attack-legend">
+                        <span><span class="color-box pa-power"></span> <span data-i18n="powerAttackLegendPower">Conviene -5/+10</span></span>
+                        <span><span class="color-box pa-normal"></span> <span data-i18n="powerAttackLegendNormal">Conviene ataque normal</span></span>
+                    </div>
                 </div>
 
                 <!-- Power Level Section -->

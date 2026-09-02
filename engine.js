@@ -189,6 +189,57 @@
         return dprPerAttack(cfg, ac) * cfg.numberOfAttacks + sneakAttackPerTurn(cfg, ac);
     }
 
+    // ---------- Great Weapon Master / Sharpshooter ----------
+
+    const POWER_ATTACK_TO_HIT = -5;
+    const POWER_ATTACK_DAMAGE = 10;
+
+    /** Misma config con la penalización/bono de GWM o Sharpshooter aplicada. No muta la original. */
+    function withPowerAttack(cfg) {
+        return Object.assign({}, cfg, {
+            attackBonus: cfg.attackBonus + POWER_ATTACK_TO_HIT,
+            damageBonus: cfg.damageBonus + POWER_ATTACK_DAMAGE
+        });
+    }
+
+    /**
+     * DPR por turno con y sin -5/+10 para cada CA del rango.
+     * better: 'power' si conviene activar el rasgo, 'normal' si no, 'tie' si empatan.
+     */
+    function powerAttackComparison(cfg, acMin, acMax) {
+        const pa = withPowerAttack(cfg);
+        const rows = [];
+        for (let ac = acMin; ac <= acMax; ac++) {
+            const normal = dprPerTurn(cfg, ac);
+            const power = dprPerTurn(pa, ac);
+            const diff = power - normal;
+            rows.push({
+                ac,
+                normal,
+                power,
+                delta: diff,
+                better: Math.abs(diff) < 1e-9 ? 'tie' : diff > 0 ? 'power' : 'normal'
+            });
+        }
+        return rows;
+    }
+
+    /**
+     * CA de corte: la mayor CA hasta la cual -5/+10 conviene de forma CONTIGUA desde CA 1.
+     * Es la regla accionable en mesa ("usá GWM contra CA <= X"). Contra CAs altísimas donde
+     * solo se pega con crítico el +10 puede volver a ganar; ese tramo se ignora acá y queda
+     * visible en powerAttackComparison.
+     * Devuelve null si ya en CA 1 no conviene.
+     */
+    function powerAttackCutoff(cfg, acMax = 30) {
+        let cutoff = null;
+        for (const row of powerAttackComparison(cfg, 1, acMax)) {
+            if (row.better === 'normal') break;
+            cutoff = row.ac;
+        }
+        return cutoff;
+    }
+
     // ---------- Distribución multiataque ----------
 
     function factorial(n) {
@@ -265,6 +316,9 @@
         dprPerAttack,
         sneakAttackPerTurn,
         dprPerTurn,
+        withPowerAttack,
+        powerAttackComparison,
+        powerAttackCutoff,
         multiAttackDistribution
     };
 }));

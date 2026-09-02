@@ -6,6 +6,19 @@ let currentLanguage = 'es';
 // Translation object with all supported languages
 const translations = {
     es: {
+        // GWM / Sharpshooter
+        powerAttack: "Great Weapon Master / Sharpshooter",
+        powerAttackTooltip: "Muestra hasta qué CA conviene usar el -5 al ataque / +10 al daño.",
+        powerAttackTitle: "🪓 Great Weapon Master / Sharpshooter",
+        powerAttackCutoff: "Conviene activar el -5/+10 hasta <strong>CA {{ac}}</strong>",
+        powerAttackNever: "El -5/+10 <strong>no conviene</strong> contra ninguna CA: tu daño base ya es alto.",
+        powerAttackAlways: "El -5/+10 <strong>conviene siempre</strong> (hasta CA 30).",
+        powerAttackVsTarget: "Contra CA {{ac}}: <strong>{{normal}}</strong> DPR normal vs <strong>{{power}}</strong> con -5/+10 →",
+        powerAttackUse: "activalo",
+        powerAttackSkip: "no lo actives",
+        powerAttackTie: "da igual",
+        powerAttackLegendPower: "Conviene -5/+10",
+        powerAttackLegendNormal: "Conviene ataque normal",
         // Header
         title: "⚔️ Calculadora de Probabilidades de Ataque D&D",
         subtitle: "Calcula tus probabilidades de impacto y daño esperado",
@@ -194,6 +207,19 @@ const translations = {
     },
 
     en: {
+        // GWM / Sharpshooter
+        powerAttack: "Great Weapon Master / Sharpshooter",
+        powerAttackTooltip: "Shows up to which AC the -5 to hit / +10 damage is worth it.",
+        powerAttackTitle: "🪓 Great Weapon Master / Sharpshooter",
+        powerAttackCutoff: "Use -5/+10 up to <strong>AC {{ac}}</strong>",
+        powerAttackNever: "-5/+10 is <strong>never worth it</strong>: your base damage is already high.",
+        powerAttackAlways: "-5/+10 is <strong>always worth it</strong> (up to AC 30).",
+        powerAttackVsTarget: "Against AC {{ac}}: <strong>{{normal}}</strong> DPR normal vs <strong>{{power}}</strong> with -5/+10 →",
+        powerAttackUse: "use it",
+        powerAttackSkip: "don't use it",
+        powerAttackTie: "no difference",
+        powerAttackLegendPower: "-5/+10 is better",
+        powerAttackLegendNormal: "Normal attack is better",
         // Header
         title: "⚔️ D&D Attack Probability Calculator",
         subtitle: "Calculate your hit probabilities and expected damage",
@@ -382,6 +408,19 @@ const translations = {
     },
 
     pt: {
+        // GWM / Sharpshooter
+        powerAttack: "Great Weapon Master / Sharpshooter",
+        powerAttackTooltip: "Mostra até qual CA vale a pena usar o -5 no ataque / +10 no dano.",
+        powerAttackTitle: "🪓 Great Weapon Master / Sharpshooter",
+        powerAttackCutoff: "Vale usar o -5/+10 até <strong>CA {{ac}}</strong>",
+        powerAttackNever: "O -5/+10 <strong>nunca vale a pena</strong>: seu dano base já é alto.",
+        powerAttackAlways: "O -5/+10 <strong>sempre vale a pena</strong> (até CA 30).",
+        powerAttackVsTarget: "Contra CA {{ac}}: <strong>{{normal}}</strong> DPR normal vs <strong>{{power}}</strong> com -5/+10 →",
+        powerAttackUse: "ative",
+        powerAttackSkip: "não ative",
+        powerAttackTie: "tanto faz",
+        powerAttackLegendPower: "Melhor -5/+10",
+        powerAttackLegendNormal: "Melhor ataque normal",
         // Header
         title: "⚔️ Calculadora de Probabilidade de Ataque D&D",
         subtitle: "Calcule suas probabilidades de acerto e dano esperado",
@@ -570,6 +609,19 @@ const translations = {
     },
 
     de: {
+        // GWM / Sharpshooter
+        powerAttack: "Great Weapon Master / Sharpshooter",
+        powerAttackTooltip: "Zeigt, bis zu welcher RK sich -5 auf den Angriff / +10 Schaden lohnt.",
+        powerAttackTitle: "🪓 Great Weapon Master / Sharpshooter",
+        powerAttackCutoff: "-5/+10 lohnt sich bis <strong>RK {{ac}}</strong>",
+        powerAttackNever: "-5/+10 lohnt sich <strong>nie</strong>: dein Grundschaden ist bereits hoch.",
+        powerAttackAlways: "-5/+10 lohnt sich <strong>immer</strong> (bis RK 30).",
+        powerAttackVsTarget: "Gegen RK {{ac}}: <strong>{{normal}}</strong> DPR normal vs <strong>{{power}}</strong> mit -5/+10 →",
+        powerAttackUse: "aktivieren",
+        powerAttackSkip: "nicht aktivieren",
+        powerAttackTie: "kein Unterschied",
+        powerAttackLegendPower: "-5/+10 ist besser",
+        powerAttackLegendNormal: "Normaler Angriff ist besser",
         // Header
         title: "⚔️ D&D Angriffwahrscheinlichkeits-Rechner",
         subtitle: "Berechne deine Trefferwahrscheinlichkeiten und erwarteten Schaden",
@@ -998,7 +1050,8 @@ class ProfileManager {
                         advantage: this.calculator.config.advantage,
                         critRange: this.calculator.config.critRange,
                         numberOfAttacks: this.calculator.config.numberOfAttacks,
-                        targetAC: this.calculator.config.targetAC
+                        targetAC: this.calculator.config.targetAC,
+                        powerAttack: !!this.calculator.config.powerAttack
                     }
                 };
                 const updatedProfile = this.profiles[index];
@@ -1024,7 +1077,8 @@ class ProfileManager {
                 advantage: this.calculator.config.advantage,
                 critRange: this.calculator.config.critRange,
                 numberOfAttacks: this.calculator.config.numberOfAttacks,
-                targetAC: this.calculator.config.targetAC
+                targetAC: this.calculator.config.targetAC,
+                        powerAttack: !!this.calculator.config.powerAttack
             }
         };
 
@@ -1049,6 +1103,7 @@ class ProfileManager {
         this.calculator.config.targetAC = cfg.targetAC;
         this.calculator.config.attackDiceBonus = cfg.attackDiceBonus || 0;
         this.calculator.config.sneakAttackDice = cfg.sneakAttackDice || 0;
+        this.calculator.config.powerAttack = !!cfg.powerAttack;
 
         // Actualizar UI inputs
         this.updateUIFromConfig();
@@ -1079,6 +1134,8 @@ class ProfileManager {
         document.getElementById('critRange').value = cfg.critRange;
         document.getElementById('numberOfAttacks').value = cfg.numberOfAttacks;
         document.getElementById('attacksValue').textContent = cfg.numberOfAttacks;
+        const powerAttackInput = document.getElementById('powerAttack');
+        if (powerAttackInput) powerAttackInput.checked = !!cfg.powerAttack;
 
         if (cfg.targetAC) {
             document.getElementById('targetAC').value = cfg.targetAC;
@@ -1530,7 +1587,8 @@ class DnDCalculator {
             advantage: 'normal',
             critRange: 20,
             numberOfAttacks: 1,
-            targetAC: null
+            targetAC: null,
+            powerAttack: false // mostrar análisis de GWM / Sharpshooter (-5/+10)
         };
 
         this.calcTimer = null;
@@ -1584,6 +1642,14 @@ class DnDCalculator {
                 this.config.sneakAttackDice = Math.max(0, parseInt(e.target.value) || 0);
                 this.updateDiceNotation();
                 this.scheduleCalculate();
+            });
+        }
+
+        const powerAttackInput = document.getElementById('powerAttack');
+        if (powerAttackInput) {
+            powerAttackInput.addEventListener('change', (e) => {
+                this.config.powerAttack = e.target.checked;
+                this.scheduleCalculate(0);
             });
         }
 
@@ -1793,6 +1859,9 @@ class DnDCalculator {
             multiAttackPanel.style.display = 'none';
         }
 
+        // GWM / Sharpshooter
+        this.renderPowerAttack();
+
         // Power Level - mostrar si hay CA objetivo
         if (this.config.targetAC) {
             const targetAC = this.config.targetAC;
@@ -1995,6 +2064,47 @@ class DnDCalculator {
         }
     }
 
+    renderPowerAttack() {
+        const panel = document.getElementById('powerAttackPanel');
+        if (!panel) return;
+        if (!this.config.powerAttack) {
+            panel.style.display = 'none';
+            return;
+        }
+        panel.style.display = 'block';
+
+        const cfg = this.engineConfig();
+        const rows = DnDEngine.powerAttackComparison(cfg, 1, 30);
+        const cutoff = DnDEngine.powerAttackCutoff(cfg, 30);
+
+        // Veredicto principal
+        const verdict = document.getElementById('powerAttackVerdict');
+        if (cutoff === null) verdict.innerHTML = t('powerAttackNever');
+        else if (cutoff >= 30) verdict.innerHTML = t('powerAttackAlways');
+        else verdict.innerHTML = t('powerAttackCutoff', { ac: cutoff });
+
+        // Contra la CA objetivo
+        const target = document.getElementById('powerAttackTarget');
+        const ac = this.config.targetAC;
+        const row = ac ? rows.find(r => r.ac === ac) : null;
+        if (row) {
+            const advice = row.better === 'power' ? t('powerAttackUse')
+                         : row.better === 'normal' ? t('powerAttackSkip')
+                         : t('powerAttackTie');
+            target.innerHTML = `${t('powerAttackVsTarget', { ac, normal: row.normal.toFixed(1), power: row.power.toFixed(1) })} <strong class="pa-advice pa-${row.better}">${advice}</strong>`;
+            target.style.display = '';
+        } else {
+            target.style.display = 'none';
+        }
+
+        // Tira por CA: qué conviene contra cada una
+        const strip = document.getElementById('powerAttackStrip');
+        strip.innerHTML = rows.map(r => `
+            <div class="pa-cell pa-${r.better} ${r.ac === ac ? 'pa-target' : ''}" title="CA ${r.ac}: ${r.normal.toFixed(1)} vs ${r.power.toFixed(1)}">
+                <span class="pa-ac">${r.ac}</span>
+            </div>`).join('');
+    }
+
     calculatePowerLevel(dpr, hitChance) {
         // Fórmula: Power Level = DPR × hit_chance × 10
         // Esto da un número único y comparable entre builds
@@ -2129,7 +2239,6 @@ function loadProfile(id) {
     const result = profileManager.loadProfile(id);
 
     if (result.success) {
-        calculator.calculateNow();
         showProfileFeedback(t('profileLoaded', { name: result.profile.name }), 'success');
         // Scroll hacia los resultados
         document.querySelector('.results-panel')?.scrollIntoView({ behavior: 'smooth' });
