@@ -342,7 +342,10 @@ details.panel > .panel-body { padding: 0 14px 14px; display: flex; flex-directio
 .profile-actions { display: flex; gap: 2px; }
 .profile-actions button { min-width: 44px; min-height: 44px; border: 0; background: transparent; border-radius: var(--radius-sm); font-size: 1.1em; }
 .profile-actions button:active { background: var(--bg-input); }
+.profiles-io { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-top: 4px; }
 .profile-feedback { margin-top: 8px; padding: 8px 10px; border-radius: var(--radius-sm); font-size: 0.9em; background: rgba(95, 143, 76, 0.2); border: 1px solid var(--hit); transition: opacity 0.3s; }
+.profile-feedback.error { background: rgba(176, 65, 62, 0.2); border-color: var(--miss); }
+.profile-feedback.warning { background: rgba(224, 160, 58, 0.15); border-color: var(--crit); }
 .profile-feedback.fade-out { opacity: 0; }
 
 .compare-profiles-list { display: flex; flex-direction: column; gap: 6px; }

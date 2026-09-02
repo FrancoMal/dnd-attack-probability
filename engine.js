@@ -50,7 +50,8 @@
             advantage: ADVANTAGE_MODES.includes(cfg.advantage) ? cfg.advantage : 'normal',
             critRange: clamp(toInt(cfg.critRange, 20), 2, 20),
             numberOfAttacks: clamp(toInt(cfg.numberOfAttacks, 1), 1, 20),
-            targetAC: cfg.targetAC == null || cfg.targetAC === '' ? null : clamp(toInt(cfg.targetAC, 15), 1, 40)
+            targetAC: cfg.targetAC == null || cfg.targetAC === '' ? null : clamp(toInt(cfg.targetAC, 15), 1, 40),
+            powerAttack: !!cfg.powerAttack
         };
     }
 

@@ -196,6 +196,11 @@
                     </div>
                     <div class="profiles-list" id="profilesList"></div>
                     <div class="empty" id="noProfiles" data-i18n="noProfiles">No hay perfiles guardados</div>
+                    <div class="profiles-io">
+                        <button type="button" class="btn-ghost btn-sm" onclick="exportProfiles()" data-i18n="exportProfilesBtn">Exportar JSON</button>
+                        <button type="button" class="btn-ghost btn-sm" onclick="document.getElementById('importFile').click()" data-i18n="importProfilesBtn">Importar JSON</button>
+                        <input type="file" id="importFile" accept="application/json,.json" hidden>
+                    </div>
                 </div>
             </details>
 
@@ -369,6 +374,7 @@
     </footer>
 
     <script src="engine.js"></script>
+    <script src="profiles-io.js"></script>
     <script src="calculator.js"></script>
 </body>
 </html>

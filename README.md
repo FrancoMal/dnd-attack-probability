@@ -33,7 +33,7 @@ Una calculadora de probabilidades de combate para Dungeons & Dragons 5e. Calcula
 - **Recálculo en vivo**: todo se actualiza al instante al cambiar cualquier valor
 - **Pensada para el celular**: barra pegajosa con la CA objetivo, % de impacto y daño por turno siempre a la vista; controles grandes para usarla con una mano en la mesa
 - **Instalable y offline (PWA)**: agregala a la pantalla de inicio y funciona sin internet
-- **Perfiles**: guardá builds y comparalas contra una CA
+- **Perfiles**: guardá builds, comparalas contra una CA y exportalas/importalas como JSON (backup y compartir con la mesa)
 
 ### Cómo usar
 
@@ -46,12 +46,13 @@ Una calculadora de probabilidades de combate para Dungeons & Dragons 5e. Calcula
 
 ### Archivos
 
-- **`index.html`** + **`styles.css`** + **`engine.js`** + **`calculator.js`**: la app
+- **`index.html`** + **`styles.css`** + **`engine.js`** + **`profiles-io.js`** + **`calculator.js`**: la app
   - `engine.js`: toda la matemática (funciones puras, sin DOM). Única fuente de verdad
+  - `profiles-io.js`: exportar/importar perfiles en JSON, con validación (también puro)
   - `calculator.js`: interfaz, perfiles, comparador, i18n
 - **`manifest.webmanifest`**, **`sw.js`**, **`icons/`**: PWA (instalación y caché offline)
 - **`calculator-standalone.html`**: todo en un solo archivo, **generado** desde los fuentes (no editar a mano)
-- **`tests/`**: tests del motor contra un oráculo de fuerza bruta
+- **`tests/`**: tests del motor (contra un oráculo de fuerza bruta) y del import/export
 
 ### Desarrollo
 
@@ -63,7 +64,16 @@ npm run build:standalone  # regenera calculator-standalone.html
 npm run build:icons       # regenera icons/*.png
 ```
 
-Al publicar una versión nueva subí `CACHE_VERSION` en `sw.js` para que los usuarios instalados reciban la actualización.
+Al publicar una versión nueva subí `CACHE_VERSION` en `sw.js` para que los usuarios instalados reciban la actualización. Durante el desarrollo, el service worker sirve desde caché: si no ves tus cambios, desregistralo en DevTools → Application → Service Workers.
+
+#### Formato de perfiles (`profiles-io.js`)
+
+El archivo exportado es `{ format, version, exportedAt, profiles }`. Al importar:
+
+- Se **rechaza** el perfil al que le falta `name`, `config`, `config.attackBonus` o `config.damageDice` (no se puede inventar sin mentir); el resto del archivo se importa igual y se avisa cuántos quedaron afuera.
+- Se **completan** `id` y `createdAt` si faltan (son registro, no datos del usuario).
+- Se **acotan** los valores bien tipados pero fuera de rango (+999 al ataque pasa a +40) y se descartan los campos desconocidos.
+- Nunca se pisa un perfil guardado: si un id se repite, el importado recibe uno nuevo.
 
 ### Matemáticas
 
@@ -111,7 +121,7 @@ A combat probability calculator for Dungeons & Dragons 5e. It calculates exact p
 - **Live recalculation**: everything updates instantly as you change any value
 - **Built for phones**: sticky bar with target AC, hit chance and damage per turn always visible; large one-handed controls for use at the table
 - **Installable and offline (PWA)**: add it to your home screen and it works with no internet
-- **Profiles**: save builds and compare them against an AC
+- **Profiles**: save builds, compare them against an AC, and export/import them as JSON (backup and sharing with your table)
 
 ### How to Use
 
@@ -124,12 +134,13 @@ A combat probability calculator for Dungeons & Dragons 5e. It calculates exact p
 
 ### Files
 
-- **`index.html`** + **`styles.css`** + **`engine.js`** + **`calculator.js`**: the app
+- **`index.html`** + **`styles.css`** + **`engine.js`** + **`profiles-io.js`** + **`calculator.js`**: the app
   - `engine.js`: all the math (pure functions, no DOM). Single source of truth
+  - `profiles-io.js`: JSON profile export/import with validation (also pure)
   - `calculator.js`: UI, profiles, comparison, i18n
 - **`manifest.webmanifest`**, **`sw.js`**, **`icons/`**: PWA (install and offline cache)
 - **`calculator-standalone.html`**: everything in one file, **generated** from the sources (do not edit by hand)
-- **`tests/`**: engine tests against a brute-force oracle
+- **`tests/`**: engine tests (against a brute-force oracle) and import/export tests
 
 ### Development
 
@@ -141,7 +152,16 @@ npm run build:standalone  # regenerates calculator-standalone.html
 npm run build:icons       # regenerates icons/*.png
 ```
 
-When shipping a new version bump `CACHE_VERSION` in `sw.js` so installed users get the update.
+When shipping a new version bump `CACHE_VERSION` in `sw.js` so installed users get the update. While developing, the service worker serves from cache: if you don't see your changes, unregister it in DevTools → Application → Service Workers.
+
+#### Profile format (`profiles-io.js`)
+
+The exported file is `{ format, version, exportedAt, profiles }`. On import:
+
+- A profile missing `name`, `config`, `config.attackBonus` or `config.damageDice` is **rejected** (those can't be guessed without lying); the rest of the file is still imported and you're told how many were skipped.
+- `id` and `createdAt` are **filled in** when missing (bookkeeping, not user data).
+- Well-typed but out-of-range values are **clamped** (+999 to hit becomes +40) and unknown fields are dropped.
+- A saved profile is never overwritten: on an id collision the imported one gets a fresh id.
 
 ### Mathematics
 

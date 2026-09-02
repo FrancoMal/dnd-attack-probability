@@ -6,6 +6,18 @@ let currentLanguage = 'es';
 // Translation object with all supported languages
 const translations = {
     es: {
+        // Exportar / importar perfiles
+        exportProfilesBtn: "Exportar JSON",
+        importProfilesBtn: "Importar JSON",
+        exportNoProfiles: "No hay perfiles para exportar",
+        exportDone: "{{n}} perfil(es) exportado(s)",
+        importDone: "{{n}} perfil(es) importado(s)",
+        importDoneWithSkips: "{{n}} perfil(es) importado(s), {{skipped}} omitido(s) por estar incompletos",
+        importErrorEmpty: "El archivo está vacío",
+        importErrorInvalidJson: "El archivo no es un JSON válido",
+        importErrorFormat: "El archivo no tiene una lista de perfiles",
+        importErrorNoValidProfiles: "Ningún perfil del archivo tiene los campos obligatorios (nombre, bonificador de ataque y dados de daño)",
+        importErrorRead: "No se pudo leer el archivo",
         installApp: "Instalar",
         // Barra superior / hero / tabla compacta
         appName: "Ataque D&D",
@@ -220,6 +232,18 @@ const translations = {
     },
 
     en: {
+        // Exportar / importar perfiles
+        exportProfilesBtn: "Export JSON",
+        importProfilesBtn: "Import JSON",
+        exportNoProfiles: "No profiles to export",
+        exportDone: "{{n}} profile(s) exported",
+        importDone: "{{n}} profile(s) imported",
+        importDoneWithSkips: "{{n}} profile(s) imported, {{skipped}} skipped for being incomplete",
+        importErrorEmpty: "The file is empty",
+        importErrorInvalidJson: "The file is not valid JSON",
+        importErrorFormat: "The file has no profile list",
+        importErrorNoValidProfiles: "No profile in the file has the required fields (name, attack bonus and damage dice)",
+        importErrorRead: "The file could not be read",
         installApp: "Install",
         // Barra superior / hero / tabla compacta
         appName: "D&D Attack",
@@ -434,6 +458,18 @@ const translations = {
     },
 
     pt: {
+        // Exportar / importar perfiles
+        exportProfilesBtn: "Exportar JSON",
+        importProfilesBtn: "Importar JSON",
+        exportNoProfiles: "Não há perfis para exportar",
+        exportDone: "{{n}} perfil(is) exportado(s)",
+        importDone: "{{n}} perfil(is) importado(s)",
+        importDoneWithSkips: "{{n}} perfil(is) importado(s), {{skipped}} ignorado(s) por estarem incompletos",
+        importErrorEmpty: "O arquivo está vazio",
+        importErrorInvalidJson: "O arquivo não é um JSON válido",
+        importErrorFormat: "O arquivo não tem uma lista de perfis",
+        importErrorNoValidProfiles: "Nenhum perfil do arquivo tem os campos obrigatórios (nome, bônus de ataque e dados de dano)",
+        importErrorRead: "Não foi possível ler o arquivo",
         installApp: "Instalar",
         // Barra superior / hero / tabla compacta
         appName: "Ataque D&D",
@@ -648,6 +684,18 @@ const translations = {
     },
 
     de: {
+        // Exportar / importar perfiles
+        exportProfilesBtn: "JSON exportieren",
+        importProfilesBtn: "JSON importieren",
+        exportNoProfiles: "Keine Profile zum Exportieren",
+        exportDone: "{{n}} Profil(e) exportiert",
+        importDone: "{{n}} Profil(e) importiert",
+        importDoneWithSkips: "{{n}} Profil(e) importiert, {{skipped}} wegen fehlender Felder übersprungen",
+        importErrorEmpty: "Die Datei ist leer",
+        importErrorInvalidJson: "Die Datei ist kein gültiges JSON",
+        importErrorFormat: "Die Datei enthält keine Profilliste",
+        importErrorNoValidProfiles: "Kein Profil in der Datei hat die Pflichtfelder (Name, Angriffsbonus und Schadenswürfel)",
+        importErrorRead: "Die Datei konnte nicht gelesen werden",
         installApp: "Installieren",
         // Barra superior / hero / tabla compacta
         appName: "D&D Angriff",
@@ -1025,7 +1073,7 @@ class ProfileManager {
     }
 
     generateId() {
-        return Date.now().toString(36) + Math.random().toString(36).substr(2);
+        return DnDProfilesIO.generateId();
     }
 
     // Start editing a profile
@@ -1159,6 +1207,22 @@ class ProfileManager {
         this.calculator.calculate();
 
         return { success: true, profile };
+    }
+
+    // Devuelve el JSON con todos los perfiles guardados
+    exportToJSON() {
+        return DnDProfilesIO.exportProfiles(this.profiles);
+    }
+
+    // Importa un JSON y fusiona con lo guardado (nunca pisa perfiles existentes)
+    importFromJSON(text) {
+        const result = DnDProfilesIO.importProfiles(text);
+        if (!result.ok) return result;
+
+        this.profiles = DnDProfilesIO.mergeProfiles(this.profiles, result.profiles);
+        this.saveToStorage();
+        this.renderProfiles();
+        return result;
     }
 
     deleteProfile(id) {
@@ -2341,22 +2405,66 @@ function deleteProfile(id) {
     profileManager.deleteProfile(id);
 }
 
+// Descarga los perfiles como archivo JSON
+function exportProfiles() {
+    if (profileManager.profiles.length === 0) {
+        showProfileFeedback(t('exportNoProfiles'), 'error');
+        return;
+    }
+
+    const blob = new Blob([profileManager.exportToJSON()], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = DnDProfilesIO.exportFilename();
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+
+    showProfileFeedback(t('exportDone', { n: profileManager.profiles.length }), 'success');
+}
+
+// Lee el archivo elegido e importa los perfiles válidos
+function importProfilesFromFile(file) {
+    if (!file) return;
+
+    const reader = new FileReader();
+    reader.onload = () => {
+        const result = profileManager.importFromJSON(String(reader.result));
+
+        if (!result.ok) {
+            showProfileFeedback(t(result.errorKey), 'error');
+            return;
+        }
+        const message = result.skipped.length > 0
+            ? t('importDoneWithSkips', { n: result.profiles.length, skipped: result.skipped.length })
+            : t('importDone', { n: result.profiles.length });
+        showProfileFeedback(message, result.skipped.length > 0 ? 'warning' : 'success');
+    };
+    reader.onerror = () => showProfileFeedback(t('importErrorRead'), 'error');
+    reader.readAsText(file);
+}
+
+// Mensaje temporal dentro del panel de perfiles. Reemplaza al mensaje anterior,
+// así dos acciones seguidas no apilan carteles.
 function showProfileFeedback(message, type) {
-    // Crear elemento de feedback temporal
+    const panel = document.querySelector('#profilesPanel .panel-body');
+    if (!panel) return;
+
+    panel.querySelectorAll('.profile-feedback').forEach(el => el.remove());
+
     const feedback = document.createElement('div');
     feedback.className = `profile-feedback ${type}`;
+    feedback.setAttribute('role', type === 'success' ? 'status' : 'alert');
     feedback.textContent = message;
+    panel.appendChild(feedback);
 
-    const profilesSection = document.querySelector('.profiles-section');
-    if (profilesSection) {
-        profilesSection.appendChild(feedback);
-
-        // Remover después de 2 segundos
-        setTimeout(() => {
-            feedback.classList.add('fade-out');
-            setTimeout(() => feedback.remove(), 300);
-        }, 2000);
-    }
+    // Los errores tardan más en leerse que un "guardado"
+    setTimeout(() => {
+        feedback.classList.add('fade-out');
+        setTimeout(() => feedback.remove(), 300);
+    }, type === 'success' ? 2000 : 5000);
 }
 
 // ========== FUNCIONES DE COMPARACIÓN ==========
@@ -2408,6 +2516,15 @@ document.addEventListener('DOMContentLoaded', () => {
             input.dispatchEvent(new Event('input', { bubbles: true }));
         });
     });
+
+    // Importar perfiles desde archivo
+    const importFile = document.getElementById('importFile');
+    if (importFile) {
+        importFile.addEventListener('change', (e) => {
+            importProfilesFromFile(e.target.files[0]);
+            e.target.value = ''; // permite volver a elegir el mismo archivo
+        });
+    }
 
     // Initialize calculator
     calculator = new DnDCalculator();
