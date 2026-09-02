@@ -1,0 +1,11 @@
+{
+  "name": "dnd-attack-probability",
+  "version": "2.0.0",
+  "description": "Calculadora de probabilidades de ataque para D&D 5e (HTML/CSS/JS vanilla)",
+  "private": true,
+  "scripts": {
+    "test": "node --test \"tests/**/*.test.js\"",
+    "build:standalone": "node scripts/build-standalone.js"
+  },
+  "license": "MIT"
+}

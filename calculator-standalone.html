@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+<!-- ARCHIVO GENERADO por scripts/build-standalone.js a partir de index.html, styles.css, engine.js y calculator.js. No editar a mano: editá los fuentes y corré "npm run build:standalone". -->
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -64,6 +65,10 @@ header {
     box-shadow: var(--shadow-md);
 }
 
+header {
+    position: relative;
+}
+
 header h1 {
     font-size: 2.5em;
     color: var(--color-crit);
@@ -74,6 +79,373 @@ header h1 {
 .subtitle {
     color: var(--text-secondary);
     font-size: 1.1em;
+}
+
+/* Language Selector */
+.language-selector {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+}
+
+/* Custom Select with Flags */
+.custom-select {
+    position: relative;
+    min-width: 160px;
+    cursor: pointer;
+    user-select: none;
+}
+
+.custom-select .select-selected {
+    padding: 8px 30px 8px 12px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    color: var(--text-primary);
+    font-size: 0.95em;
+    cursor: pointer;
+    transition: all 0.3s;
+    min-width: 150px;
+}
+
+.custom-select .select-selected:after {
+    content: "";
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    width: 0;
+    height: 0;
+    border: 5px solid transparent;
+    border-color: var(--text-primary) transparent transparent transparent;
+}
+
+.custom-select .select-selected.select-arrow-active:after {
+    border-color: transparent transparent var(--text-primary) transparent;
+    top: 40%;
+}
+
+.custom-select .select-items {
+    position: absolute;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 99;
+    margin-top: 5px;
+    box-shadow: var(--shadow-md);
+}
+
+.custom-select .select-items div {
+    padding: 10px 12px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.custom-select .select-items div:hover {
+    background: var(--bg-hover);
+    color: var(--color-highlight);
+}
+
+.select-hide {
+    display: none;
+}
+
+.custom-select .fi {
+    margin-right: 8px;
+    font-size: 1.2em;
+    vertical-align: middle;
+}
+
+.language-selector select:focus {
+    outline: none;
+    border-color: var(--color-highlight);
+    box-shadow: 0 0 0 2px rgba(94, 53, 177, 0.2);
+}
+
+/* ========== RESPONSIVE DESIGN ========== */
+
+/* Tablet y pantallas medianas */
+@media (max-width: 1024px) {
+    .container {
+        padding: 15px;
+    }
+
+    header h1 {
+        font-size: 2em;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+/* Móviles y pantallas pequeñas */
+@media (max-width: 768px) {
+    /* Header responsive */
+    .container {
+        padding: 10px;
+    }
+
+    header {
+        padding: 20px 15px;
+        margin-bottom: 20px;
+    }
+
+    header h1 {
+        font-size: 1.6em;
+        margin-bottom: 8px;
+    }
+
+    .subtitle {
+        font-size: 0.95em;
+    }
+
+    .language-selector {
+        position: static;
+        margin-top: 15px;
+        text-align: center;
+    }
+
+    .custom-select {
+        margin: 0 auto;
+        min-width: 140px;
+    }
+
+    /* Config panel responsive */
+    .config-panel {
+        position: relative;
+        top: 0;
+        padding: 20px 15px;
+    }
+
+    .config-panel h2,
+    .results-panel h2 {
+        font-size: 1.3em;
+    }
+
+    /* Input groups más compactos */
+    .input-group {
+        margin-bottom: 16px;
+    }
+
+    .input-group label {
+        font-size: 0.9em;
+    }
+
+    /* Dice builder responsive */
+    .dice-item {
+        flex-wrap: wrap;
+        gap: 6px;
+    }
+
+    .dice-count {
+        width: 50px !important;
+    }
+
+    .dice-sides {
+        width: 70px !important;
+    }
+
+    /* Radio buttons más compactos */
+    .radio-label {
+        padding: 6px;
+        font-size: 0.9em;
+    }
+
+    /* Slider con etiqueta ajustada */
+    .attacks-value {
+        font-size: 0.85em;
+        padding: 2px 8px;
+    }
+
+    /* Botón calcular responsive */
+    .btn-calculate {
+        padding: 12px;
+        font-size: 1em;
+    }
+
+    /* Results panel responsive */
+    .results-panel {
+        padding: 20px 15px;
+    }
+
+    /* Tabla responsive - scroll horizontal */
+    .table-wrapper {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        margin: 0 -15px 20px -15px;
+        padding: 0 15px;
+    }
+
+    .results-table {
+        min-width: 600px;
+        font-size: 0.85em;
+    }
+
+    .results-table th,
+    .results-table td {
+        padding: 10px 8px;
+    }
+
+    .results-table th {
+        font-size: 0.8em;
+    }
+
+    /* Prob bars más estrechas */
+    .prob-bar {
+        height: 20px;
+    }
+
+    .bar-segment {
+        font-size: 0.7em;
+    }
+
+    /* Multi-attack distribution responsive */
+    .distribution-item {
+        grid-template-columns: 80px 1fr 100px;
+        gap: 10px;
+        padding: 10px;
+    }
+
+    .dist-label {
+        font-size: 0.85em;
+    }
+
+    .dist-bar {
+        height: 24px;
+    }
+
+    .dist-bar::after {
+        font-size: 0.8em;
+    }
+
+    .dist-damage {
+        font-size: 0.85em;
+    }
+
+    /* Distribution combo responsive */
+    .dist-combo {
+        grid-template-columns: 140px 1fr 120px;
+        gap: 8px;
+        padding: 8px;
+    }
+
+    .combo-label {
+        font-size: 0.8em;
+    }
+
+    .combo-bar {
+        height: 20px;
+    }
+
+    .combo-bar::after {
+        font-size: 0.75em;
+        left: 4px;
+    }
+
+    .combo-damage {
+        font-size: 0.8em;
+    }
+
+    /* Legend responsive */
+    .legend {
+        gap: 12px;
+        padding: 12px;
+        font-size: 0.85em;
+    }
+
+    .legend-item {
+        gap: 6px;
+    }
+
+    .color-box {
+        width: 16px;
+        height: 16px;
+    }
+
+    /* Tooltips ajustados */
+    .tooltip-text,
+    .info-icon::after {
+        width: 180px;
+        margin-left: -90px;
+        font-size: 0.8em;
+        padding: 6px;
+    }
+
+    /* Roll requirement responsive */
+    .roll-requirement {
+        padding: 12px;
+        font-size: 0.9em;
+    }
+}
+
+/* Móviles muy pequeños */
+@media (max-width: 480px) {
+    header h1 {
+        font-size: 1.4em;
+    }
+
+    .subtitle {
+        font-size: 0.85em;
+    }
+
+    /* Tablas más estrechas */
+    .results-table {
+        min-width: 550px;
+        font-size: 0.8em;
+    }
+
+    .results-table th,
+    .results-table td {
+        padding: 8px 6px;
+    }
+
+    /* Distribution items en columna */
+    .distribution-item {
+        grid-template-columns: 1fr;
+        gap: 8px;
+    }
+
+    .dist-label {
+        text-align: center;
+    }
+
+    .dist-damage {
+        text-align: center;
+    }
+
+    .dist-combo {
+        grid-template-columns: 1fr;
+        text-align: center;
+    }
+
+    .combo-damage {
+        text-align: center;
+    }
+
+    /* Stats grid en columna única */
+    .stats-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .stat-card {
+        justify-content: center;
+    }
+
+    /* Legend en columna */
+    .legend {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    /* Botones más pequeños */
+    .btn-calculate {
+        padding: 10px;
+        font-size: 0.95em;
+    }
 }
 
 /* Layout principal */
@@ -166,7 +538,7 @@ header h1 {
     border-radius: 4px;
     padding: 8px;
     position: absolute;
-    z-index: 1;
+    z-index: 1000;
     bottom: 125%;
     left: 50%;
     margin-left: -100px;
@@ -205,7 +577,7 @@ header h1 {
     text-align: left;
     border-radius: 4px;
     padding: 10px;
-    z-index: 100;
+    z-index: 1000;
     bottom: 125%;
     left: 50%;
     margin-left: -110px;
@@ -228,7 +600,7 @@ header h1 {
     border-width: 5px;
     border-style: solid;
     border-color: var(--bg-primary) transparent transparent transparent;
-    z-index: 100;
+    z-index: 1000;
     transition: opacity 0.3s, visibility 0.3s;
 }
 
@@ -817,42 +1189,1259 @@ footer {
 .results-table tbody tr {
     animation: fadeIn 0.3s ease-in-out;
 }
+
+/* ========== COMBAT STATISTICS PANEL ========== */
+.combat-stats-panel {
+    background: var(--bg-secondary);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    margin-bottom: 25px;
+    border: 2px solid var(--color-highlight);
+    box-shadow: var(--shadow-md);
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.combat-stats-panel h3 {
+    color: var(--color-crit);
+    margin: 0 0 10px 0;
+    font-size: 1.3em;
+}
+
+.vs-ac-label {
+    color: var(--text-secondary);
+    margin-bottom: 15px;
+    font-size: 0.95em;
+}
+
+.vs-ac-label .ac-number {
+    color: var(--color-highlight);
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 15px;
+    margin: 15px 0;
+}
+
+.stat-card {
+    background: var(--bg-tertiary);
+    padding: 15px;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    transition: all 0.3s;
+}
+
+.stat-card:hover {
+    background: var(--bg-hover);
+    transform: translateY(-2px);
+}
+
+.stat-card .stat-icon {
+    font-size: 2em;
+}
+
+.stat-content {
+    flex: 1;
+}
+
+.stat-label {
+    color: var(--text-secondary);
+    font-size: 0.85em;
+    margin-bottom: 4px;
+}
+
+.stat-value {
+    font-size: 1.8em;
+    font-weight: bold;
+    color: var(--color-crit);
+    line-height: 1;
+}
+
+.stat-unit {
+    color: var(--text-muted);
+    font-size: 0.75em;
+    margin-top: 2px;
+}
+
+.defeat-times {
+    background: var(--bg-tertiary);
+    padding: 15px;
+    border-radius: 6px;
+    margin: 15px 0;
+}
+
+.defeat-times h4 {
+    color: var(--color-hit);
+    margin: 0 0 12px 0;
+    font-size: 1.1em;
+}
+
+.defeat-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 10px;
+}
+
+.defeat-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: var(--bg-secondary);
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+.defeat-enemy {
+    color: var(--text-secondary);
+}
+
+.defeat-turns {
+    color: var(--color-crit);
+    font-weight: bold;
+}
+
+.level-estimate {
+    text-align: center;
+    padding: 15px;
+    background: linear-gradient(135deg, var(--color-highlight), #7e57c2);
+    border-radius: 6px;
+    color: white;
+    margin-top: 15px;
+}
+
+.level-badge {
+    font-size: 1.5em;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.level-explanation {
+    font-size: 0.85em;
+    opacity: 0.9;
+}
+
+/* Combat stats ya incluido en media queries principales arriba */
+
+/* ========== POWER LEVEL SECTION ========== */
+.power-level-section {
+    background: linear-gradient(135deg, #1a1a2e, #16213e);
+    border-radius: var(--border-radius);
+    padding: 25px;
+    margin-top: 30px;
+    border: 3px solid var(--color-crit);
+    box-shadow: 0 0 20px rgba(255, 160, 0, 0.3);
+    animation: fadeIn 0.5s ease-in-out;
+}
+
+.power-level-section h3 {
+    color: var(--color-crit);
+    text-align: center;
+    margin: 0 0 20px 0;
+    font-size: 1.5em;
+    text-shadow: 0 0 10px rgba(255, 160, 0, 0.5);
+}
+
+.power-level-display {
+    text-align: center;
+    padding: 30px;
+    background: radial-gradient(circle, rgba(255, 160, 0, 0.2), transparent);
+    border-radius: 12px;
+    margin-bottom: 25px;
+}
+
+.power-number {
+    font-size: 4em;
+    font-weight: bold;
+    color: var(--color-crit);
+    text-shadow: 0 0 20px rgba(255, 160, 0, 0.6);
+    line-height: 1;
+    animation: powerPulse 2s ease-in-out infinite;
+}
+
+@keyframes powerPulse {
+    0%, 100% {
+        transform: scale(1);
+        text-shadow: 0 0 20px rgba(255, 160, 0, 0.6);
+    }
+    50% {
+        transform: scale(1.05);
+        text-shadow: 0 0 30px rgba(255, 160, 0, 0.9);
+    }
+}
+
+.power-label {
+    font-size: 1.2em;
+    color: var(--text-secondary);
+    margin-top: 10px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+}
+
+.power-breakdown {
+    background: var(--bg-tertiary);
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.power-breakdown h4 {
+    color: var(--color-highlight);
+    margin: 0 0 15px 0;
+    font-size: 1.1em;
+}
+
+.formula-display {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin: 15px 0;
+    padding: 15px;
+    background: var(--bg-secondary);
+    border-radius: 6px;
+}
+
+.formula-line {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 12px;
+    background: var(--bg-tertiary);
+    border-radius: 4px;
+}
+
+.formula-part {
+    color: var(--text-secondary);
+    font-size: 0.95em;
+}
+
+.formula-value {
+    color: var(--color-crit);
+    font-weight: bold;
+    font-size: 1.1em;
+}
+
+.formula-value.final {
+    font-size: 1.5em;
+    text-shadow: 0 0 10px rgba(255, 160, 0, 0.4);
+}
+
+.formula-operator {
+    text-align: center;
+    color: var(--color-highlight);
+    font-weight: bold;
+    font-size: 1.2em;
+    padding: 4px 0;
+}
+
+.formula-result {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px;
+    background: var(--color-highlight);
+    border-radius: 6px;
+    color: white;
+}
+
+.formula-result .formula-part {
+    color: white;
+}
+
+.power-explanation {
+    margin-top: 15px;
+    padding: 15px;
+    background: var(--bg-secondary);
+    border-radius: 6px;
+    border-left: 4px solid var(--color-crit);
+}
+
+.power-explanation p {
+    color: var(--color-crit);
+    margin: 0 0 10px 0;
+}
+
+.power-explanation ul {
+    margin: 0;
+    padding-left: 20px;
+    color: var(--text-secondary);
+}
+
+.power-explanation li {
+    margin-bottom: 8px;
+    line-height: 1.5;
+}
+
+.power-explanation strong {
+    color: var(--text-primary);
+}
+
+/* Power level responsive ya incluido en media queries principales */
+
+/* ========== SISTEMA DE PERFILES ========== */
+
+.profiles-section {
+    margin-top: 25px;
+    padding-top: 20px;
+    border-top: 2px solid var(--border-color);
+}
+
+.profiles-section h3 {
+    color: var(--color-highlight);
+    margin-bottom: 15px;
+    font-size: 1.1em;
+}
+
+/* Guardar perfil */
+.save-profile {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.save-profile input {
+    flex: 1;
+    padding: 10px 12px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    color: var(--text-primary);
+    font-size: 0.95em;
+}
+
+.save-profile input:focus {
+    outline: none;
+    border-color: var(--color-highlight);
+    box-shadow: 0 0 0 2px rgba(94, 53, 177, 0.2);
+}
+
+.save-profile input::placeholder {
+    color: var(--text-muted);
+}
+
+.btn-save-profile {
+    padding: 10px 15px;
+    background: var(--color-highlight);
+    border: none;
+    border-radius: var(--border-radius);
+    color: white;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.btn-save-profile:hover {
+    background: #7c4dff;
+    transform: translateY(-1px);
+}
+
+.btn-save-profile:active {
+    transform: translateY(0);
+}
+
+/* Lista de perfiles */
+.profiles-list {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.profiles-list::-webkit-scrollbar {
+    width: 6px;
+}
+
+.profiles-list::-webkit-scrollbar-track {
+    background: var(--bg-secondary);
+    border-radius: 3px;
+}
+
+.profiles-list::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 3px;
+}
+
+.profiles-list::-webkit-scrollbar-thumb:hover {
+    background: var(--text-muted);
+}
+
+/* Card de perfil */
+.profile-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px;
+    background: var(--bg-tertiary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    transition: all 0.2s;
+}
+
+.profile-card:hover {
+    border-color: var(--color-highlight);
+    background: var(--bg-hover);
+}
+
+.profile-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    flex: 1;
+    min-width: 0;
+}
+
+.profile-name {
+    font-weight: bold;
+    color: var(--text-primary);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.profile-preview {
+    font-size: 0.85em;
+    color: var(--text-muted);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Botones de acciones */
+.profile-actions {
+    display: flex;
+    gap: 5px;
+    margin-left: 10px;
+}
+
+.profile-actions button {
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-size: 1em;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-load {
+    background: var(--color-hit);
+    color: white;
+}
+
+.btn-load:hover {
+    background: #4caf50;
+    transform: scale(1.1);
+}
+
+.btn-delete {
+    background: var(--color-miss);
+    color: white;
+}
+
+.btn-delete:hover {
+    background: #f44336;
+    transform: scale(1.1);
+}
+
+/* Estado vacío */
+.no-profiles {
+    text-align: center;
+    padding: 20px;
+    color: var(--text-muted);
+    font-style: italic;
+    background: var(--bg-tertiary);
+    border-radius: var(--border-radius);
+    border: 1px dashed var(--border-color);
+}
+
+/* Feedback de acciones */
+.profile-feedback {
+    padding: 10px 15px;
+    border-radius: var(--border-radius);
+    margin-top: 10px;
+    font-size: 0.9em;
+    animation: slideIn 0.3s ease;
+}
+
+.profile-feedback.success {
+    background: rgba(56, 142, 60, 0.2);
+    border: 1px solid var(--color-hit);
+    color: var(--color-hit);
+}
+
+.profile-feedback.fade-out {
+    animation: fadeOut 0.3s ease forwards;
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}
+
+/* Perfiles responsive ya incluido en media queries principales */
+
+/* ========== COMPARACIÓN DE PERFILES ========== */
+
+.compare-section {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid var(--border-color);
+}
+
+.compare-section h3 {
+    color: var(--text-primary);
+    margin-bottom: 15px;
+    font-size: 1.1em;
+}
+
+.compare-profiles-selection {
+    margin-bottom: 15px;
+}
+
+.compare-profiles-selection > label {
+    display: block;
+    color: var(--text-secondary);
+    font-size: 0.9em;
+    margin-bottom: 10px;
+}
+
+.compare-profiles-list {
+    max-height: 200px;
+    overflow-y: auto;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background: var(--bg-tertiary);
+}
+
+.compare-checkbox-item {
+    display: flex;
+    align-items: center;
+    padding: 10px 12px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.compare-checkbox-item:last-child {
+    border-bottom: none;
+}
+
+.compare-checkbox-item:hover {
+    background: var(--bg-secondary);
+}
+
+.compare-checkbox-item input[type="checkbox"] {
+    display: none;
+}
+
+.compare-checkbox-item .checkbox-custom {
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--border-color);
+    border-radius: 3px;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    flex-shrink: 0;
+}
+
+.compare-checkbox-item input[type="checkbox"]:checked + .checkbox-custom {
+    background: var(--color-crit);
+    border-color: var(--color-crit);
+}
+
+.compare-checkbox-item input[type="checkbox"]:checked + .checkbox-custom::after {
+    content: "✓";
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+.compare-profile-name {
+    font-weight: 600;
+    color: var(--text-primary);
+    margin-right: 8px;
+    flex-shrink: 0;
+}
+
+.compare-profile-preview {
+    font-size: 0.85em;
+    color: var(--text-muted);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.compare-no-profiles {
+    text-align: center;
+    padding: 20px;
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+.compare-ac-input {
+    margin-bottom: 15px;
+}
+
+.compare-ac-input label {
+    display: block;
+    color: var(--text-secondary);
+    font-size: 0.9em;
+    margin-bottom: 5px;
+}
+
+.compare-ac-input input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    font-size: 1em;
+}
+
+.compare-ac-input input:focus {
+    outline: none;
+    border-color: var(--color-crit);
+    box-shadow: 0 0 0 2px rgba(255, 171, 0, 0.2);
+}
+
+.btn-compare {
+    width: 100%;
+    padding: 12px 20px;
+    background: linear-gradient(135deg, var(--color-crit), #ff8f00);
+    color: #1a1a2e;
+    border: none;
+    border-radius: var(--border-radius);
+    font-size: 1em;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-compare:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(255, 171, 0, 0.4);
+}
+
+.btn-compare:active {
+    transform: translateY(0);
+}
+
+/* Panel de resultados de comparación */
+.comparison-results-panel {
+    background: var(--bg-secondary);
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius);
+    padding: 20px;
+    margin-top: 20px;
+}
+
+.comparison-results-panel h3 {
+    color: var(--color-crit);
+    margin-bottom: 10px;
+}
+
+.comparison-vs-ac {
+    text-align: center;
+    color: var(--text-secondary);
+    margin-bottom: 15px;
+    font-size: 0.95em;
+}
+
+.comparison-ac-number {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: var(--color-crit);
+    margin-left: 5px;
+}
+
+.comparison-table-wrapper {
+    overflow-x: auto;
+}
+
+.comparison-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9em;
+}
+
+.comparison-table th,
+.comparison-table td {
+    padding: 12px 10px;
+    text-align: center;
+    border-bottom: 1px solid var(--border-color);
+}
+
+.comparison-table th {
+    background: var(--bg-tertiary);
+    color: var(--text-secondary);
+    font-weight: 600;
+    font-size: 0.85em;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.comparison-table th:first-child,
+.comparison-table td:first-child {
+    text-align: left;
+}
+
+.comparison-table tbody tr {
+    transition: background-color 0.2s ease;
+}
+
+.comparison-table tbody tr:hover {
+    background: var(--bg-tertiary);
+}
+
+.profile-name-cell {
+    min-width: 150px;
+}
+
+.profile-name-cell strong {
+    color: var(--text-primary);
+}
+
+.adv-badge {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 0.75em;
+    font-weight: 600;
+    margin-left: 5px;
+}
+
+.adv-badge.advantage {
+    background: rgba(56, 142, 60, 0.2);
+    color: var(--color-hit);
+}
+
+.adv-badge.disadvantage {
+    background: rgba(229, 57, 53, 0.2);
+    color: var(--color-miss);
+}
+
+.attacks-badge {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 3px;
+    font-size: 0.75em;
+    font-weight: 600;
+    margin-left: 5px;
+    background: rgba(255, 171, 0, 0.2);
+    color: var(--color-crit);
+}
+
+.value-number {
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+.best-value {
+    background: rgba(255, 171, 0, 0.15) !important;
+}
+
+.best-value .value-number {
+    color: var(--color-crit);
+}
+
+.best-badge {
+    margin-left: 5px;
+    font-size: 0.9em;
+}
+
+/* Comparación responsive ya incluido en media queries principales */
+
+/* ========== PROFILE EDITING STYLES ========== */
+
+/* Editing indicator */
+.editing-indicator {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: linear-gradient(135deg, var(--accent-orange), #e67e22);
+    color: white;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    margin: 0.8rem 0;
+    font-weight: 500;
+    animation: pulse-glow 2s ease-in-out infinite;
+}
+
+@keyframes pulse-glow {
+    0%, 100% {
+        box-shadow: 0 0 5px rgba(255, 152, 0, 0.3);
+    }
+    50% {
+        box-shadow: 0 0 15px rgba(255, 152, 0, 0.6);
+    }
+}
+
+.editing-text {
+    font-size: 0.95rem;
+}
+
+.btn-cancel-edit {
+    background: rgba(255, 255, 255, 0.2);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    color: white;
+    padding: 0.4rem 0.8rem;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    transition: all 0.2s ease;
+}
+
+.btn-cancel-edit:hover {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Edit button on profile cards */
+.btn-edit {
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    padding: 0.5rem;
+    transition: all 0.2s ease;
+    font-size: 1rem;
+}
+
+.btn-edit:hover {
+    background: linear-gradient(135deg, #2980b9, #1f618d);
+    transform: scale(1.1);
+}
+
+/* Profile card in editing state */
+.profile-card.editing {
+    border: 2px solid var(--accent-orange);
+    background: linear-gradient(135deg,
+        rgba(255, 152, 0, 0.15),
+        rgba(255, 152, 0, 0.05));
+    position: relative;
+}
+
+.profile-card.editing::before {
+    content: "✏️";
+    position: absolute;
+    top: -8px;
+    right: -8px;
+    background: var(--accent-orange);
+    color: white;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;
+}
+
+/* ========== COMPARISON TABLE NEW COLUMNS ========== */
+
+/* Dice notation cell */
+.dice-cell {
+    text-align: center;
+}
+
+.dice-notation {
+    font-family: 'Courier New', monospace;
+    font-weight: 600;
+    color: var(--accent-blue);
+    background: rgba(52, 152, 219, 0.1);
+    padding: 0.2rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.9em;
+}
+
+/* Attack bonus cell */
+.attack-bonus-cell {
+    text-align: center;
+}
+
+.attack-bonus {
+    font-family: 'Courier New', monospace;
+    font-weight: 700;
+    color: var(--color-hit);
+    font-size: 1.1em;
+}
+
+/* Attack dice bonus cell */
+.attack-dice-cell {
+    text-align: center;
+}
+
+.attack-dice-bonus {
+    font-family: 'Courier New', monospace;
+    font-weight: 600;
+    color: var(--color-crit);
+    font-size: 0.95em;
+}
+
+/* Responsive adjustments for new columns */
+@media (max-width: 1024px) {
+    .dice-notation {
+        font-size: 0.8em;
+        padding: 0.15rem 0.3rem;
+    }
+
+    .attack-bonus {
+        font-size: 0.95em;
+    }
+
+    .attack-dice-bonus {
+        font-size: 0.85em;
+    }
+}
+
+/* Responsive adicional ya consolidado arriba */
+
+/* ========== MOBILE PANEL TOGGLE ========== */
+
+/* Botón cerrar en panel (solo móvil) */
+.mobile-panel-close {
+    display: none;
+}
+
+/* FAB - Floating Action Button */
+.mobile-fab-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--color-highlight), #7e57c2);
+    border: none;
+    box-shadow: var(--shadow-lg);
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 1000;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.mobile-fab-btn:hover {
+    transform: scale(1.1);
+    box-shadow: 0 8px 24px rgba(94, 53, 177, 0.5);
+}
+
+.mobile-fab-btn:active {
+    transform: scale(0.95);
+}
+
+/* Panel colapsado en móvil */
+@media (max-width: 768px) {
+    .mobile-panel-close {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        width: 100%;
+        padding: 12px;
+        background: var(--bg-tertiary);
+        border: none;
+        border-bottom: 2px solid var(--border-color);
+        color: var(--text-primary);
+        cursor: pointer;
+        font-size: 0.9em;
+        margin-bottom: 15px;
+        border-radius: var(--border-radius) var(--border-radius) 0 0;
+        transition: all 0.3s;
+    }
+
+    .mobile-panel-close:hover {
+        background: var(--bg-hover);
+        border-bottom-color: var(--color-highlight);
+    }
+
+    .mobile-panel-close .close-icon {
+        font-size: 0.8em;
+        color: var(--text-muted);
+        transition: transform 0.3s;
+    }
+
+    .mobile-panel-close:hover .close-icon {
+        transform: translateY(2px);
+    }
+
+    /* Panel colapsado */
+    .config-panel.mobile-collapsed {
+        display: none;
+        animation: fadeOut 0.3s ease-in-out;
+    }
+}
+
+/* ========== CONSOLIDACIÓN RESPONSIVE FINAL ========== */
+
+@media (max-width: 768px) {
+    /* Combat stats */
+    .combat-stats-panel {
+        padding: 15px;
+    }
+
+    .stats-grid {
+        grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+    }
+
+    .stat-value {
+        font-size: 1.5em;
+    }
+
+    .defeat-list {
+        grid-template-columns: 1fr;
+    }
+
+    /* Power level */
+    .power-level-section {
+        padding: 20px 15px;
+    }
+
+    .power-number {
+        font-size: 3em;
+    }
+
+    .formula-line {
+        flex-direction: column;
+        text-align: center;
+        gap: 5px;
+    }
+
+    .formula-result {
+        flex-direction: column;
+        text-align: center;
+        gap: 5px;
+    }
+
+    .power-explanation {
+        padding: 12px;
+    }
+
+    /* Perfiles */
+    .save-profile {
+        flex-direction: column;
+    }
+
+    .btn-save-profile {
+        width: 100%;
+    }
+
+    .profile-card {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+
+    .profile-actions {
+        margin-left: 0;
+        width: 100%;
+        justify-content: flex-end;
+    }
+
+    .profile-preview {
+        white-space: normal;
+    }
+
+    /* Comparación */
+    .comparison-results-panel {
+        padding: 15px;
+    }
+
+    .comparison-table-wrapper {
+        margin: 0 -15px;
+        padding: 0 15px;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .comparison-table {
+        min-width: 800px;
+        font-size: 0.8em;
+    }
+
+    .comparison-table th,
+    .comparison-table td {
+        padding: 8px 5px;
+    }
+
+    .profile-name-cell {
+        min-width: 100px;
+    }
+
+    .adv-badge,
+    .attacks-badge {
+        display: block;
+        margin: 3px 0 0 0;
+    }
+
+    /* Editing indicator */
+    .editing-indicator {
+        flex-direction: column;
+        gap: 0.5rem;
+        text-align: center;
+    }
+
+    /* Comparison table cells */
+    .dice-cell,
+    .attack-bonus-cell,
+    .attack-dice-cell {
+        padding: 8px 3px;
+    }
+
+    .dice-notation {
+        font-size: 0.8em;
+        padding: 0.15rem 0.3rem;
+    }
+
+    .attack-bonus {
+        font-size: 0.95em;
+    }
+
+    .attack-dice-bonus {
+        font-size: 0.85em;
+    }
+}
+
+@media (max-width: 480px) {
+    /* Combat stats muy compactos */
+    .stat-card .stat-icon {
+        font-size: 1.5em;
+    }
+
+    .stat-value {
+        font-size: 1.3em;
+    }
+
+    /* Power level muy compacto */
+    .power-number {
+        font-size: 2.5em;
+    }
+
+    .power-explanation ul {
+        font-size: 0.9em;
+    }
+
+    /* Comparison muy compacta */
+    .comparison-table {
+        min-width: 700px;
+        font-size: 0.75em;
+    }
+
+    .comparison-ac-number {
+        font-size: 1.3em;
+    }
+
+    /* Profile cards muy compactos */
+    .profile-actions button {
+        width: 28px;
+        height: 28px;
+        font-size: 0.9em;
+    }
+}
+
     </style>
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>⚔️ D&D Attack Probability Calculator</h1>
-            <p class="subtitle">Calcula tus probabilidades de impacto y daño esperado</p>
+            <h1 data-i18n="title">⚔️ D&D Attack Probability Calculator</h1>
+            <p class="subtitle" data-i18n="subtitle">Calcula tus probabilidades de impacto y daño esperado</p>
+            <div class="language-selector">
+                <div class="custom-select" id="languageSelect">
+                    <div class="select-selected">
+                        <span class="fi fi-es"></span> Español
+                    </div>
+                    <div class="select-items select-hide">
+                        <div data-value="es"><span class="fi fi-es"></span> Español</div>
+                        <div data-value="en"><span class="fi fi-us"></span> English</div>
+                        <div data-value="pt"><span class="fi fi-pt"></span> Português</div>
+                        <div data-value="de"><span class="fi fi-de"></span> Deutsch</div>
+                    </div>
+                </div>
+            </div>
         </header>
 
         <div class="main-layout">
             <!-- Panel de configuración -->
             <aside class="config-panel">
-                <h2>⚙️ Configuración de Ataque</h2>
+                <!-- Botón cerrar móvil -->
+                <button class="mobile-panel-close" onclick="closeMobilePanel()" aria-label="Cerrar configuración">
+                    <span class="close-icon">▼</span>
+                    <span data-i18n="closeConfig">Cerrar Configuración</span>
+                </button>
+
+                <h2 data-i18n="configTitle">⚙️ Configuración de Ataque</h2>
 
                 <div class="input-group">
                     <label for="attackBonus">
-                        Bonificador de Ataque
+                        <span data-i18n="attackBonus">Bonificador de Ataque</span>
                         <span class="tooltip">?
-                            <span class="tooltip-text">Tu modificador de ataque total (ej: +5)</span>
+                            <span class="tooltip-text" data-i18n="attackBonusTooltip">Tu modificador de ataque total (ej: +5)</span>
                         </span>
                     </label>
                     <input type="number" id="attackBonus" value="5" min="-5" max="20" step="1">
                 </div>
 
                 <div class="input-group">
-                    <label for="damageBonus">
-                        Bonificador de Daño
+                    <label for="attackDiceBonus">
+                        <span data-i18n="attackDiceBonus">Dado Extra al Ataque</span>
                         <span class="tooltip">?
-                            <span class="tooltip-text">Modificador que se suma al daño (ej: +3)</span>
+                            <span class="tooltip-text" data-i18n="attackDiceBonusTooltip">Dado adicional para tiradas de ataque (ej: Bendición, Inspiración Bárdica)</span>
+                        </span>
+                    </label>
+                    <select id="attackDiceBonus">
+                        <option value="0" selected data-i18n="attackDiceBonusNone">Ninguno</option>
+                        <option value="4" data-i18n="attackDiceBonusBless">+1d4 (Bendición)</option>
+                        <option value="6" data-i18n="attackDiceBonusBardic6">+1d6 (Inspiración)</option>
+                        <option value="8" data-i18n="attackDiceBonusBardic8">+1d8 (Inspiración)</option>
+                        <option value="10" data-i18n="attackDiceBonusBardic10">+1d10 (Inspiración)</option>
+                        <option value="12" data-i18n="attackDiceBonusBardic12">+1d12 (Inspiración)</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label for="damageBonus">
+                        <span data-i18n="damageBonus">Bonificador de Daño</span>
+                        <span class="tooltip">?
+                            <span class="tooltip-text" data-i18n="damageBonusTooltip">Modificador que se suma al daño (ej: +3)</span>
                         </span>
                     </label>
                     <input type="number" id="damageBonus" value="3" min="0" max="20" step="1">
                 </div>
 
                 <div class="input-group">
-                    <label>Dados de Daño</label>
+                    <label data-i18n="damageDice">Dados de Daño</label>
                     <div class="dice-builder">
                         <div id="diceList" class="dice-list">
                             <div class="dice-item">
@@ -870,54 +2459,54 @@ footer {
                                 <button class="btn-remove" onclick="removeDice(this)">×</button>
                             </div>
                         </div>
-                        <button class="btn-add" onclick="addDice()">+ Añadir Dado</button>
+                        <button class="btn-add" onclick="addDice()" data-i18n="addDice">+ Añadir Dado</button>
                         <div class="dice-notation" id="diceNotation">1d8</div>
                     </div>
                 </div>
 
                 <div class="input-group">
                     <label for="sneakAttackDice">
-                        Sneak Attack (d6)
+                        <span data-i18n="sneakAttack">Sneak Attack (d6)</span>
                         <span class="tooltip">?
-                            <span class="tooltip-text">Cantidad de d6 de Sneak Attack. Se aplica UNA sola vez por turno y se duplica en crítico (regla oficial de D&D 5e).</span>
+                            <span class="tooltip-text" data-i18n="sneakAttackTooltip">Cantidad de d6 de Sneak Attack. Se aplica UNA sola vez por turno y se duplica en crítico (regla oficial de D&D 5e).</span>
                         </span>
                     </label>
                     <input type="number" id="sneakAttackDice" value="0" min="0" max="12" step="1">
                 </div>
 
                 <div class="input-group">
-                    <label>Rango Crítico</label>
+                    <label data-i18n="critRange">Rango Crítico</label>
                     <select id="critRange">
-                        <option value="20" selected>Solo 20 (5%)</option>
-                        <option value="19">19-20 (10%)</option>
-                        <option value="18">18-20 (15%)</option>
+                        <option value="20" selected data-i18n="critRange20">Solo 20 (5%)</option>
+                        <option value="19" data-i18n="critRange19">19-20 (10%)</option>
+                        <option value="18" data-i18n="critRange18">18-20 (15%)</option>
                     </select>
                 </div>
 
                 <div class="input-group">
-                    <label>Ventaja / Desventaja</label>
+                    <label data-i18n="advantageLabel">Ventaja / Desventaja</label>
                     <div class="radio-group">
                         <label class="radio-label">
                             <input type="radio" name="advantage" value="disadvantage">
                             <span class="radio-custom"></span>
-                            Desventaja
+                            <span data-i18n="disadvantage">Desventaja</span>
                         </label>
                         <label class="radio-label">
                             <input type="radio" name="advantage" value="normal" checked>
                             <span class="radio-custom"></span>
-                            Normal
+                            <span data-i18n="normal">Normal</span>
                         </label>
                         <label class="radio-label">
                             <input type="radio" name="advantage" value="advantage">
                             <span class="radio-custom"></span>
-                            Ventaja
+                            <span data-i18n="advantage">Ventaja</span>
                         </label>
                     </div>
                 </div>
 
                 <div class="input-group">
                     <label for="numberOfAttacks">
-                        Número de Ataques
+                        <span data-i18n="numberOfAttacks">Número de Ataques</span>
                         <span class="attacks-value" id="attacksValue">1</span>
                     </label>
                     <input type="range" id="numberOfAttacks" min="1" max="8" value="1" step="1">
@@ -925,22 +2514,127 @@ footer {
 
                 <div class="input-group">
                     <label for="targetAC">
-                        CA Objetivo (Opcional)
+                        <span data-i18n="targetAC">CA Objetivo (Opcional)</span>
                         <span class="tooltip">?
-                            <span class="tooltip-text">Clase de Armadura del enemigo específico a destacar</span>
+                            <span class="tooltip-text" data-i18n="targetACTooltip">Clase de Armadura del enemigo específico a destacar</span>
                         </span>
                     </label>
-                    <input type="number" id="targetAC" value="" min="1" max="30" placeholder="Ej: 15">
+                    <input type="number" id="targetAC" value="" min="1" max="30" data-i18n="targetACPlaceholder" placeholder="Ej: 15">
                 </div>
 
-                <button class="btn-calculate" onclick="calculator.calculate()">
+                <button class="btn-calculate" onclick="calculator.calculate()" data-i18n="calculateButton">
                     🎲 Calcular Probabilidades
                 </button>
+
+                <!-- Sección de Perfiles -->
+                <div class="profiles-section">
+                    <h3 data-i18n="profilesTitle">📁 Perfiles Guardados</h3>
+
+                    <div class="save-profile">
+                        <input type="text" id="profileName" data-i18n="profileNamePlaceholder" placeholder="Nombre del perfil...">
+                        <button class="btn-save-profile" onclick="saveProfile()" data-i18n="saveProfileBtn">💾 Guardar Perfil</button>
+                    </div>
+
+                    <!-- Editing indicator -->
+                    <div class="editing-indicator" id="editingIndicator" style="display: none;">
+                        <span class="editing-text" id="editingText">Editando: Perfil</span>
+                        <button class="btn-cancel-edit" onclick="cancelEditProfile()" data-i18n="cancelEdit">✖ Cancelar</button>
+                    </div>
+
+                    <div class="profiles-list" id="profilesList">
+                        <!-- Perfiles se generan dinámicamente -->
+                    </div>
+
+                    <div class="no-profiles" id="noProfiles" data-i18n="noProfiles">No hay perfiles guardados</div>
+                </div>
+
+                <!-- Sección de Comparación de Perfiles -->
+                <div class="compare-section">
+                    <h3 data-i18n="compareTitle">⚔️ Comparar Perfiles</h3>
+
+                    <div class="compare-profiles-selection">
+                        <label data-i18n="compareSelectProfiles">Selecciona perfiles a comparar:</label>
+                        <div class="compare-profiles-list" id="compareProfilesList">
+                            <!-- Checkboxes se generan dinámicamente -->
+                        </div>
+                        <div class="compare-no-profiles" id="compareNoProfiles" data-i18n="compareNoProfiles">Guarda perfiles primero para compararlos</div>
+                    </div>
+
+                    <div class="compare-ac-input">
+                        <label for="compareTargetAC" data-i18n="compareTargetAC">CA para comparar</label>
+                        <input type="number" id="compareTargetAC" value="15" min="1" max="30">
+                    </div>
+
+                    <button class="btn-compare" onclick="runComparison()" data-i18n="compareButton">📊 Comparar</button>
+                </div>
             </aside>
 
             <!-- Panel de resultados -->
             <main class="results-panel">
-                <h2>📊 Tabla de Probabilidades</h2>
+                <h2 data-i18n="resultsTitle">📊 Tabla de Probabilidades</h2>
+
+                <!-- Combat Statistics Panel -->
+                <div class="combat-stats-panel" id="combatStatsPanel" style="display: none;">
+                    <h3 data-i18n="combatStatsTitle">📊 Estadísticas de Combate</h3>
+                    <div class="vs-ac-label">
+                        <span data-i18n="vsAC">contra CA</span> <span class="ac-number" id="statsTargetAC">15</span>
+                    </div>
+
+                    <div class="stats-grid">
+                        <div class="stat-card">
+                            <div class="stat-icon">⚔️</div>
+                            <div class="stat-content">
+                                <div class="stat-label" data-i18n="statDPRTotal">DPR Total</div>
+                                <div class="stat-value" id="statDPRTotal">0</div>
+                                <div class="stat-unit" data-i18n="damagePerRound">daño/turno</div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon">🎯</div>
+                            <div class="stat-content">
+                                <div class="stat-label" data-i18n="statHitProb">Prob. Impacto</div>
+                                <div class="stat-value" id="statHitChance">0%</div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon">💥</div>
+                            <div class="stat-content">
+                                <div class="stat-label" data-i18n="statDamagePerHit">Daño/Impacto</div>
+                                <div class="stat-value" id="statDamagePerHit">0</div>
+                                <div class="stat-unit" data-i18n="average">promedio</div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card">
+                            <div class="stat-icon">🎲</div>
+                            <div class="stat-content">
+                                <div class="stat-label" data-i18n="statCritsPerRound">Críticos/Turno</div>
+                                <div class="stat-value" id="statCritsPerRound">0</div>
+                            </div>
+                        </div>
+
+                        <div class="stat-card" id="statSneakAttackCard" style="display: none;">
+                            <div class="stat-icon">🗡️</div>
+                            <div class="stat-content">
+                                <div class="stat-label" data-i18n="statSneakAttack">Sneak Attack</div>
+                                <div class="stat-value" id="statSneakAttack">0</div>
+                                <div class="stat-unit" data-i18n="damagePerRound">daño/turno</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="defeat-times">
+                        <h4 data-i18n="defeatTimesTitle">⏱️ Turnos para Derrotar</h4>
+                        <div class="defeat-list" id="defeatTimesList"></div>
+                    </div>
+
+                    <div class="level-estimate">
+                        <div class="level-badge" id="levelBadge">Nivel 1-4</div>
+                        <div class="level-explanation" data-i18n="levelExplanation">Basado en DPR y bonificador de ataque</div>
+                    </div>
+                </div>
 
                 <div class="roll-requirement" id="rollRequirement"></div>
 
@@ -949,39 +2643,39 @@ footer {
                         <thead>
                             <tr>
                                 <th>
-                                    CA
-                                    <span class="info-icon" data-tooltip="Clase de Armadura del enemigo">ⓘ</span>
+                                    <span data-i18n="tableHeaderAC">CA</span>
+                                    <span class="info-icon" data-i18n-tooltip="tableHeaderACTooltip" data-tooltip="Clase de Armadura del enemigo">ⓘ</span>
                                 </th>
                                 <th>
-                                    Fallo
-                                    <span class="info-icon" data-tooltip="Probabilidad de no impactar (incluso con 1 natural)">ⓘ</span>
+                                    <span data-i18n="tableHeaderMiss">Fallo</span>
+                                    <span class="info-icon" data-i18n-tooltip="tableHeaderMissTooltip" data-tooltip="Probabilidad de no impactar (incluso con 1 natural)">ⓘ</span>
                                 </th>
                                 <th>
-                                    Impacto
-                                    <span class="info-icon" data-tooltip="Probabilidad de impacto normal (sin crítico)">ⓘ</span>
+                                    <span data-i18n="tableHeaderHit">Impacto</span>
+                                    <span class="info-icon" data-i18n-tooltip="tableHeaderHitTooltip" data-tooltip="Probabilidad de impacto normal (sin crítico)">ⓘ</span>
                                 </th>
                                 <th>
-                                    Crítico
-                                    <span class="info-icon" data-tooltip="Probabilidad de crítico (duplica dados de daño)">ⓘ</span>
+                                    <span data-i18n="tableHeaderCrit">Crítico</span>
+                                    <span class="info-icon" data-i18n-tooltip="tableHeaderCritTooltip" data-tooltip="Probabilidad de crítico (duplica dados de daño)">ⓘ</span>
                                 </th>
                                 <th>
-                                    Daño Normal
-                                    <span class="info-icon" data-tooltip="Rango de daño si impactas sin crítico">ⓘ</span>
+                                    <span data-i18n="tableHeaderNormalDmg">Daño Normal</span>
+                                    <span class="info-icon" data-i18n-tooltip="tableHeaderNormalDmgTooltip" data-tooltip="Rango de daño si impactas sin crítico">ⓘ</span>
                                 </th>
                                 <th>
-                                    Daño Crítico
-                                    <span class="info-icon" data-tooltip="Rango de daño con impacto crítico">ⓘ</span>
+                                    <span data-i18n="tableHeaderCritDmg">Daño Crítico</span>
+                                    <span class="info-icon" data-i18n-tooltip="tableHeaderCritDmgTooltip" data-tooltip="Rango de daño con impacto crítico">ⓘ</span>
                                 </th>
                                 <th>
-                                    DPR
-                                    <span class="info-icon" data-tooltip="Damage Per Round: daño promedio esperado por turno considerando todas las probabilidades">ⓘ</span>
+                                    <span data-i18n="tableHeaderDPR">DPR</span>
+                                    <span class="info-icon" data-i18n-tooltip="tableHeaderDPRTooltip" data-tooltip="Damage Per Round: daño promedio esperado por turno considerando todas las probabilidades">ⓘ</span>
                                 </th>
-                                <th>Visualización</th>
+                                <th data-i18n="tableHeaderViz">Visualización</th>
                             </tr>
                         </thead>
                         <tbody id="resultsBody">
                             <tr>
-                                <td colspan="8" class="no-data">
+                                <td colspan="8" class="no-data" data-i18n="noData">
                                     Haz clic en "Calcular Probabilidades" para ver los resultados
                                 </td>
                             </tr>
@@ -991,46 +2685,1925 @@ footer {
 
                 <!-- Panel de múltiples ataques -->
                 <div class="multi-attack-panel" id="multiAttackPanel" style="display: none;">
-                    <h3>🎯 Distribución de Múltiples Ataques</h3>
+                    <h3 data-i18n="multiAttackTitle">🎯 Distribución de Múltiples Ataques</h3>
                     <div class="multi-attack-info" id="multiAttackInfo"></div>
                     <div id="multiAttackDistribution"></div>
+                </div>
+
+                <!-- Power Level Section -->
+                <div class="power-level-section" id="powerLevelSection" style="display: none;">
+                    <h3 data-i18n="powerLevelTitle">⚡ Nivel de Poder del Personaje</h3>
+
+                    <div class="power-level-display">
+                        <div class="power-number" id="powerLevelNumber">0</div>
+                        <div class="power-label" data-i18n="powerLevelLabel">Power Level</div>
+                    </div>
+
+                    <div class="power-breakdown">
+                        <h4 data-i18n="howCalculated">📊 Cómo se calcula:</h4>
+                        <div class="formula-display">
+                            <div class="formula-line">
+                                <span class="formula-part" data-i18n="statDPRTotal">DPR Total</span>
+                                <span class="formula-value" id="formulaDPR">0</span>
+                            </div>
+                            <div class="formula-operator">×</div>
+                            <div class="formula-line">
+                                <span class="formula-part" data-i18n="statHitProb">Probabilidad de Impacto</span>
+                                <span class="formula-value" id="formulaHit">0%</span>
+                            </div>
+                            <div class="formula-operator">× 10</div>
+                            <div class="formula-result">
+                                <span class="formula-part" data-i18n="powerLevelLabel">= Power Level</span>
+                                <span class="formula-value final" id="formulaResult">0</span>
+                            </div>
+                        </div>
+
+                        <div class="power-explanation">
+                            <p><strong data-i18n="whyTheseFactors">¿Por qué estos factores?</strong></p>
+                            <ul>
+                                <li><strong data-i18n="statDPRTotal">DPR Total:</strong> <span data-i18n="dprTotalExplain">Incluye ventaja, críticos y múltiples ataques</span></li>
+                                <li><strong data-i18n="statHitProb">Probabilidad de Impacto:</strong> <span data-i18n="hitChanceExplain">Penaliza builds poco confiables</span></li>
+                                <li><strong>× 10:</strong> <span data-i18n="scaleExplain">Escala para números comparables</span></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Panel de Comparación de Perfiles -->
+                <div class="comparison-results-panel" id="comparisonResultsPanel" style="display: none;">
+                    <h3 data-i18n="compareResultsTitle">📊 Comparación de Perfiles</h3>
+                    <div class="comparison-vs-ac">
+                        <span data-i18n="compareVsAC">contra CA</span>
+                        <span class="comparison-ac-number" id="comparisonTargetAC">15</span>
+                    </div>
+
+                    <div class="comparison-table-wrapper">
+                        <table class="comparison-table">
+                            <thead>
+                                <tr>
+                                    <th>Perfil</th>
+                                    <th data-i18n="compareDice">Tiradas</th>
+                                    <th data-i18n="compareAttackBonus">Bono Ataque</th>
+                                    <th data-i18n="compareAttackDice">Dado Extra</th>
+                                    <th data-i18n="compareSneakAttack">Sneak Attack</th>
+                                    <th data-i18n="comparePowerLevel">Power Level</th>
+                                    <th data-i18n="compareRollNeeded">Roll Mínimo</th>
+                                    <th data-i18n="compareHitChance">Prob. Impacto</th>
+                                    <th data-i18n="compareCritChance">Prob. Crítico</th>
+                                    <th data-i18n="compareNormalDmg">Daño Normal</th>
+                                    <th data-i18n="compareCritDmg">Daño Crítico</th>
+                                    <th data-i18n="compareDPR">DPR Total</th>
+                                </tr>
+                            </thead>
+                            <tbody id="comparisonTableBody">
+                                <!-- Filas se generan dinámicamente -->
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
 
                 <!-- Leyenda -->
                 <div class="legend">
                     <div class="legend-item">
                         <span class="color-box miss"></span>
-                        <span>Fallo</span>
+                        <span data-i18n="legendMiss">Fallo</span>
                     </div>
                     <div class="legend-item">
                         <span class="color-box hit"></span>
-                        <span>Impacto Normal</span>
+                        <span data-i18n="legendHit">Impacto Normal</span>
                     </div>
                     <div class="legend-item">
                         <span class="color-box crit"></span>
-                        <span>Crítico</span>
+                        <span data-i18n="legendCrit">Crítico</span>
                     </div>
                     <div class="legend-item">
-                        <span class="info-text">DPR = Damage Per Round (daño promedio esperado)</span>
+                        <span class="info-text" data-i18n="legendDPR">DPR = Damage Per Round (daño promedio esperado)</span>
                     </div>
                 </div>
             </main>
         </div>
 
         <footer>
-            <p>Calculadora basada en las reglas de D&D 5e</p>
+            <p data-i18n="footerText">Calculadora basada en las reglas de D&D 5e</p>
         </footer>
     </div>
 
+    <!-- FAB Móvil -->
+    <button class="mobile-fab-btn" onclick="openMobilePanel()" aria-label="Abrir configuración" style="display: none;">
+        <span>⚙️</span>
+    </button>
+
     <script>
-// Calculadora de probabilidades D&D
+/*
+ * engine.js — Motor de probabilidad y daño para D&D 5e.
+ *
+ * Funciones puras, sin DOM. Es la ÚNICA fuente de verdad de la matemática:
+ * la usan calculator.js (UI, comparador de perfiles) y calculator-standalone.html.
+ *
+ * Funciona como módulo CommonJS (tests en Node) y como global `DnDEngine` en el navegador.
+ */
+(function (root, factory) {
+    if (typeof module === 'object' && module.exports) {
+        module.exports = factory();
+    } else {
+        root.DnDEngine = factory();
+    }
+}(typeof self !== 'undefined' ? self : this, function () {
+    'use strict';
+
+    const ADVANTAGE_MODES = ['normal', 'advantage', 'disadvantage'];
+
+    // ---------- Configuración ----------
+
+    function toInt(value, fallback) {
+        const n = parseInt(value, 10);
+        return Number.isFinite(n) ? n : fallback;
+    }
+
+    function clamp(n, min, max) {
+        return Math.min(max, Math.max(min, n));
+    }
+
+    /**
+     * Devuelve una configuración completa y saneada a partir de una parcial.
+     * Nunca muta el objeto de entrada.
+     */
+    function normalizeConfig(input) {
+        const cfg = input || {};
+        const dice = Array.isArray(cfg.damageDice) && cfg.damageDice.length > 0
+            ? cfg.damageDice
+            : [{ count: 1, sides: 8 }];
+
+        return {
+            attackBonus: clamp(toInt(cfg.attackBonus, 0), -20, 40),
+            damageBonus: clamp(toInt(cfg.damageBonus, 0), -20, 100),
+            damageDice: dice.map(d => ({
+                count: clamp(toInt(d.count, 1), 1, 100),
+                sides: clamp(toInt(d.sides, 6), 1, 100)
+            })),
+            attackDiceBonus: clamp(toInt(cfg.attackDiceBonus, 0), 0, 20),
+            sneakAttackDice: clamp(toInt(cfg.sneakAttackDice, 0), 0, 20),
+            advantage: ADVANTAGE_MODES.includes(cfg.advantage) ? cfg.advantage : 'normal',
+            critRange: clamp(toInt(cfg.critRange, 20), 2, 20),
+            numberOfAttacks: clamp(toInt(cfg.numberOfAttacks, 1), 1, 20),
+            targetAC: cfg.targetAC == null || cfg.targetAC === '' ? null : clamp(toInt(cfg.targetAC, 15), 1, 40)
+        };
+    }
+
+    // ---------- Probabilidad de impacto ----------
+
+    function normalProbability(targetRoll, critMin) {
+        const critChance = (21 - critMin) / 20;
+
+        if (targetRoll >= 21) {
+            // Solo el crítico impacta
+            return { hit: critChance, crit: critChance, miss: 1 - critChance };
+        }
+        if (targetRoll <= 1) {
+            // Todo impacta salvo el 1 natural
+            return { hit: 0.95, crit: critChance, miss: 0.05 };
+        }
+        const hit = (21 - targetRoll) / 20;
+        return { hit, crit: critChance, miss: 1 - hit };
+    }
+
+    function advantageProbability(targetRoll, critMin) {
+        // P(max(d1,d2) >= x) = 1 - ((x-1)/20)²
+        const pCrit = 1 - ((critMin - 1) / 20) ** 2;
+        let pHit;
+        if (targetRoll >= 21) pHit = pCrit;
+        else if (targetRoll <= 1) pHit = 1 - (1 / 20) ** 2; // fallo solo con doble 1
+        else pHit = 1 - ((targetRoll - 1) / 20) ** 2;
+        return { hit: pHit, crit: pCrit, miss: 1 - pHit };
+    }
+
+    function disadvantageProbability(targetRoll, critMin) {
+        // P(min(d1,d2) >= x) = ((21-x)/20)²
+        const pCrit = ((21 - critMin) / 20) ** 2;
+        let pHit;
+        if (targetRoll >= 21) pHit = pCrit;
+        else if (targetRoll <= 1) pHit = 1 - (1 / 20) ** 2;
+        else pHit = ((21 - targetRoll) / 20) ** 2;
+        return { hit: pHit, crit: pCrit, miss: 1 - pHit };
+    }
+
+    /**
+     * Con dado extra al ataque (Bless d4, Inspiración Bárdica dN) no hay fórmula
+     * cerrada cómoda: se enumeran todas las combinaciones. Reglas:
+     *  - 1 natural en el d20 (el que se usa) = fallo, sin importar el dado extra.
+     *  - Crítico se decide solo por el d20.
+     *  - El crítico siempre impacta.
+     */
+    function bonusDieProbability(targetRoll, critMin, advantage, bonusSides) {
+        let hit = 0, crit = 0, total = 0;
+        const twoDice = advantage !== 'normal';
+
+        for (let d1 = 1; d1 <= 20; d1++) {
+            for (let d2 = 1; d2 <= 20; d2++) {
+                if (!twoDice && d2 !== 1) continue;
+                const d20 = advantage === 'advantage' ? Math.max(d1, d2)
+                          : advantage === 'disadvantage' ? Math.min(d1, d2)
+                          : d1;
+                for (let b = 1; b <= bonusSides; b++) {
+                    total++;
+                    if (d20 === 1) continue;
+                    if (d20 >= critMin) { crit++; hit++; continue; }
+                    if (d20 + b >= targetRoll) hit++;
+                }
+            }
+        }
+        return { hit: hit / total, crit: crit / total, miss: 1 - hit / total };
+    }
+
+    /**
+     * Probabilidades de fallo / impacto / crítico de UN ataque contra una CA.
+     * `hit` incluye a los críticos; impacto normal = hit - crit.
+     */
+    function hitProbability(cfg, ac) {
+        const targetRoll = ac - cfg.attackBonus;
+        const critMin = cfg.critRange;
+
+        if (cfg.attackDiceBonus > 0) {
+            return bonusDieProbability(targetRoll, critMin, cfg.advantage, cfg.attackDiceBonus);
+        }
+        if (cfg.advantage === 'advantage') return advantageProbability(targetRoll, critMin);
+        if (cfg.advantage === 'disadvantage') return disadvantageProbability(targetRoll, critMin);
+        return normalProbability(targetRoll, critMin);
+    }
+
+    // ---------- Daño ----------
+
+    const SNEAK_DIE_AVG = 3.5;
+
+    function sneakAttackAverage(cfg, isCrit) {
+        return cfg.sneakAttackDice * (isCrit ? 2 : 1) * SNEAK_DIE_AVG;
+    }
+
+    function sneakAttackRange(cfg, isCrit) {
+        const dice = cfg.sneakAttackDice * (isCrit ? 2 : 1);
+        return { min: dice, max: dice * 6 };
+    }
+
+    /**
+     * Daño promedio de un impacto. Los dados se duplican en crítico; el bono no.
+     * includeSneak: sumar el Sneak Attack a este impacto (útil solo para 1 ataque/turno).
+     */
+    function damageAverage(cfg, isCrit, includeSneak) {
+        let total = cfg.damageBonus;
+        for (const die of cfg.damageDice) {
+            total += die.count * (isCrit ? 2 : 1) * (1 + die.sides) / 2;
+        }
+        if (includeSneak) total += sneakAttackAverage(cfg, isCrit);
+        return total;
+    }
+
+    function damageRange(cfg, isCrit, includeSneak) {
+        let min = cfg.damageBonus, max = cfg.damageBonus;
+        for (const die of cfg.damageDice) {
+            const n = die.count * (isCrit ? 2 : 1);
+            min += n;
+            max += n * die.sides;
+        }
+        if (includeSneak) {
+            const sa = sneakAttackRange(cfg, isCrit);
+            min += sa.min;
+            max += sa.max;
+        }
+        return { min, max };
+    }
+
+    // ---------- DPR ----------
+
+    /** Daño esperado de UN ataque de arma (sin Sneak Attack). */
+    function dprPerAttack(cfg, ac) {
+        const { hit, crit } = hitProbability(cfg, ac);
+        return (hit - crit) * damageAverage(cfg, false, false) + crit * damageAverage(cfg, true, false);
+    }
+
+    /**
+     * Sneak Attack esperado POR TURNO: se aplica una sola vez, al mejor impacto.
+     * Se duplica si algún ataque del turno fue crítico.
+     */
+    function sneakAttackPerTurn(cfg, ac) {
+        if (cfg.sneakAttackDice <= 0) return 0;
+        const { hit, crit } = hitProbability(cfg, ac);
+        const n = cfg.numberOfAttacks;
+        const avg = sneakAttackAverage(cfg, false);
+        const pNoCrit = Math.pow(1 - crit, n);
+        const pNoHit = Math.pow(1 - hit, n);
+        return (1 - pNoCrit) * 2 * avg + (pNoCrit - pNoHit) * avg;
+    }
+
+    /** Daño esperado total del turno: arma × nº de ataques + Sneak Attack. */
+    function dprPerTurn(cfg, ac) {
+        return dprPerAttack(cfg, ac) * cfg.numberOfAttacks + sneakAttackPerTurn(cfg, ac);
+    }
+
+    // ---------- Distribución multiataque ----------
+
+    function factorial(n) {
+        let r = 1;
+        for (let i = 2; i <= n; i++) r *= i;
+        return r;
+    }
+
+    function multinomial(n, a, b, c) {
+        return factorial(n) / (factorial(a) * factorial(b) * factorial(c));
+    }
+
+    /**
+     * Distribución completa de resultados de un turno con n ataques.
+     * Devuelve un grupo por cantidad de impactos (0..n); cada grupo lista las
+     * combinaciones normales/críticos con su probabilidad y daño (prom, min, max).
+     * NO filtra nada: las probabilidades suman exactamente 1. Filtrar es cosa de la vista.
+     */
+    function multiAttackDistribution(cfg, ac) {
+        const n = cfg.numberOfAttacks;
+        const { hit: pHit, crit: pCrit } = hitProbability(cfg, ac);
+        const pMiss = 1 - pHit;
+        const pNormal = pHit - pCrit;
+
+        const normalAvg = damageAverage(cfg, false, false);
+        const critAvg = damageAverage(cfg, true, false);
+        const normalRange = damageRange(cfg, false, false);
+        const critRange = damageRange(cfg, true, false);
+
+        const groups = [];
+        for (let hits = 0; hits <= n; hits++) {
+            const combinations = [];
+            for (let crits = 0; crits <= hits; crits++) {
+                const normals = hits - crits;
+                const misses = n - hits;
+                const probability = multinomial(n, misses, normals, crits)
+                    * Math.pow(pMiss, misses)
+                    * Math.pow(pNormal, normals)
+                    * Math.pow(pCrit, crits);
+
+                let saAvg = 0, saMin = 0, saMax = 0;
+                if (cfg.sneakAttackDice > 0 && hits >= 1) {
+                    const isCrit = crits >= 1;
+                    saAvg = sneakAttackAverage(cfg, isCrit);
+                    ({ min: saMin, max: saMax } = sneakAttackRange(cfg, isCrit));
+                }
+
+                combinations.push({
+                    normals,
+                    crits,
+                    probability,
+                    damage: normals * normalAvg + crits * critAvg + saAvg,
+                    damageMin: normals * normalRange.min + crits * critRange.min + saMin,
+                    damageMax: normals * normalRange.max + crits * critRange.max + saMax
+                });
+            }
+            groups.push({
+                totalHits: hits,
+                combinations,
+                totalProbability: combinations.reduce((s, c) => s + c.probability, 0)
+            });
+        }
+        return groups;
+    }
+
+    return {
+        ADVANTAGE_MODES,
+        normalizeConfig,
+        hitProbability,
+        damageAverage,
+        damageRange,
+        sneakAttackAverage,
+        sneakAttackRange,
+        dprPerAttack,
+        sneakAttackPerTurn,
+        dprPerTurn,
+        multiAttackDistribution
+    };
+}));
+
+// ========== SISTEMA DE INTERNACIONALIZACIÓN ==========
+
+// Current language (auto-detect or from localStorage)
+let currentLanguage = 'es';
+
+// Translation object with all supported languages
+const translations = {
+    es: {
+        // Header
+        title: "⚔️ Calculadora de Probabilidades de Ataque D&D",
+        subtitle: "Calcula tus probabilidades de impacto y daño esperado",
+
+        // Config panel
+        configTitle: "⚙️ Configuración de Ataque",
+        closeConfig: "Cerrar Configuración",
+        attackBonus: "Bonificador de Ataque",
+        attackBonusTooltip: "Tu modificador de ataque total (ej: +5)",
+        damageBonus: "Bonificador de Daño",
+        damageBonusTooltip: "Modificador que se suma al daño (ej: +3)",
+        damageDice: "Dados de Daño",
+        addDice: "+ Añadir Dado",
+        critRange: "Rango Crítico",
+        critRange20: "Solo 20 (5%)",
+        critRange19: "19-20 (10%)",
+        critRange18: "18-20 (15%)",
+        advantageLabel: "Ventaja / Desventaja",
+        disadvantage: "Desventaja",
+        normal: "Normal",
+        advantage: "Ventaja",
+        numberOfAttacks: "Número de Ataques",
+        targetAC: "CA Objetivo (Opcional)",
+        targetACTooltip: "Clase de Armadura del enemigo específico a destacar",
+        targetACPlaceholder: "Ej: 15",
+        calculateButton: "🎲 Calcular Probabilidades",
+
+        // Results panel
+        resultsTitle: "📊 Tabla de Probabilidades",
+        tableHeaderAC: "CA",
+        tableHeaderACTooltip: "Clase de Armadura del enemigo",
+        tableHeaderMiss: "Fallo",
+        tableHeaderMissTooltip: "Probabilidad de no impactar (incluso con 1 natural)",
+        tableHeaderHit: "Impacto",
+        tableHeaderHitTooltip: "Probabilidad de impacto normal (sin crítico)",
+        tableHeaderCrit: "Crítico",
+        tableHeaderCritTooltip: "Probabilidad de crítico (duplica dados de daño)",
+        tableHeaderNormalDmg: "Daño Normal",
+        tableHeaderNormalDmgTooltip: "Rango de daño si impactas sin crítico",
+        tableHeaderCritDmg: "Daño Crítico",
+        tableHeaderCritDmgTooltip: "Rango de daño con impacto crítico",
+        tableHeaderDPR: "DPR",
+        tableHeaderDPRTooltip: "Damage Per Round: daño promedio esperado por turno considerando todas las probabilidades",
+        tableHeaderViz: "Visualización",
+        noData: "Haz clic en \"Calcular Probabilidades\" para ver los resultados",
+
+        // Roll requirement messages
+        rollReqAuto: "<strong>CA {{ac}}:</strong> Impactas automáticamente (excepto con 1 natural)",
+        rollReqCritOnly: "<strong>CA {{ac}}:</strong> Solo puedes impactar con crítico natural",
+        rollReqNormal: "<strong>CA {{ac}}:</strong> Necesitas sacar <strong>{{roll}}</strong> o más en el d20",
+        rollReqAdvice: "<strong>Consejo:</strong> Especifica una CA objetivo para ver los requisitos de tirada",
+        damageNormal: "<br><strong>Daño normal:</strong> {{min}}-{{max}} (promedio {{avg}})",
+        damageCrit: "<br><strong>Daño crítico:</strong> {{min}}-{{max}} (promedio {{avg}})",
+
+        // Multi-attack panel
+        multiAttackTitle: "🎯 Distribución de Múltiples Ataques",
+        multiAttackWith: "Contra CA {{ac}} con {{n}} ataques",
+        multiAttackAdvantage: " <strong style=\"color: var(--color-hit);\">(CON VENTAJA)</strong>",
+        multiAttackDisadvantage: " <strong style=\"color: var(--color-miss);\">(CON DESVENTAJA)</strong>",
+        multiAttackHitProb: "Probabilidad de impacto por ataque: {{prob}}%",
+        multiAttackCritProb: "Probabilidad de crítico por ataque: {{prob}}%",
+        multiAttackSummary: "<strong style=\"color: var(--color-crit);\">📊 Resumen de daño total:</strong>",
+        multiAttackAllNormal: "• Si todos impactan (sin críticos): <strong style=\"color: var(--color-hit);\">{{min}}-{{max}} daño</strong>",
+        multiAttackAllCrit: "• Si todos impactan con críticos: <strong style=\"color: var(--color-crit);\">{{min}}-{{max}} daño</strong>",
+        multiAttackRange: "• Rango total posible: <strong style=\"color: var(--text-primary);\">0-{{max}} daño</strong>",
+        multiAttackHint: "<em style=\"color: var(--text-muted); font-size: 0.9em;\">Haz clic en cada grupo para ver el desglose detallado de críticos</em>",
+
+        // Distribution labels
+        hits_singular: "impacto",
+        hits_plural: "impactos",
+        normal_singular: "normal",
+        normal_plural: "normales",
+        crit_singular: "crítico",
+        crit_plural: "críticos",
+        noHits: "Sin impactos",
+        damage: "daño",
+        damageAvg: "(promedio: {{avg}})",
+
+        // Legend
+        legendMiss: "Fallo",
+        legendHit: "Impacto Normal",
+        legendCrit: "Crítico",
+        legendDPR: "DPR = Damage Per Round (daño promedio esperado)",
+
+        // Footer
+        footerText: "Calculadora basada en las reglas de D&D 5e",
+
+        // Alerts
+        alertMinDice: "Debes tener al menos un dado de daño",
+
+        // Combat Statistics
+        combatStatsTitle: "📊 Estadísticas de Combate",
+        vsAC: "contra CA",
+        statDPRTotal: "DPR Total",
+        statHitProb: "Prob. Impacto",
+        statDamagePerHit: "Daño/Impacto",
+        statCritsPerRound: "Críticos/Turno",
+        damagePerRound: "daño/turno",
+        average: "promedio",
+        defeatTimesTitle: "⏱️ Turnos para Derrotar",
+        enemyWeak: "Enemigo débil (20 HP)",
+        enemyNormal: "Enemigo normal (50 HP)",
+        enemyStrong: "Enemigo fuerte (100 HP)",
+        enemyBoss: "Jefe (200 HP)",
+        turnsLabel: "turnos",
+        levelExplanation: "Basado en DPR y bonificador de ataque",
+        levelRange: "Nivel",
+
+        // Power Level
+        powerLevelTitle: "⚡ Nivel de Poder del Personaje",
+        powerLevelLabel: "Power Level",
+        howCalculated: "📊 Cómo se calcula:",
+        whyTheseFactors: "¿Por qué estos factores?",
+        dprTotalExplain: "Incluye ventaja, críticos y múltiples ataques",
+        hitChanceExplain: "Penaliza builds poco confiables",
+        scaleExplain: "Escala para números comparables",
+
+        // Profiles
+        profilesTitle: "📁 Perfiles Guardados",
+        profileNamePlaceholder: "Nombre del perfil...",
+        saveProfileBtn: "💾 Guardar Perfil",
+        loadProfileTooltip: "Cargar este perfil",
+        deleteProfileTooltip: "Eliminar este perfil",
+        noProfiles: "No hay perfiles guardados",
+        confirmDeleteProfile: "¿Eliminar el perfil '{{name}}'?",
+        profileSaved: "Perfil '{{name}}' guardado",
+        profileLoaded: "Perfil '{{name}}' cargado",
+        profileDeleted: "Perfil eliminado",
+        profileNameRequired: "Ingresa un nombre para el perfil",
+        profileWithAdvantage: "Ventaja",
+        profileWithDisadvantage: "Desventaja",
+        profileAttacks: "{{n}} ataques",
+
+        // Profile Comparison
+        compareTitle: "⚔️ Comparar Perfiles",
+        compareSelectProfiles: "Selecciona perfiles a comparar:",
+        compareTargetAC: "CA para comparar",
+        compareButton: "📊 Comparar",
+        compareMinSelect: "Selecciona al menos 2 perfiles para comparar",
+        compareNoProfiles: "Guarda perfiles primero para compararlos",
+        compareResultsTitle: "📊 Comparación de Perfiles",
+        compareVsAC: "contra CA",
+        comparePowerLevel: "Power Level",
+        compareHitChance: "Prob. Impacto",
+        compareCritChance: "Prob. Crítico",
+        compareRollNeeded: "Roll Mínimo",
+        compareNormalDmg: "Daño Normal",
+        compareCritDmg: "Daño Crítico",
+        compareDPR: "DPR Total",
+        compareAttacks: "Ataques",
+        compareBest: "MEJOR",
+        compareAutoHit: "Auto",
+        compareCritOnly: "Solo Crit",
+        compareAdvantage: "Vent.",
+        compareDisadvantage: "Desv.",
+        compareDice: "Tiradas",
+        compareAttackBonus: "Bono Ataque",
+
+        // Profile Editing
+        editProfile: "Editar",
+        editingProfile: "Editando:",
+        updateProfile: "Actualizar Perfil",
+        cancelEdit: "Cancelar",
+
+        // Attack Dice Bonus
+        attackDiceBonus: "Dado Extra al Ataque",
+        attackDiceBonusTooltip: "Dado adicional para tiradas de ataque (ej: Bendición, Inspiración Bárdica)",
+        attackDiceBonusNone: "Ninguno",
+        attackDiceBonusBless: "+1d4 (Bendición)",
+        attackDiceBonusBardic6: "+1d6 (Inspiración)",
+        attackDiceBonusBardic8: "+1d8 (Inspiración)",
+        attackDiceBonusBardic10: "+1d10 (Inspiración)",
+        attackDiceBonusBardic12: "+1d12 (Inspiración)",
+        profileWithAttackDice: "+1d{{sides}}",
+        compareAttackDice: "Dado Extra",
+
+        // Sneak Attack (Ataque Furtivo)
+        sneakAttack: "Sneak Attack (d6)",
+        sneakAttackTooltip: "Cantidad de d6 de Sneak Attack. Se aplica UNA sola vez por turno y se duplica en crítico (regla oficial de D&D 5e).",
+        sneakNotation: "furtivo",
+        statSneakAttack: "Sneak Attack",
+        compareSneakAttack: "Sneak Attack",
+        profileWithSneak: "+{{n}}d6 SA",
+        multiAttackSneakNote: "• +{{n}}d6 de Sneak Attack incluidos (1 vez por turno, se duplican en crítico)"
+    },
+
+    en: {
+        // Header
+        title: "⚔️ D&D Attack Probability Calculator",
+        subtitle: "Calculate your hit probabilities and expected damage",
+
+        // Config panel
+        configTitle: "⚙️ Attack Configuration",
+        closeConfig: "Close Configuration",
+        attackBonus: "Attack Bonus",
+        attackBonusTooltip: "Your total attack modifier (e.g., +5)",
+        damageBonus: "Damage Bonus",
+        damageBonusTooltip: "Modifier added to damage (e.g., +3)",
+        damageDice: "Damage Dice",
+        addDice: "+ Add Die",
+        critRange: "Critical Range",
+        critRange20: "Only 20 (5%)",
+        critRange19: "19-20 (10%)",
+        critRange18: "18-20 (15%)",
+        advantageLabel: "Advantage / Disadvantage",
+        disadvantage: "Disadvantage",
+        normal: "Normal",
+        advantage: "Advantage",
+        numberOfAttacks: "Number of Attacks",
+        targetAC: "Target AC (Optional)",
+        targetACTooltip: "Armor Class of specific enemy to highlight",
+        targetACPlaceholder: "e.g., 15",
+        calculateButton: "🎲 Calculate Probabilities",
+
+        // Results panel
+        resultsTitle: "📊 Probability Table",
+        tableHeaderAC: "AC",
+        tableHeaderACTooltip: "Enemy Armor Class",
+        tableHeaderMiss: "Miss",
+        tableHeaderMissTooltip: "Probability of missing (even with natural 1)",
+        tableHeaderHit: "Hit",
+        tableHeaderHitTooltip: "Probability of normal hit (non-critical)",
+        tableHeaderCrit: "Critical",
+        tableHeaderCritTooltip: "Probability of critical hit (doubles damage dice)",
+        tableHeaderNormalDmg: "Normal Damage",
+        tableHeaderNormalDmgTooltip: "Damage range on non-critical hit",
+        tableHeaderCritDmg: "Critical Damage",
+        tableHeaderCritDmgTooltip: "Damage range on critical hit",
+        tableHeaderDPR: "DPR",
+        tableHeaderDPRTooltip: "Damage Per Round: expected average damage per turn considering all probabilities",
+        tableHeaderViz: "Visualization",
+        noData: "Click \"Calculate Probabilities\" to see results",
+
+        // Roll requirement messages
+        rollReqAuto: "<strong>AC {{ac}}:</strong> Auto-hit (except on natural 1)",
+        rollReqCritOnly: "<strong>AC {{ac}}:</strong> Can only hit with natural critical",
+        rollReqNormal: "<strong>AC {{ac}}:</strong> You need to roll <strong>{{roll}}</strong> or higher on the d20",
+        rollReqAdvice: "<strong>Tip:</strong> Specify a target AC to see roll requirements",
+        damageNormal: "<br><strong>Normal damage:</strong> {{min}}-{{max}} (average {{avg}})",
+        damageCrit: "<br><strong>Critical damage:</strong> {{min}}-{{max}} (average {{avg}})",
+
+        // Multi-attack panel
+        multiAttackTitle: "🎯 Multiple Attacks Distribution",
+        multiAttackWith: "Against AC {{ac}} with {{n}} attacks",
+        multiAttackAdvantage: " <strong style=\"color: var(--color-hit);\">(WITH ADVANTAGE)</strong>",
+        multiAttackDisadvantage: " <strong style=\"color: var(--color-miss);\">(WITH DISADVANTAGE)</strong>",
+        multiAttackHitProb: "Hit probability per attack: {{prob}}%",
+        multiAttackCritProb: "Critical probability per attack: {{prob}}%",
+        multiAttackSummary: "<strong style=\"color: var(--color-crit);\">📊 Total damage summary:</strong>",
+        multiAttackAllNormal: "• If all hit (no crits): <strong style=\"color: var(--color-hit);\">{{min}}-{{max}} damage</strong>",
+        multiAttackAllCrit: "• If all hit critically: <strong style=\"color: var(--color-crit);\">{{min}}-{{max}} damage</strong>",
+        multiAttackRange: "• Total possible range: <strong style=\"color: var(--text-primary);\">0-{{max}} damage</strong>",
+        multiAttackHint: "<em style=\"color: var(--text-muted); font-size: 0.9em;\">Click on each group to see detailed critical breakdown</em>",
+
+        // Distribution labels
+        hits_singular: "hit",
+        hits_plural: "hits",
+        normal_singular: "normal",
+        normal_plural: "normal",
+        crit_singular: "critical",
+        crit_plural: "criticals",
+        noHits: "No hits",
+        damage: "damage",
+        damageAvg: "(avg: {{avg}})",
+
+        // Legend
+        legendMiss: "Miss",
+        legendHit: "Normal Hit",
+        legendCrit: "Critical",
+        legendDPR: "DPR = Damage Per Round (expected average damage)",
+
+        // Footer
+        footerText: "Calculator based on D&D 5e rules",
+
+        // Alerts
+        alertMinDice: "You must have at least one damage die",
+
+        // Combat Statistics
+        combatStatsTitle: "📊 Combat Statistics",
+        vsAC: "vs AC",
+        statDPRTotal: "Total DPR",
+        statHitProb: "Hit Prob.",
+        statDamagePerHit: "Damage/Hit",
+        statCritsPerRound: "Crits/Round",
+        damagePerRound: "damage/round",
+        average: "average",
+        defeatTimesTitle: "⏱️ Turns to Defeat",
+        enemyWeak: "Weak enemy (20 HP)",
+        enemyNormal: "Normal enemy (50 HP)",
+        enemyStrong: "Strong enemy (100 HP)",
+        enemyBoss: "Boss (200 HP)",
+        turnsLabel: "turns",
+        levelExplanation: "Based on DPR and attack bonus",
+        levelRange: "Level",
+
+        // Power Level
+        powerLevelTitle: "⚡ Character Power Level",
+        powerLevelLabel: "Power Level",
+        howCalculated: "📊 How it's calculated:",
+        whyTheseFactors: "Why these factors?",
+        dprTotalExplain: "Includes advantage, crits, and multiple attacks",
+        hitChanceExplain: "Penalizes unreliable builds",
+        scaleExplain: "Scale for comparable numbers",
+
+        // Profiles
+        profilesTitle: "📁 Saved Profiles",
+        profileNamePlaceholder: "Profile name...",
+        saveProfileBtn: "💾 Save Profile",
+        loadProfileTooltip: "Load this profile",
+        deleteProfileTooltip: "Delete this profile",
+        noProfiles: "No saved profiles",
+        confirmDeleteProfile: "Delete profile '{{name}}'?",
+        profileSaved: "Profile '{{name}}' saved",
+        profileLoaded: "Profile '{{name}}' loaded",
+        profileDeleted: "Profile deleted",
+        profileNameRequired: "Enter a profile name",
+        profileWithAdvantage: "Advantage",
+        profileWithDisadvantage: "Disadvantage",
+        profileAttacks: "{{n}} attacks",
+
+        // Profile Comparison
+        compareTitle: "⚔️ Compare Profiles",
+        compareSelectProfiles: "Select profiles to compare:",
+        compareTargetAC: "AC to compare",
+        compareButton: "📊 Compare",
+        compareMinSelect: "Select at least 2 profiles to compare",
+        compareNoProfiles: "Save profiles first to compare them",
+        compareResultsTitle: "📊 Profile Comparison",
+        compareVsAC: "vs AC",
+        comparePowerLevel: "Power Level",
+        compareHitChance: "Hit Prob.",
+        compareCritChance: "Crit Prob.",
+        compareRollNeeded: "Min Roll",
+        compareNormalDmg: "Normal Dmg",
+        compareCritDmg: "Crit Dmg",
+        compareDPR: "Total DPR",
+        compareAttacks: "Attacks",
+        compareBest: "BEST",
+        compareAutoHit: "Auto",
+        compareCritOnly: "Crit Only",
+        compareAdvantage: "Adv.",
+        compareDisadvantage: "Dis.",
+        compareDice: "Dice",
+        compareAttackBonus: "Attack Bonus",
+
+        // Profile Editing
+        editProfile: "Edit",
+        editingProfile: "Editing:",
+        updateProfile: "Update Profile",
+        cancelEdit: "Cancel",
+
+        // Attack Dice Bonus
+        attackDiceBonus: "Attack Bonus Die",
+        attackDiceBonusTooltip: "Extra die for attack rolls (e.g., Bless, Bardic Inspiration)",
+        attackDiceBonusNone: "None",
+        attackDiceBonusBless: "+1d4 (Bless)",
+        attackDiceBonusBardic6: "+1d6 (Bardic)",
+        attackDiceBonusBardic8: "+1d8 (Bardic)",
+        attackDiceBonusBardic10: "+1d10 (Bardic)",
+        attackDiceBonusBardic12: "+1d12 (Bardic)",
+        profileWithAttackDice: "+1d{{sides}}",
+        compareAttackDice: "Bonus Die",
+
+        // Sneak Attack
+        sneakAttack: "Sneak Attack (d6)",
+        sneakAttackTooltip: "Number of Sneak Attack d6. Applied ONCE per turn and doubled on a critical hit (official D&D 5e rule).",
+        sneakNotation: "sneak",
+        statSneakAttack: "Sneak Attack",
+        compareSneakAttack: "Sneak Attack",
+        profileWithSneak: "+{{n}}d6 SA",
+        multiAttackSneakNote: "• +{{n}}d6 Sneak Attack included (once per turn, doubled on crit)"
+    },
+
+    pt: {
+        // Header
+        title: "⚔️ Calculadora de Probabilidade de Ataque D&D",
+        subtitle: "Calcule suas probabilidades de acerto e dano esperado",
+
+        // Config panel
+        configTitle: "⚙️ Configuração de Ataque",
+        closeConfig: "Fechar Configuração",
+        attackBonus: "Bônus de Ataque",
+        attackBonusTooltip: "Seu modificador total de ataque (ex: +5)",
+        damageBonus: "Bônus de Dano",
+        damageBonusTooltip: "Modificador somado ao dano (ex: +3)",
+        damageDice: "Dados de Dano",
+        addDice: "+ Adicionar Dado",
+        critRange: "Alcance Crítico",
+        critRange20: "Apenas 20 (5%)",
+        critRange19: "19-20 (10%)",
+        critRange18: "18-20 (15%)",
+        advantageLabel: "Vantagem / Desvantagem",
+        disadvantage: "Desvantagem",
+        normal: "Normal",
+        advantage: "Vantagem",
+        numberOfAttacks: "Número de Ataques",
+        targetAC: "CA Alvo (Opcional)",
+        targetACTooltip: "Classe de Armadura do inimigo específico para destacar",
+        targetACPlaceholder: "Ex: 15",
+        calculateButton: "🎲 Calcular Probabilidades",
+
+        // Results panel
+        resultsTitle: "📊 Tabela de Probabilidades",
+        tableHeaderAC: "CA",
+        tableHeaderACTooltip: "Classe de Armadura do inimigo",
+        tableHeaderMiss: "Erro",
+        tableHeaderMissTooltip: "Probabilidade de errar (mesmo com 1 natural)",
+        tableHeaderHit: "Acerto",
+        tableHeaderHitTooltip: "Probabilidade de acerto normal (sem crítico)",
+        tableHeaderCrit: "Crítico",
+        tableHeaderCritTooltip: "Probabilidade de crítico (duplica dados de dano)",
+        tableHeaderNormalDmg: "Dano Normal",
+        tableHeaderNormalDmgTooltip: "Alcance de dano em acerto não-crítico",
+        tableHeaderCritDmg: "Dano Crítico",
+        tableHeaderCritDmgTooltip: "Alcance de dano em acerto crítico",
+        tableHeaderDPR: "DPR",
+        tableHeaderDPRTooltip: "Dano Por Rodada: dano médio esperado por turno considerando todas as probabilidades",
+        tableHeaderViz: "Visualização",
+        noData: "Clique em \"Calcular Probabilidades\" para ver os resultados",
+
+        // Roll requirement messages
+        rollReqAuto: "<strong>CA {{ac}}:</strong> Acerto automático (exceto em 1 natural)",
+        rollReqCritOnly: "<strong>CA {{ac}}:</strong> Só pode acertar com crítico natural",
+        rollReqNormal: "<strong>CA {{ac}}:</strong> Você precisa rolar <strong>{{roll}}</strong> ou mais no d20",
+        rollReqAdvice: "<strong>Dica:</strong> Especifique uma CA alvo para ver os requisitos de rolagem",
+        damageNormal: "<br><strong>Dano normal:</strong> {{min}}-{{max}} (média {{avg}})",
+        damageCrit: "<br><strong>Dano crítico:</strong> {{min}}-{{max}} (média {{avg}})",
+
+        // Multi-attack panel
+        multiAttackTitle: "🎯 Distribuição de Múltiplos Ataques",
+        multiAttackWith: "Contra CA {{ac}} com {{n}} ataques",
+        multiAttackAdvantage: " <strong style=\"color: var(--color-hit);\">(COM VANTAGEM)</strong>",
+        multiAttackDisadvantage: " <strong style=\"color: var(--color-miss);\">(COM DESVANTAGEM)</strong>",
+        multiAttackHitProb: "Probabilidade de acerto por ataque: {{prob}}%",
+        multiAttackCritProb: "Probabilidade de crítico por ataque: {{prob}}%",
+        multiAttackSummary: "<strong style=\"color: var(--color-crit);\">📊 Resumo de dano total:</strong>",
+        multiAttackAllNormal: "• Se todos acertarem (sem críticos): <strong style=\"color: var(--color-hit);\">{{min}}-{{max}} dano</strong>",
+        multiAttackAllCrit: "• Se todos acertarem criticamente: <strong style=\"color: var(--color-crit);\">{{min}}-{{max}} dano</strong>",
+        multiAttackRange: "• Alcance total possível: <strong style=\"color: var(--text-primary);\">0-{{max}} dano</strong>",
+        multiAttackHint: "<em style=\"color: var(--text-muted); font-size: 0.9em;\">Clique em cada grupo para ver o detalhamento de críticos</em>",
+
+        // Distribution labels
+        hits_singular: "acerto",
+        hits_plural: "acertos",
+        normal_singular: "normal",
+        normal_plural: "normais",
+        crit_singular: "crítico",
+        crit_plural: "críticos",
+        noHits: "Sem acertos",
+        damage: "dano",
+        damageAvg: "(média: {{avg}})",
+
+        // Legend
+        legendMiss: "Erro",
+        legendHit: "Acerto Normal",
+        legendCrit: "Crítico",
+        legendDPR: "DPR = Dano Por Rodada (dano médio esperado)",
+
+        // Footer
+        footerText: "Calculadora baseada nas regras de D&D 5e",
+
+        // Alerts
+        alertMinDice: "Você deve ter pelo menos um dado de dano",
+
+        // Combat Statistics
+        combatStatsTitle: "📊 Estatísticas de Combate",
+        vsAC: "contra CA",
+        statDPRTotal: "DPR Total",
+        statHitProb: "Prob. Acerto",
+        statDamagePerHit: "Dano/Acerto",
+        statCritsPerRound: "Críticos/Turno",
+        damagePerRound: "dano/rodada",
+        average: "média",
+        defeatTimesTitle: "⏱️ Turnos para Derrotar",
+        enemyWeak: "Inimigo fraco (20 HP)",
+        enemyNormal: "Inimigo normal (50 HP)",
+        enemyStrong: "Inimigo forte (100 HP)",
+        enemyBoss: "Chefe (200 HP)",
+        turnsLabel: "turnos",
+        levelExplanation: "Baseado em DPR e bônus de ataque",
+        levelRange: "Nível",
+
+        // Power Level
+        powerLevelTitle: "⚡ Nível de Poder do Personagem",
+        powerLevelLabel: "Power Level",
+        howCalculated: "📊 Como é calculado:",
+        whyTheseFactors: "Por que esses fatores?",
+        dprTotalExplain: "Inclui vantagem, críticos e múltiplos ataques",
+        hitChanceExplain: "Penaliza builds pouco confiáveis",
+        scaleExplain: "Escala para números comparáveis",
+
+        // Profiles
+        profilesTitle: "📁 Perfis Salvos",
+        profileNamePlaceholder: "Nome do perfil...",
+        saveProfileBtn: "💾 Salvar Perfil",
+        loadProfileTooltip: "Carregar este perfil",
+        deleteProfileTooltip: "Excluir este perfil",
+        noProfiles: "Nenhum perfil salvo",
+        confirmDeleteProfile: "Excluir o perfil '{{name}}'?",
+        profileSaved: "Perfil '{{name}}' salvo",
+        profileLoaded: "Perfil '{{name}}' carregado",
+        profileDeleted: "Perfil excluído",
+        profileNameRequired: "Digite um nome para o perfil",
+        profileWithAdvantage: "Vantagem",
+        profileWithDisadvantage: "Desvantagem",
+        profileAttacks: "{{n}} ataques",
+
+        // Profile Comparison
+        compareTitle: "⚔️ Comparar Perfis",
+        compareSelectProfiles: "Selecione perfis para comparar:",
+        compareTargetAC: "CA para comparar",
+        compareButton: "📊 Comparar",
+        compareMinSelect: "Selecione pelo menos 2 perfis para comparar",
+        compareNoProfiles: "Salve perfis primeiro para compará-los",
+        compareResultsTitle: "📊 Comparação de Perfis",
+        compareVsAC: "contra CA",
+        comparePowerLevel: "Power Level",
+        compareHitChance: "Prob. Acerto",
+        compareCritChance: "Prob. Crítico",
+        compareRollNeeded: "Roll Mínimo",
+        compareNormalDmg: "Dano Normal",
+        compareCritDmg: "Dano Crítico",
+        compareDPR: "DPR Total",
+        compareAttacks: "Ataques",
+        compareBest: "MELHOR",
+        compareAutoHit: "Auto",
+        compareCritOnly: "Só Crit",
+        compareAdvantage: "Vant.",
+        compareDisadvantage: "Desv.",
+        compareDice: "Dados",
+        compareAttackBonus: "Bônus Ataque",
+
+        // Profile Editing
+        editProfile: "Editar",
+        editingProfile: "Editando:",
+        updateProfile: "Atualizar Perfil",
+        cancelEdit: "Cancelar",
+
+        // Attack Dice Bonus
+        attackDiceBonus: "Dado Bônus de Ataque",
+        attackDiceBonusTooltip: "Dado extra para rolagens de ataque (ex: Bênção, Inspiração Bárdica)",
+        attackDiceBonusNone: "Nenhum",
+        attackDiceBonusBless: "+1d4 (Bênção)",
+        attackDiceBonusBardic6: "+1d6 (Inspiração)",
+        attackDiceBonusBardic8: "+1d8 (Inspiração)",
+        attackDiceBonusBardic10: "+1d10 (Inspiração)",
+        attackDiceBonusBardic12: "+1d12 (Inspiração)",
+        profileWithAttackDice: "+1d{{sides}}",
+        compareAttackDice: "Dado Bônus",
+
+        // Sneak Attack (Ataque Furtivo)
+        sneakAttack: "Sneak Attack (d6)",
+        sneakAttackTooltip: "Quantidade de d6 de Sneak Attack. Aplicado UMA vez por turno e dobrado em um acerto crítico (regra oficial de D&D 5e).",
+        sneakNotation: "furtivo",
+        statSneakAttack: "Sneak Attack",
+        compareSneakAttack: "Sneak Attack",
+        profileWithSneak: "+{{n}}d6 SA",
+        multiAttackSneakNote: "• +{{n}}d6 de Sneak Attack incluídos (1 vez por turno, dobram no crítico)"
+    },
+
+    de: {
+        // Header
+        title: "⚔️ D&D Angriffwahrscheinlichkeits-Rechner",
+        subtitle: "Berechne deine Trefferwahrscheinlichkeiten und erwarteten Schaden",
+
+        // Config panel
+        configTitle: "⚙️ Angriffskonfiguration",
+        closeConfig: "Konfiguration schließen",
+        attackBonus: "Angriffsbonus",
+        attackBonusTooltip: "Dein gesamter Angriffsmodifikator (z.B. +5)",
+        damageBonus: "Schadensbonus",
+        damageBonusTooltip: "Modifikator zum Schaden hinzugefügt (z.B. +3)",
+        damageDice: "Schadenswürfel",
+        addDice: "+ Würfel hinzufügen",
+        critRange: "Kritischer Bereich",
+        critRange20: "Nur 20 (5%)",
+        critRange19: "19-20 (10%)",
+        critRange18: "18-20 (15%)",
+        advantageLabel: "Vorteil / Nachteil",
+        disadvantage: "Nachteil",
+        normal: "Normal",
+        advantage: "Vorteil",
+        numberOfAttacks: "Anzahl der Angriffe",
+        targetAC: "Ziel-RK (Optional)",
+        targetACTooltip: "Rüstungsklasse des spezifischen Feindes zum Hervorheben",
+        targetACPlaceholder: "z.B. 15",
+        calculateButton: "🎲 Wahrscheinlichkeiten berechnen",
+
+        // Results panel
+        resultsTitle: "📊 Wahrscheinlichkeitstabelle",
+        tableHeaderAC: "RK",
+        tableHeaderACTooltip: "Rüstungsklasse des Feindes",
+        tableHeaderMiss: "Fehlschlag",
+        tableHeaderMissTooltip: "Wahrscheinlichkeit zu verfehlen (auch bei natürlicher 1)",
+        tableHeaderHit: "Treffer",
+        tableHeaderHitTooltip: "Wahrscheinlichkeit eines normalen Treffers (kein kritischer)",
+        tableHeaderCrit: "Kritisch",
+        tableHeaderCritTooltip: "Wahrscheinlichkeit eines kritischen Treffers (verdoppelt Schadenswürfel)",
+        tableHeaderNormalDmg: "Normaler Schaden",
+        tableHeaderNormalDmgTooltip: "Schadensbereich bei nicht-kritischem Treffer",
+        tableHeaderCritDmg: "Kritischer Schaden",
+        tableHeaderCritDmgTooltip: "Schadensbereich bei kritischem Treffer",
+        tableHeaderDPR: "SPR",
+        tableHeaderDPRTooltip: "Schaden Pro Runde: erwarteter Durchschnittsschaden pro Runde unter Berücksichtigung aller Wahrscheinlichkeiten",
+        tableHeaderViz: "Visualisierung",
+        noData: "Klicke auf \"Wahrscheinlichkeiten berechnen\", um Ergebnisse zu sehen",
+
+        // Roll requirement messages
+        rollReqAuto: "<strong>RK {{ac}}:</strong> Automatischer Treffer (außer bei natürlicher 1)",
+        rollReqCritOnly: "<strong>RK {{ac}}:</strong> Kann nur mit natürlichem Kritischen treffen",
+        rollReqNormal: "<strong>RK {{ac}}:</strong> Du musst <strong>{{roll}}</strong> oder höher auf dem W20 würfeln",
+        rollReqAdvice: "<strong>Tipp:</strong> Gib eine Ziel-RK an, um Wurf-Anforderungen zu sehen",
+        damageNormal: "<br><strong>Normaler Schaden:</strong> {{min}}-{{max}} (Durchschnitt {{avg}})",
+        damageCrit: "<br><strong>Kritischer Schaden:</strong> {{min}}-{{max}} (Durchschnitt {{avg}})",
+
+        // Multi-attack panel
+        multiAttackTitle: "🎯 Verteilung mehrerer Angriffe",
+        multiAttackWith: "Gegen RK {{ac}} mit {{n}} Angriffen",
+        multiAttackAdvantage: " <strong style=\"color: var(--color-hit);\">(MIT VORTEIL)</strong>",
+        multiAttackDisadvantage: " <strong style=\"color: var(--color-miss);\">(MIT NACHTEIL)</strong>",
+        multiAttackHitProb: "Trefferwahrscheinlichkeit pro Angriff: {{prob}}%",
+        multiAttackCritProb: "Kritische Wahrscheinlichkeit pro Angriff: {{prob}}%",
+        multiAttackSummary: "<strong style=\"color: var(--color-crit);\">📊 Gesamtschadenszusammenfassung:</strong>",
+        multiAttackAllNormal: "• Wenn alle treffen (keine Kritischen): <strong style=\"color: var(--color-hit);\">{{min}}-{{max}} Schaden</strong>",
+        multiAttackAllCrit: "• Wenn alle kritisch treffen: <strong style=\"color: var(--color-crit);\">{{min}}-{{max}} Schaden</strong>",
+        multiAttackRange: "• Gesamtmöglicher Bereich: <strong style=\"color: var(--text-primary);\">0-{{max}} Schaden</strong>",
+        multiAttackHint: "<em style=\"color: var(--text-muted); font-size: 0.9em;\">Klicke auf jede Gruppe, um detaillierte Kritische-Aufschlüsselung zu sehen</em>",
+
+        // Distribution labels
+        hits_singular: "Treffer",
+        hits_plural: "Treffer",
+        normal_singular: "normal",
+        normal_plural: "normale",
+        crit_singular: "kritisch",
+        crit_plural: "kritische",
+        noHits: "Keine Treffer",
+        damage: "Schaden",
+        damageAvg: "(Durchschnitt: {{avg}})",
+
+        // Legend
+        legendMiss: "Fehlschlag",
+        legendHit: "Normaler Treffer",
+        legendCrit: "Kritisch",
+        legendDPR: "SPR = Schaden Pro Runde (erwarteter Durchschnittsschaden)",
+
+        // Footer
+        footerText: "Rechner basierend auf D&D 5e Regeln",
+
+        // Alerts
+        alertMinDice: "Du musst mindestens einen Schadenswürfel haben",
+
+        // Combat Statistics
+        combatStatsTitle: "📊 Kampfstatistiken",
+        vsAC: "gegen RK",
+        statDPRTotal: "Gesamt-SPR",
+        statHitProb: "Trefferwahrsch.",
+        statDamagePerHit: "Schaden/Treffer",
+        statCritsPerRound: "Kritische/Runde",
+        damagePerRound: "schaden/runde",
+        average: "durchschnitt",
+        defeatTimesTitle: "⏱️ Runden zum Besiegen",
+        enemyWeak: "Schwacher Gegner (20 TP)",
+        enemyNormal: "Normaler Gegner (50 TP)",
+        enemyStrong: "Starker Gegner (100 TP)",
+        enemyBoss: "Boss (200 TP)",
+        turnsLabel: "runden",
+        levelExplanation: "Basierend auf SPR und Angriffsbonus",
+        levelRange: "Stufe",
+
+        // Power Level
+        powerLevelTitle: "⚡ Charakter-Machtstufe",
+        powerLevelLabel: "Power Level",
+        howCalculated: "📊 Wie wird es berechnet:",
+        whyTheseFactors: "Warum diese Faktoren?",
+        dprTotalExplain: "Beinhaltet Vorteil, Kritische und mehrere Angriffe",
+        hitChanceExplain: "Bestraft unzuverlässige Builds",
+        scaleExplain: "Skala für vergleichbare Zahlen",
+
+        // Profiles
+        profilesTitle: "📁 Gespeicherte Profile",
+        profileNamePlaceholder: "Profilname...",
+        saveProfileBtn: "💾 Profil Speichern",
+        loadProfileTooltip: "Dieses Profil laden",
+        deleteProfileTooltip: "Dieses Profil löschen",
+        noProfiles: "Keine gespeicherten Profile",
+        confirmDeleteProfile: "Profil '{{name}}' löschen?",
+        profileSaved: "Profil '{{name}}' gespeichert",
+        profileLoaded: "Profil '{{name}}' geladen",
+        profileDeleted: "Profil gelöscht",
+        profileNameRequired: "Gib einen Profilnamen ein",
+        profileWithAdvantage: "Vorteil",
+        profileWithDisadvantage: "Nachteil",
+        profileAttacks: "{{n}} Angriffe",
+
+        // Profile Comparison
+        compareTitle: "⚔️ Profile Vergleichen",
+        compareSelectProfiles: "Profile zum Vergleichen auswählen:",
+        compareTargetAC: "RK zum Vergleichen",
+        compareButton: "📊 Vergleichen",
+        compareMinSelect: "Wähle mindestens 2 Profile zum Vergleichen",
+        compareNoProfiles: "Speichere zuerst Profile zum Vergleichen",
+        compareResultsTitle: "📊 Profil-Vergleich",
+        compareVsAC: "gegen RK",
+        comparePowerLevel: "Power Level",
+        compareHitChance: "Trefferwahrsch.",
+        compareCritChance: "Krit. Wahrsch.",
+        compareRollNeeded: "Min. Wurf",
+        compareNormalDmg: "Normaler Schaden",
+        compareCritDmg: "Krit. Schaden",
+        compareDPR: "Gesamt-SPR",
+        compareAttacks: "Angriffe",
+        compareBest: "BESTE",
+        compareAutoHit: "Auto",
+        compareCritOnly: "Nur Krit",
+        compareAdvantage: "Vort.",
+        compareDisadvantage: "Nacht.",
+        compareDice: "Würfel",
+        compareAttackBonus: "Angriffsbonus",
+
+        // Profile Editing
+        editProfile: "Bearbeiten",
+        editingProfile: "Bearbeiten:",
+        updateProfile: "Profil Aktualisieren",
+        cancelEdit: "Abbrechen",
+
+        // Attack Dice Bonus
+        attackDiceBonus: "Angriffswürfel-Bonus",
+        attackDiceBonusTooltip: "Zusätzlicher Würfel für Angriffswürfe (z.B. Segnen, Bardische Inspiration)",
+        attackDiceBonusNone: "Keiner",
+        attackDiceBonusBless: "+1d4 (Segnen)",
+        attackDiceBonusBardic6: "+1d6 (Bardisch)",
+        attackDiceBonusBardic8: "+1d8 (Bardisch)",
+        attackDiceBonusBardic10: "+1d10 (Bardisch)",
+        attackDiceBonusBardic12: "+1d12 (Bardisch)",
+        profileWithAttackDice: "+1d{{sides}}",
+        compareAttackDice: "Bonuswürfel",
+
+        // Sneak Attack (Hinterhältiger Angriff)
+        sneakAttack: "Sneak Attack (W6)",
+        sneakAttackTooltip: "Anzahl der Sneak-Attack-W6. Wird EINMAL pro Zug angewendet und bei einem kritischen Treffer verdoppelt (offizielle D&D-5e-Regel).",
+        sneakNotation: "heimlich",
+        statSneakAttack: "Sneak Attack",
+        compareSneakAttack: "Sneak Attack",
+        profileWithSneak: "+{{n}}W6 SA",
+        multiAttackSneakNote: "• +{{n}}W6 Sneak Attack enthalten (einmal pro Zug, im Kritischen verdoppelt)"
+    }
+};
+
+// Helper function to get translated text with placeholder replacement
+function t(key, params = {}) {
+    let text = translations[currentLanguage][key];
+    if (!text) {
+        console.warn(`Missing translation: ${currentLanguage}.${key}`);
+        return key;
+    }
+
+    // Replace {{var}} with params.var
+    return text.replace(/\{\{(\w+)\}\}/g, (match, param) => {
+        return params[param] !== undefined ? params[param] : match;
+    });
+}
+
+// Function to set language and update all UI elements
+function setLanguage(lang) {
+    if (!translations[lang]) {
+        console.warn(`Language ${lang} not supported, falling back to Spanish`);
+        lang = 'es';
+    }
+
+    currentLanguage = lang;
+
+    // Save to localStorage
+    try {
+        localStorage.setItem('language', lang);
+    } catch (e) {
+        console.warn('localStorage not available');
+    }
+
+    // Update all elements with data-i18n
+    document.querySelectorAll('[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (translations[currentLanguage][key]) {
+            if (el.tagName === 'INPUT' && el.type === 'button') {
+                el.value = translations[currentLanguage][key];
+            } else if (el.tagName === 'INPUT' && el.hasAttribute('placeholder')) {
+                el.placeholder = translations[currentLanguage][key];
+            } else {
+                el.textContent = translations[currentLanguage][key];
+            }
+        }
+    });
+
+    // Update tooltips
+    document.querySelectorAll('[data-i18n-tooltip]').forEach(el => {
+        const key = el.getAttribute('data-i18n-tooltip');
+        if (translations[currentLanguage][key]) {
+            el.setAttribute('data-tooltip', translations[currentLanguage][key]);
+        }
+    });
+
+    // Update the tooltip-text spans
+    document.querySelectorAll('.tooltip-text[data-i18n]').forEach(el => {
+        const key = el.getAttribute('data-i18n');
+        if (translations[currentLanguage][key]) {
+            el.textContent = translations[currentLanguage][key];
+        }
+    });
+
+    // Re-calculate to update dynamic texts
+    if (typeof calculator !== 'undefined' && calculator) {
+        calculator.calculate();
+    }
+}
+
+// Initialize language on page load
+function initializeLanguage() {
+    // Try to get from localStorage
+    let savedLang = null;
+    try {
+        savedLang = localStorage.getItem('language');
+    } catch (e) {
+        console.warn('localStorage not available');
+    }
+
+    if (savedLang && translations[savedLang]) {
+        currentLanguage = savedLang;
+    } else {
+        // Auto-detect from browser
+        const browserLang = navigator.language || navigator.userLanguage;
+        if (browserLang) {
+            const langPrefix = browserLang.toLowerCase().split('-')[0];
+            if (translations[langPrefix]) {
+                currentLanguage = langPrefix;
+            }
+        }
+    }
+
+    // Set the initial language in custom selector
+    const selector = document.getElementById('languageSelect');
+    if (selector) {
+        const selected = selector.querySelector('.select-selected');
+        const items = selector.querySelectorAll('.select-items div');
+
+        items.forEach(item => {
+            if (item.getAttribute('data-value') === currentLanguage) {
+                selected.innerHTML = item.innerHTML;
+            }
+        });
+    }
+
+    // Apply language
+    setLanguage(currentLanguage);
+}
+
+// ========== SISTEMA DE ESTADÍSTICAS DE COMBATE ==========
+
+function estimateCharacterLevel(attackBonus, dpr) {
+    // Benchmarks basados en DMG y análisis de optimización típica de D&D 5e
+    const benchmarks = [
+        {minLevel: 1, maxLevel: 4, minDPR: 5, maxDPR: 15, minAB: 2, maxAB: 5},
+        {minLevel: 3, maxLevel: 7, minDPR: 12, maxDPR: 25, minAB: 4, maxAB: 7},
+        {minLevel: 5, maxLevel: 11, minDPR: 20, maxDPR: 40, minAB: 6, maxAB: 10},
+        {minLevel: 9, maxLevel: 16, minDPR: 35, maxDPR: 60, minAB: 9, maxAB: 13},
+        {minLevel: 15, maxLevel: 20, minDPR: 55, maxDPR: 100, minAB: 12, maxAB: 17}
+    ];
+
+    for (const bench of benchmarks) {
+        const dprMatch = dpr >= bench.minDPR && dpr <= bench.maxDPR;
+        const abMatch = attackBonus >= bench.minAB && attackBonus <= bench.maxAB;
+
+        if (dprMatch || abMatch) {
+            // Ajustar rango si solo uno coincide
+            if (dprMatch && !abMatch) {
+                if (attackBonus > bench.maxAB) {
+                    return {min: bench.minLevel + 2, max: Math.min(20, bench.maxLevel + 2)};
+                } else {
+                    return {min: Math.max(1, bench.minLevel - 2), max: bench.maxLevel};
+                }
+            }
+            return {min: bench.minLevel, max: bench.maxLevel};
+        }
+    }
+
+    // Extremadamente poderoso
+    return {min: 17, max: 20};
+}
+
+// ========== SISTEMA DE PERFILES ==========
+
+class ProfileManager {
+    constructor(calculator) {
+        this.calculator = calculator;
+        this.storageKey = 'dnd_calc_profiles';
+        this.profiles = this.loadFromStorage();
+        this.editingProfileId = null; // Track which profile is being edited
+    }
+
+    loadFromStorage() {
+        try {
+            const data = localStorage.getItem(this.storageKey);
+            return data ? JSON.parse(data) : [];
+        } catch (e) {
+            console.warn('Error loading profiles:', e);
+            return [];
+        }
+    }
+
+    saveToStorage() {
+        try {
+            localStorage.setItem(this.storageKey, JSON.stringify(this.profiles));
+        } catch (e) {
+            console.warn('Error saving profiles:', e);
+        }
+    }
+
+    generateId() {
+        return Date.now().toString(36) + Math.random().toString(36).substr(2);
+    }
+
+    // Start editing a profile
+    startEditing(id) {
+        const profile = this.profiles.find(p => p.id === id);
+        if (!profile) return;
+
+        this.editingProfileId = id;
+        this.loadProfile(id); // Load config into form
+        this.renderProfiles(); // Re-render to show editing state
+        this.showEditingIndicator(profile.name);
+    }
+
+    // Cancel editing mode
+    cancelEditing() {
+        this.editingProfileId = null;
+        this.hideEditingIndicator();
+        this.renderProfiles();
+    }
+
+    // Show editing indicator UI
+    showEditingIndicator(profileName) {
+        const indicator = document.getElementById('editingIndicator');
+        const textEl = document.getElementById('editingText');
+        if (indicator && textEl) {
+            textEl.textContent = `${t('editingProfile')} ${profileName}`;
+            indicator.style.display = 'flex';
+        }
+    }
+
+    // Hide editing indicator UI
+    hideEditingIndicator() {
+        const indicator = document.getElementById('editingIndicator');
+        if (indicator) {
+            indicator.style.display = 'none';
+        }
+    }
+
+    // Check if currently editing
+    isEditing() {
+        return this.editingProfileId !== null;
+    }
+
+    // Get the profile being edited
+    getEditingProfile() {
+        if (!this.editingProfileId) return null;
+        return this.profiles.find(p => p.id === this.editingProfileId);
+    }
+
+    saveProfile(name) {
+        if (!name || !name.trim()) {
+            return { success: false, messageKey: 'profileNameRequired' };
+        }
+
+        // If editing, update the existing profile
+        if (this.editingProfileId) {
+            const index = this.profiles.findIndex(p => p.id === this.editingProfileId);
+            if (index !== -1) {
+                this.profiles[index] = {
+                    ...this.profiles[index],
+                    name: name.trim(),
+                    updatedAt: Date.now(),
+                    config: {
+                        attackBonus: this.calculator.config.attackBonus,
+                        damageBonus: this.calculator.config.damageBonus,
+                        damageDice: this.calculator.config.damageDice.map(d => ({ ...d })),
+                        attackDiceBonus: this.calculator.config.attackDiceBonus,
+                        sneakAttackDice: this.calculator.config.sneakAttackDice,
+                        advantage: this.calculator.config.advantage,
+                        critRange: this.calculator.config.critRange,
+                        numberOfAttacks: this.calculator.config.numberOfAttacks,
+                        targetAC: this.calculator.config.targetAC
+                    }
+                };
+                const updatedProfile = this.profiles[index];
+                this.editingProfileId = null;
+                this.hideEditingIndicator();
+                this.saveToStorage();
+                this.renderProfiles();
+                return { success: true, profile: updatedProfile, updated: true };
+            }
+        }
+
+        // Create new profile
+        const profile = {
+            id: this.generateId(),
+            name: name.trim(),
+            createdAt: Date.now(),
+            config: {
+                attackBonus: this.calculator.config.attackBonus,
+                damageBonus: this.calculator.config.damageBonus,
+                damageDice: this.calculator.config.damageDice.map(d => ({ ...d })),
+                attackDiceBonus: this.calculator.config.attackDiceBonus,
+                sneakAttackDice: this.calculator.config.sneakAttackDice,
+                advantage: this.calculator.config.advantage,
+                critRange: this.calculator.config.critRange,
+                numberOfAttacks: this.calculator.config.numberOfAttacks,
+                targetAC: this.calculator.config.targetAC
+            }
+        };
+
+        this.profiles.unshift(profile); // Más reciente primero
+        this.saveToStorage();
+        this.renderProfiles();
+        return { success: true, profile };
+    }
+
+    loadProfile(id) {
+        const profile = this.profiles.find(p => p.id === id);
+        if (!profile) return { success: false };
+
+        // Restaurar configuración en calculator
+        const cfg = profile.config;
+        this.calculator.config.attackBonus = cfg.attackBonus;
+        this.calculator.config.damageBonus = cfg.damageBonus;
+        this.calculator.config.damageDice = cfg.damageDice.map(d => ({ ...d }));
+        this.calculator.config.advantage = cfg.advantage;
+        this.calculator.config.critRange = cfg.critRange;
+        this.calculator.config.numberOfAttacks = cfg.numberOfAttacks;
+        this.calculator.config.targetAC = cfg.targetAC;
+        this.calculator.config.attackDiceBonus = cfg.attackDiceBonus || 0;
+        this.calculator.config.sneakAttackDice = cfg.sneakAttackDice || 0;
+
+        // Actualizar UI inputs
+        this.updateUIFromConfig();
+
+        // Recalcular
+        this.calculator.calculate();
+
+        return { success: true, profile };
+    }
+
+    deleteProfile(id) {
+        const profile = this.profiles.find(p => p.id === id);
+        if (profile && confirm(t('confirmDeleteProfile', { name: profile.name }))) {
+            this.profiles = this.profiles.filter(p => p.id !== id);
+            this.saveToStorage();
+            this.renderProfiles();
+            return true;
+        }
+        return false;
+    }
+
+    updateUIFromConfig() {
+        const cfg = this.calculator.config;
+
+        // Actualizar inputs numéricos
+        document.getElementById('attackBonus').value = cfg.attackBonus;
+        document.getElementById('damageBonus').value = cfg.damageBonus;
+        document.getElementById('critRange').value = cfg.critRange;
+        document.getElementById('numberOfAttacks').value = cfg.numberOfAttacks;
+        document.getElementById('attacksValue').textContent = cfg.numberOfAttacks;
+
+        if (cfg.targetAC) {
+            document.getElementById('targetAC').value = cfg.targetAC;
+        } else {
+            document.getElementById('targetAC').value = '';
+        }
+
+        // Actualizar radio buttons de ventaja
+        document.querySelectorAll('input[name="advantage"]').forEach(radio => {
+            radio.checked = radio.value === cfg.advantage;
+        });
+
+        // Actualizar select de dado extra al ataque
+        const attackDiceBonusSelect = document.getElementById('attackDiceBonus');
+        if (attackDiceBonusSelect) {
+            attackDiceBonusSelect.value = cfg.attackDiceBonus || 0;
+        }
+
+        // Actualizar input de Sneak Attack
+        const sneakAttackInput = document.getElementById('sneakAttackDice');
+        if (sneakAttackInput) {
+            sneakAttackInput.value = cfg.sneakAttackDice || 0;
+        }
+
+        // Reconstruir dados de daño
+        const diceList = document.getElementById('diceList');
+        diceList.innerHTML = '';
+
+        cfg.damageDice.forEach((die, index) => {
+            const diceItem = document.createElement('div');
+            diceItem.className = 'dice-item';
+            diceItem.innerHTML = `
+                <input type="number" class="dice-count" value="${die.count}" min="1" max="10">
+                <span>d</span>
+                <select class="dice-sides">
+                    <option value="4"${die.sides === 4 ? ' selected' : ''}>4</option>
+                    <option value="6"${die.sides === 6 ? ' selected' : ''}>6</option>
+                    <option value="8"${die.sides === 8 ? ' selected' : ''}>8</option>
+                    <option value="10"${die.sides === 10 ? ' selected' : ''}>10</option>
+                    <option value="12"${die.sides === 12 ? ' selected' : ''}>12</option>
+                    <option value="20"${die.sides === 20 ? ' selected' : ''}>20</option>
+                    <option value="100"${die.sides === 100 ? ' selected' : ''}>100</option>
+                </select>
+                <button class="btn-remove" onclick="removeDice(this)">×</button>
+            `;
+            diceList.appendChild(diceItem);
+        });
+
+        // Actualizar notación de dados
+        this.calculator.updateDiceNotation();
+    }
+
+    formatProfilePreview(config) {
+        // Crear preview compacto: "+5 | 1d8+3 | Ventaja | 2 ataques"
+        const diceStr = config.damageDice.map(d => `${d.count}d${d.sides}`).join('+');
+        const dmgStr = config.damageBonus > 0 ? `${diceStr}+${config.damageBonus}` : diceStr;
+
+        let parts = [`+${config.attackBonus}`, dmgStr];
+
+        if (config.advantage === 'advantage') {
+            parts.push(t('profileWithAdvantage'));
+        } else if (config.advantage === 'disadvantage') {
+            parts.push(t('profileWithDisadvantage'));
+        }
+
+        if (config.attackDiceBonus && config.attackDiceBonus > 0) {
+            parts.push(t('profileWithAttackDice', { sides: config.attackDiceBonus }));
+        }
+
+        if (config.sneakAttackDice && config.sneakAttackDice > 0) {
+            parts.push(t('profileWithSneak', { n: config.sneakAttackDice }));
+        }
+
+        if (config.numberOfAttacks > 1) {
+            parts.push(t('profileAttacks', { n: config.numberOfAttacks }));
+        }
+
+        if (config.targetAC) {
+            parts.push(`CA: ${config.targetAC}`);
+        }
+
+        return parts.join(' | ');
+    }
+
+    renderProfiles() {
+        const listEl = document.getElementById('profilesList');
+        const noProfilesEl = document.getElementById('noProfiles');
+
+        if (!listEl) return;
+
+        if (this.profiles.length === 0) {
+            listEl.innerHTML = '';
+            if (noProfilesEl) noProfilesEl.style.display = 'block';
+        } else {
+            if (noProfilesEl) noProfilesEl.style.display = 'none';
+
+            listEl.innerHTML = this.profiles.map(profile => {
+                const isEditing = this.editingProfileId === profile.id;
+                return `
+                <div class="profile-card ${isEditing ? 'editing' : ''}" data-id="${profile.id}">
+                    <div class="profile-info">
+                        <span class="profile-name">${this.escapeHtml(profile.name)}</span>
+                        <span class="profile-preview">${this.formatProfilePreview(profile.config)}</span>
+                    </div>
+                    <div class="profile-actions">
+                        <button class="btn-edit" onclick="editProfile('${profile.id}')" title="${t('editProfile')}">✏️</button>
+                        <button class="btn-load" onclick="loadProfile('${profile.id}')" title="${t('loadProfileTooltip')}">📥</button>
+                        <button class="btn-delete" onclick="deleteProfile('${profile.id}')" title="${t('deleteProfileTooltip')}">🗑️</button>
+                    </div>
+                </div>
+            `}).join('');
+        }
+
+        // También actualizar los checkboxes de comparación si existe el comparador
+        if (typeof profileComparator !== 'undefined' && profileComparator) {
+            profileComparator.renderCompareCheckboxes();
+        }
+    }
+
+    escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+}
+
+// ========== SISTEMA DE COMPARACIÓN DE PERFILES ==========
+
+class ProfileComparator {
+    constructor(profileManager) {
+        this.profileManager = profileManager;
+        this.selectedProfiles = new Set();
+    }
+
+    // Calcular estadísticas para una configuración de perfil (toda la matemática vive en engine.js)
+    calculateStatsForConfig(rawConfig, targetAC) {
+        const config = DnDEngine.normalizeConfig(rawConfig);
+        const { hit: hitChance, crit: critChance } = DnDEngine.hitProbability(config, targetAC);
+
+        const normalDamage = DnDEngine.damageRange(config, false, false);
+        const critDamage = DnDEngine.damageRange(config, true, false);
+        const normalAvgDmg = DnDEngine.damageAverage(config, false, false);
+        const critAvgDmg = DnDEngine.damageAverage(config, true, false);
+
+        const dprPerAttack = DnDEngine.dprPerAttack(config, targetAC);
+        const sneakDPR = DnDEngine.sneakAttackPerTurn(config, targetAC);
+        const totalDPR = DnDEngine.dprPerTurn(config, targetAC);
+
+        // Power Level
+        const powerLevel = Math.round(totalDPR * hitChance * 10);
+
+        // Roll mínimo necesario
+        const targetRoll = targetAC - config.attackBonus;
+        let rollNeeded;
+        if (targetRoll <= 1) {
+            rollNeeded = 'auto'; // Impacto automático
+        } else if (targetRoll >= 21) {
+            rollNeeded = 'crit'; // Solo crítico
+        } else {
+            rollNeeded = targetRoll;
+        }
+
+        return {
+            hitChance,
+            critChance,
+            normalDamage,
+            critDamage,
+            normalAvgDmg,
+            critAvgDmg,
+            dprPerAttack,
+            totalDPR,
+            sneakDPR,
+            sneakAttackDice: config.sneakAttackDice,
+            powerLevel,
+            rollNeeded,
+            numberOfAttacks: config.numberOfAttacks,
+            advantage: config.advantage
+        };
+    }
+
+    // Comparar perfiles seleccionados
+    compareProfiles(profileIds, targetAC) {
+        const results = [];
+
+        profileIds.forEach(id => {
+            const profile = this.profileManager.profiles.find(p => p.id === id);
+            if (!profile) return;
+
+            const stats = this.calculateStatsForConfig(profile.config, targetAC);
+            results.push({
+                id: profile.id,
+                name: profile.name,
+                config: profile.config,
+                stats
+            });
+        });
+
+        // Encontrar los mejores valores para cada métrica
+        const bests = this.findBestValues(results);
+
+        return { results, bests, targetAC };
+    }
+
+    findBestValues(results) {
+        if (results.length === 0) return {};
+
+        const bests = {
+            powerLevel: { value: -Infinity, ids: [] },
+            hitChance: { value: -Infinity, ids: [] },
+            critChance: { value: -Infinity, ids: [] },
+            totalDPR: { value: -Infinity, ids: [] },
+            rollNeeded: { value: Infinity, ids: [] }, // Menor es mejor
+            normalDamageMax: { value: -Infinity, ids: [] },
+            critDamageMax: { value: -Infinity, ids: [] }
+        };
+
+        results.forEach(r => {
+            const s = r.stats;
+
+            // Power Level (mayor es mejor)
+            if (s.powerLevel > bests.powerLevel.value) {
+                bests.powerLevel = { value: s.powerLevel, ids: [r.id] };
+            } else if (s.powerLevel === bests.powerLevel.value) {
+                bests.powerLevel.ids.push(r.id);
+            }
+
+            // Hit Chance (mayor es mejor)
+            if (s.hitChance > bests.hitChance.value) {
+                bests.hitChance = { value: s.hitChance, ids: [r.id] };
+            } else if (s.hitChance === bests.hitChance.value) {
+                bests.hitChance.ids.push(r.id);
+            }
+
+            // Crit Chance (mayor es mejor)
+            if (s.critChance > bests.critChance.value) {
+                bests.critChance = { value: s.critChance, ids: [r.id] };
+            } else if (s.critChance === bests.critChance.value) {
+                bests.critChance.ids.push(r.id);
+            }
+
+            // Total DPR (mayor es mejor)
+            if (s.totalDPR > bests.totalDPR.value) {
+                bests.totalDPR = { value: s.totalDPR, ids: [r.id] };
+            } else if (s.totalDPR === bests.totalDPR.value) {
+                bests.totalDPR.ids.push(r.id);
+            }
+
+            // Roll Needed (menor es mejor) - solo para valores numéricos
+            if (typeof s.rollNeeded === 'number') {
+                if (s.rollNeeded < bests.rollNeeded.value) {
+                    bests.rollNeeded = { value: s.rollNeeded, ids: [r.id] };
+                } else if (s.rollNeeded === bests.rollNeeded.value) {
+                    bests.rollNeeded.ids.push(r.id);
+                }
+            } else if (s.rollNeeded === 'auto') {
+                // Auto-hit es el mejor
+                if (bests.rollNeeded.value !== 0) {
+                    bests.rollNeeded = { value: 0, ids: [r.id] };
+                } else {
+                    bests.rollNeeded.ids.push(r.id);
+                }
+            }
+
+            // Max Normal Damage (mayor es mejor)
+            if (s.normalDamage.max > bests.normalDamageMax.value) {
+                bests.normalDamageMax = { value: s.normalDamage.max, ids: [r.id] };
+            } else if (s.normalDamage.max === bests.normalDamageMax.value) {
+                bests.normalDamageMax.ids.push(r.id);
+            }
+
+            // Max Crit Damage (mayor es mejor)
+            if (s.critDamage.max > bests.critDamageMax.value) {
+                bests.critDamageMax = { value: s.critDamage.max, ids: [r.id] };
+            } else if (s.critDamage.max === bests.critDamageMax.value) {
+                bests.critDamageMax.ids.push(r.id);
+            }
+        });
+
+        return bests;
+    }
+
+    // Renderizar la tabla de comparación
+    renderComparison(comparisonData) {
+        const panel = document.getElementById('comparisonResultsPanel');
+        const tableBody = document.getElementById('comparisonTableBody');
+        const acLabel = document.getElementById('comparisonTargetAC');
+
+        if (!panel || !tableBody) return;
+
+        const { results, bests, targetAC } = comparisonData;
+
+        // Mostrar panel y actualizar CA
+        panel.style.display = 'block';
+        if (acLabel) acLabel.textContent = targetAC;
+
+        // Generar filas de la tabla
+        tableBody.innerHTML = results.map(r => {
+            const s = r.stats;
+            const isBest = (metric) => bests[metric]?.ids.includes(r.id);
+
+            // Formatear roll needed
+            let rollDisplay;
+            if (s.rollNeeded === 'auto') {
+                rollDisplay = t('compareAutoHit');
+            } else if (s.rollNeeded === 'crit') {
+                rollDisplay = t('compareCritOnly');
+            } else {
+                rollDisplay = s.rollNeeded + '+';
+            }
+
+            // Formatear ventaja/desventaja
+            let advDisplay = '';
+            if (s.advantage === 'advantage') {
+                advDisplay = `<span class="adv-badge advantage">${t('compareAdvantage')}</span>`;
+            } else if (s.advantage === 'disadvantage') {
+                advDisplay = `<span class="adv-badge disadvantage">${t('compareDisadvantage')}</span>`;
+            }
+
+            // Format dice with damage bonus
+            const diceNotation = this.formatDiceNotation(r.config);
+            const damageBonus = r.config.damageBonus;
+            const diceDisplay = damageBonus > 0 ? `${diceNotation}+${damageBonus}` :
+                               damageBonus < 0 ? `${diceNotation}${damageBonus}` : diceNotation;
+
+            return `
+                <tr>
+                    <td class="profile-name-cell">
+                        <strong>${this.escapeHtml(r.name)}</strong>
+                        ${advDisplay}
+                        ${s.numberOfAttacks > 1 ? `<span class="attacks-badge">${s.numberOfAttacks}×</span>` : ''}
+                    </td>
+                    <td class="dice-cell">
+                        <span class="dice-notation">${diceDisplay}</span>
+                    </td>
+                    <td class="attack-bonus-cell">
+                        <span class="attack-bonus">${this.formatAttackBonus(r.config.attackBonus)}</span>
+                    </td>
+                    <td class="attack-dice-cell">
+                        <span class="attack-dice-bonus">${r.config.attackDiceBonus > 0 ? '+1d' + r.config.attackDiceBonus : '-'}</span>
+                    </td>
+                    <td class="sneak-attack-cell">
+                        <span class="sneak-attack-dice">${s.sneakAttackDice > 0 ? s.sneakAttackDice + 'd6' : '-'}</span>
+                    </td>
+                    <td class="${isBest('powerLevel') ? 'best-value' : ''}">
+                        <span class="value-number">${s.powerLevel}</span>
+                        ${isBest('powerLevel') ? '<span class="best-badge">🏆</span>' : ''}
+                    </td>
+                    <td class="${isBest('rollNeeded') ? 'best-value' : ''}">
+                        <span class="value-number">${rollDisplay}</span>
+                        ${isBest('rollNeeded') ? '<span class="best-badge">🏆</span>' : ''}
+                    </td>
+                    <td class="${isBest('hitChance') ? 'best-value' : ''}">
+                        <span class="value-number">${(s.hitChance * 100).toFixed(1)}%</span>
+                        ${isBest('hitChance') ? '<span class="best-badge">🏆</span>' : ''}
+                    </td>
+                    <td class="${isBest('critChance') ? 'best-value' : ''}">
+                        <span class="value-number">${(s.critChance * 100).toFixed(1)}%</span>
+                        ${isBest('critChance') ? '<span class="best-badge">🏆</span>' : ''}
+                    </td>
+                    <td class="${isBest('normalDamageMax') ? 'best-value' : ''}">
+                        <span class="value-number">${s.normalDamage.min}-${s.normalDamage.max}</span>
+                        ${isBest('normalDamageMax') ? '<span class="best-badge">🏆</span>' : ''}
+                    </td>
+                    <td class="${isBest('critDamageMax') ? 'best-value' : ''}">
+                        <span class="value-number">${s.critDamage.min}-${s.critDamage.max}</span>
+                        ${isBest('critDamageMax') ? '<span class="best-badge">🏆</span>' : ''}
+                    </td>
+                    <td class="${isBest('totalDPR') ? 'best-value' : ''}">
+                        <span class="value-number">${s.totalDPR.toFixed(1)}</span>
+                        ${isBest('totalDPR') ? '<span class="best-badge">🏆</span>' : ''}
+                    </td>
+                </tr>
+            `;
+        }).join('');
+
+        // Scroll a los resultados
+        panel.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    escapeHtml(text) {
+        const div = document.createElement('div');
+        div.textContent = text;
+        return div.innerHTML;
+    }
+
+    // Format dice notation for display (e.g., "2d6+1d8")
+    formatDiceNotation(config) {
+        const mainDice = config.damageDice.map(d => `${d.count}d${d.sides}`).join('+');
+        return mainDice;
+    }
+
+    // Format attack bonus for display (e.g., "+8" or "-2")
+    formatAttackBonus(bonus) {
+        return bonus >= 0 ? `+${bonus}` : `${bonus}`;
+    }
+
+    // Renderizar checkboxes de selección en la sección de comparación
+    renderCompareCheckboxes() {
+        const container = document.getElementById('compareProfilesList');
+        const noProfilesMsg = document.getElementById('compareNoProfiles');
+
+        if (!container) return;
+
+        const profiles = this.profileManager.profiles;
+
+        if (profiles.length === 0) {
+            container.innerHTML = '';
+            if (noProfilesMsg) noProfilesMsg.style.display = 'block';
+            return;
+        }
+
+        if (noProfilesMsg) noProfilesMsg.style.display = 'none';
+
+        container.innerHTML = profiles.map(profile => `
+            <label class="compare-checkbox-item">
+                <input type="checkbox"
+                       class="compare-profile-checkbox"
+                       value="${profile.id}"
+                       ${this.selectedProfiles.has(profile.id) ? 'checked' : ''}>
+                <span class="checkbox-custom"></span>
+                <span class="compare-profile-name">${this.escapeHtml(profile.name)}</span>
+                <span class="compare-profile-preview">${this.profileManager.formatProfilePreview(profile.config)}</span>
+            </label>
+        `).join('');
+
+        // Event listeners para checkboxes
+        container.querySelectorAll('.compare-profile-checkbox').forEach(checkbox => {
+            checkbox.addEventListener('change', (e) => {
+                if (e.target.checked) {
+                    this.selectedProfiles.add(e.target.value);
+                } else {
+                    this.selectedProfiles.delete(e.target.value);
+                }
+            });
+        });
+    }
+}
+
+// ========== CALCULADORA DE PROBABILIDADES D&D ==========
+
 class DnDCalculator {
     constructor() {
         this.config = {
             attackBonus: 5,
             damageBonus: 3,
             damageDice: [{ count: 1, sides: 8 }],
-            sneakAttackDice: 0, // Nd6 de Sneak Attack: 1 vez por turno, se duplica en crítico
+            attackDiceBonus: 0, // 0 = none, 4 = d4, 6 = d6, 8 = d8, 10 = d10, 12 = d12
+            sneakAttackDice: 0, // cantidad de d6 de Sneak Attack (0 = ninguno). Se aplica 1 vez por turno y se duplica en crítico
             advantage: 'normal',
             critRange: 20,
             numberOfAttacks: 1,
@@ -1054,7 +4627,15 @@ class DnDCalculator {
             this.config.critRange = parseInt(e.target.value);
         });
 
-        // Sneak Attack (Nd6, una vez por turno)
+        // Attack Dice Bonus (Bless, Bardic Inspiration, etc.)
+        const attackDiceBonusSelect = document.getElementById('attackDiceBonus');
+        if (attackDiceBonusSelect) {
+            attackDiceBonusSelect.addEventListener('change', (e) => {
+                this.config.attackDiceBonus = parseInt(e.target.value) || 0;
+            });
+        }
+
+        // Sneak Attack (dados d6, una vez por turno)
         const sneakAttackInput = document.getElementById('sneakAttackDice');
         if (sneakAttackInput) {
             sneakAttackInput.addEventListener('input', (e) => {
@@ -1110,278 +4691,61 @@ class DnDCalculator {
             ? `${notation} + ${this.config.damageBonus}`
             : notation;
 
+        // Añadir Sneak Attack a la notación (se resuelve 1 vez por turno)
         if (this.config.sneakAttackDice > 0) {
-            fullNotation += ` + ${this.config.sneakAttackDice}d6 furtivo`;
+            fullNotation += ` + ${this.config.sneakAttackDice}d6 ${t('sneakNotation')}`;
         }
 
         document.getElementById('diceNotation').textContent = fullNotation;
     }
 
-    // ========== CÁLCULO DE PROBABILIDADES ==========
+    // ========== CÁLCULO (delegado a engine.js) ==========
+
+    // Configuración saneada para el motor. Siempre pasar por acá, nunca usar this.config directo.
+    engineConfig() {
+        return DnDEngine.normalizeConfig(this.config);
+    }
 
     calculateHitChance(ac) {
-        const targetRoll = ac - this.config.attackBonus;
-        const critMin = this.config.critRange;
-
-        if (this.config.advantage === 'normal') {
-            return this.calculateNormalProbability(targetRoll, critMin);
-        } else if (this.config.advantage === 'advantage') {
-            return this.calculateAdvantageProbability(targetRoll, critMin);
-        } else {
-            return this.calculateDisadvantageProbability(targetRoll, critMin);
-        }
+        return DnDEngine.hitProbability(this.engineConfig(), ac);
     }
 
-    calculateNormalProbability(targetRoll, critMin) {
-        // Caso: crítico siempre impacta (incluso si necesitas 21+)
-        if (targetRoll >= 21) {
-            const critChance = (21 - critMin) / 20;
-            return {
-                hit: critChance,
-                crit: critChance,
-                miss: 1 - critChance
-            };
-        }
-
-        // Caso: siempre impactas (excepto con 1, que es fallo automático)
-        if (targetRoll <= 1) {
-            const critChance = (21 - critMin) / 20;
-            return {
-                hit: 0.95, // todo excepto el 1
-                crit: critChance,
-                miss: 0.05
-            };
-        }
-
-        // Caso normal
-        const hitRolls = 21 - targetRoll; // resultados que son hit
-        const critRolls = 21 - critMin;   // resultados que son crítico
-
-        return {
-            hit: hitRolls / 20,
-            crit: critRolls / 20,
-            miss: (targetRoll - 1) / 20
-        };
-    }
-
-    calculateAdvantageProbability(targetRoll, critMin) {
-        // Con ventaja: P(max >= x) = 1 - P(ambos < x) = 1 - ((x-1)/20)²
-
-        let pHit, pCrit;
-
-        if (targetRoll >= 21) {
-            // Solo crítico puede impactar
-            pCrit = 1 - ((critMin - 1) / 20) ** 2;
-            pHit = pCrit;
-        } else if (targetRoll <= 1) {
-            // Casi todo impacta (excepto doble 1)
-            pHit = 1 - (1 / 20) ** 2; // 1 - 0.0025 = 0.9975
-            pCrit = 1 - ((critMin - 1) / 20) ** 2;
-        } else {
-            pHit = 1 - ((targetRoll - 1) / 20) ** 2;
-            pCrit = 1 - ((critMin - 1) / 20) ** 2;
-        }
-
-        return {
-            hit: pHit,
-            crit: pCrit,
-            miss: 1 - pHit
-        };
-    }
-
-    calculateDisadvantageProbability(targetRoll, critMin) {
-        // Con desventaja: P(min >= x) = ((21-x)/20)²
-
-        let pHit, pCrit;
-
-        if (targetRoll >= 21) {
-            // Solo crítico puede impactar
-            pCrit = ((21 - critMin) / 20) ** 2;
-            pHit = pCrit;
-        } else if (targetRoll <= 1) {
-            // Siempre impactas excepto con doble 1
-            pHit = 1 - (1 / 20) ** 2;
-            pCrit = ((21 - critMin) / 20) ** 2;
-        } else {
-            pHit = ((21 - targetRoll) / 20) ** 2;
-            pCrit = ((21 - critMin) / 20) ** 2;
-        }
-
-        return {
-            hit: pHit,
-            crit: pCrit,
-            miss: 1 - pHit
-        };
-    }
-
-    // ========== CÁLCULO DE DAÑO ==========
-
-    // Promedio del Sneak Attack (Nd6). Se duplica en crítico (RAW).
     getSneakAttackAverage(isCrit = false) {
-        const dice = this.config.sneakAttackDice || 0;
-        if (dice <= 0) return 0;
-        const multiplier = isCrit ? 2 : 1;
-        return dice * multiplier * 3.5;
+        return DnDEngine.sneakAttackAverage(this.engineConfig(), isCrit);
     }
 
     getSneakAttackRange(isCrit = false) {
-        const dice = this.config.sneakAttackDice || 0;
-        if (dice <= 0) return { min: 0, max: 0 };
-        const multiplier = isCrit ? 2 : 1;
-        return { min: dice * multiplier * 1, max: dice * multiplier * 6 };
+        return DnDEngine.sneakAttackRange(this.engineConfig(), isCrit);
     }
 
+    // includeSneak: true incluye el SA en el daño de UN impacto (útil para 1 ataque/turno).
     calculateAverageDamage(isCrit = false, includeSneak = true) {
-        let avgDice = 0;
-
-        this.config.damageDice.forEach(die => {
-            const avgPerDie = (1 + die.sides) / 2;
-            const multiplier = isCrit ? die.count * 2 : die.count;
-            avgDice += multiplier * avgPerDie;
-        });
-
-        // El bonificador NO se duplica en crítico
-        let total = avgDice + this.config.damageBonus;
-        if (includeSneak) total += this.getSneakAttackAverage(isCrit);
-        return total;
+        return DnDEngine.damageAverage(this.engineConfig(), isCrit, includeSneak);
     }
 
     calculateDamageRange(isCrit = false, includeSneak = true) {
-        let min = 0;
-        let max = 0;
-
-        this.config.damageDice.forEach(die => {
-            const multiplier = isCrit ? die.count * 2 : die.count;
-            min += multiplier * 1;
-            max += multiplier * die.sides;
-        });
-
-        min += this.config.damageBonus;
-        max += this.config.damageBonus;
-
-        if (includeSneak) {
-            const sa = this.getSneakAttackRange(isCrit);
-            min += sa.min;
-            max += sa.max;
-        }
-
-        return { min, max };
+        return DnDEngine.damageRange(this.engineConfig(), isCrit, includeSneak);
     }
 
+    // Daño esperado de UN ataque dadas sus probabilidades
     calculateExpectedDPR(hitChance, critChance, includeSneak = true) {
         const normalDmg = this.calculateAverageDamage(false, includeSneak);
         const critDmg = this.calculateAverageDamage(true, includeSneak);
-
-        // DPR = P(hit normal) × daño_normal + P(crit) × daño_crítico
-        const pNormalHit = hitChance - critChance;
-        const dpr = pNormalHit * normalDmg + critChance * critDmg;
-
-        return dpr;
+        return (hitChance - critChance) * normalDmg + critChance * critDmg;
     }
 
-    // ========== MÚLTIPLES ATAQUES ==========
+    // Sneak Attack esperado POR TURNO (1 vez, duplicado si hubo crítico)
+    calculateExpectedSneakAttack(ac) {
+        return DnDEngine.sneakAttackPerTurn(this.engineConfig(), ac);
+    }
+
+    // DPR TOTAL por turno = arma × nº de ataques + Sneak Attack
+    calculateTotalDPR(ac) {
+        return DnDEngine.dprPerTurn(this.engineConfig(), ac);
+    }
 
     calculateMultiAttackDistribution(ac) {
-        const n = this.config.numberOfAttacks;
-        const { hit: pHit, crit: pCrit } = this.calculateHitChance(ac);
-
-        const pMiss = 1 - pHit;
-        const pNormal = pHit - pCrit;
-
-        // Daño de ARMA por ataque (sin Sneak Attack: se suma aparte 1 vez por turno)
-        const normalDmg = this.calculateAverageDamage(false, false);
-        const critDmg = this.calculateAverageDamage(true, false);
-
-        // Rangos de daño del arma (sin Sneak Attack)
-        const normalRange = this.calculateDamageRange(false, false);
-        const critRange = this.calculateDamageRange(true, false);
-
-        const sneakDice = this.config.sneakAttackDice || 0;
-
-        const results = [];
-
-        // Para cada número total de hits
-        for (let totalHits = 0; totalHits <= n; totalHits++) {
-            const hitCombinations = [];
-
-            // Para cada combinación de críticos dentro de los hits
-            for (let crits = 0; crits <= totalHits; crits++) {
-                const normals = totalHits - crits;
-                const misses = n - totalHits;
-
-                // Probabilidad multinomial
-                const prob = this.multinomialCoeff(n, misses, normals, crits) *
-                            Math.pow(pMiss, misses) *
-                            Math.pow(pNormal, normals) *
-                            Math.pow(pCrit, crits);
-
-                // Sneak Attack: 1 sola vez por turno si hubo impacto; se duplica si hay crítico
-                let saAvg = 0, saMin = 0, saMax = 0;
-                if (sneakDice > 0 && totalHits >= 1) {
-                    const saMult = crits >= 1 ? 2 : 1;
-                    saAvg = sneakDice * saMult * 3.5;
-                    saMin = sneakDice * saMult * 1;
-                    saMax = sneakDice * saMult * 6;
-                }
-
-                // Daño para esta combinación (promedio y rango)
-                const avgDamage = normals * normalDmg + crits * critDmg + saAvg;
-                const minDamage = normals * normalRange.min + crits * critRange.min + saMin;
-                const maxDamage = normals * normalRange.max + crits * critRange.max + saMax;
-
-                // Solo incluir si probabilidad > 0.1%
-                if (prob > 0.001) {
-                    hitCombinations.push({
-                        normals: normals,
-                        crits: crits,
-                        probability: prob,
-                        damage: avgDamage,
-                        damageMin: minDamage,
-                        damageMax: maxDamage
-                    });
-                }
-            }
-
-            // Calcular probabilidad total para este número de hits
-            const totalProbability = hitCombinations.reduce((sum, c) => sum + c.probability, 0);
-
-            results.push({
-                totalHits: totalHits,
-                combinations: hitCombinations,
-                totalProbability: totalProbability
-            });
-        }
-
-        return results;
-    }
-
-    multinomialCoeff(n, k1, k2, k3) {
-        return this.factorial(n) / (this.factorial(k1) * this.factorial(k2) * this.factorial(k3));
-    }
-
-    factorial(n) {
-        if (n === 0 || n === 1) return 1;
-        let result = 1;
-        for (let i = 2; i <= n; i++) {
-            result *= i;
-        }
-        return result;
-    }
-
-    binomial(n, k) {
-        if (k < 0 || k > n) return 0;
-        if (k === 0 || k === n) return 1;
-
-        // Optimización: usar la mitad más pequeña
-        k = Math.min(k, n - k);
-
-        let result = 1;
-        for (let i = 0; i < k; i++) {
-            result *= (n - i);
-            result /= (i + 1);
-        }
-
-        return result;
+        return DnDEngine.multiAttackDistribution(this.engineConfig(), ac);
     }
 
     // ========== GENERACIÓN DE UI ==========
@@ -1439,11 +4803,11 @@ class DnDCalculator {
             let requirementText = '';
 
             if (targetRoll <= 1) {
-                requirementText = `<strong>CA ${this.config.targetAC}:</strong> Impactas automáticamente (excepto con 1 natural)`;
+                requirementText = t('rollReqAuto', { ac: this.config.targetAC });
             } else if (targetRoll >= 21) {
-                requirementText = `<strong>CA ${this.config.targetAC}:</strong> Solo puedes impactar con crítico natural`;
+                requirementText = t('rollReqCritOnly', { ac: this.config.targetAC });
             } else {
-                requirementText = `<strong>CA ${this.config.targetAC}:</strong> Necesitas sacar <strong>${targetRoll}</strong> o más en el d20`;
+                requirementText = t('rollReqNormal', { ac: this.config.targetAC, roll: targetRoll });
             }
 
             const normalDmg = this.calculateAverageDamage(false);
@@ -1451,12 +4815,31 @@ class DnDCalculator {
             const normalRange = this.calculateDamageRange(false);
             const critRange = this.calculateDamageRange(true);
 
-            requirementText += `<br><strong>Daño normal:</strong> ${normalRange.min}-${normalRange.max} (promedio ${normalDmg.toFixed(1)})`;
-            requirementText += `<br><strong>Daño crítico:</strong> ${critRange.min}-${critRange.max} (promedio ${critDmg.toFixed(1)})`;
+            requirementText += t('damageNormal', {
+                min: normalRange.min,
+                max: normalRange.max,
+                avg: normalDmg.toFixed(1)
+            });
+            requirementText += t('damageCrit', {
+                min: critRange.min,
+                max: critRange.max,
+                avg: critDmg.toFixed(1)
+            });
 
             rollRequirement.innerHTML = requirementText;
         } else {
-            rollRequirement.innerHTML = '<strong>Consejo:</strong> Especifica una CA objetivo para ver los requisitos de tirada';
+            rollRequirement.innerHTML = t('rollReqAdvice');
+        }
+
+        // Combat Statistics - solo mostrar si hay CA objetivo
+        const combatStatsPanel = document.getElementById('combatStatsPanel');
+        if (this.config.targetAC && combatStatsPanel) {
+            const targetAC = this.config.targetAC;
+            const { hit: targetHit, crit: targetCrit } = this.calculateHitChance(targetAC);
+            const targetDPR = this.calculateTotalDPR(targetAC);
+            this.renderCombatStats(targetAC, targetDPR, targetHit, targetCrit);
+        } else if (combatStatsPanel) {
+            combatStatsPanel.style.display = 'none';
         }
 
         // Múltiples ataques
@@ -1466,6 +4849,22 @@ class DnDCalculator {
         } else {
             multiAttackPanel.style.display = 'none';
         }
+
+        // Power Level - mostrar si hay CA objetivo
+        if (this.config.targetAC) {
+            const targetAC = this.config.targetAC;
+            const { hit: targetHit, crit: targetCrit } = this.calculateHitChance(targetAC);
+            const targetDPR = this.calculateTotalDPR(targetAC);
+            this.renderPowerLevel(targetAC, targetDPR, targetHit);
+        } else {
+            const powerLevelSection = document.getElementById('powerLevelSection');
+            if (powerLevelSection) {
+                powerLevelSection.style.display = 'none';
+            }
+        }
+
+        // Auto-cerrar panel en móvil después de calcular
+        autoClosePanelAfterCalculate();
     }
 
     renderMultiAttackDistribution() {
@@ -1475,8 +4874,8 @@ class DnDCalculator {
         const infoDiv = document.getElementById('multiAttackInfo');
 
         // Texto de ventaja/desventaja
-        const advantageText = this.config.advantage === 'advantage' ? ' <strong style="color: var(--color-hit);">(CON VENTAJA)</strong>' :
-                              this.config.advantage === 'disadvantage' ? ' <strong style="color: var(--color-miss);">(CON DESVENTAJA)</strong>' :
+        const advantageText = this.config.advantage === 'advantage' ? t('multiAttackAdvantage') :
+                              this.config.advantage === 'disadvantage' ? t('multiAttackDisadvantage') :
                               '';
 
         // Calcular resumen de daño total (arma × n + Sneak Attack 1 vez por turno)
@@ -1492,26 +4891,22 @@ class DnDCalculator {
         const allCritsMin = n * critRange.min + saCrit.min;
         const allCritsMax = n * critRange.max + saCrit.max;
 
-        const sneakNote = sneakDice > 0
-            ? `<span style="color: var(--color-crit);">• +${sneakDice}d6 de Sneak Attack incluidos (1 vez por turno, se duplican en crítico)</span><br>`
-            : '';
-
         // Información general
         const { hit: pHit, crit: pCrit } = this.calculateHitChance(targetAC);
         infoDiv.innerHTML = `
-            <strong>Contra CA ${targetAC} con ${this.config.numberOfAttacks} ataques${advantageText}:</strong><br>
-            Probabilidad de impacto por ataque: ${(pHit * 100).toFixed(1)}%<br>
-            Probabilidad de crítico por ataque: ${(pCrit * 100).toFixed(1)}%<br>
+            ${t('multiAttackWith', { ac: targetAC, n: this.config.numberOfAttacks })}${advantageText}:<br>
+            ${t('multiAttackHitProb', { prob: (pHit * 100).toFixed(1) })}<br>
+            ${t('multiAttackCritProb', { prob: (pCrit * 100).toFixed(1) })}<br>
             <br>
-            <strong style="color: var(--color-crit);">📊 Resumen de daño total:</strong><br>
+            ${t('multiAttackSummary')}<br>
             <span style="color: var(--text-secondary);">
-                • Si todos impactan (sin críticos): <strong style="color: var(--color-hit);">${allNormalsMin}-${allNormalsMax} daño</strong><br>
-                • Si todos impactan con críticos: <strong style="color: var(--color-crit);">${allCritsMin}-${allCritsMax} daño</strong><br>
-                • Rango total posible: <strong style="color: var(--text-primary);">0-${allCritsMax} daño</strong>
+                ${t('multiAttackAllNormal', { min: allNormalsMin, max: allNormalsMax })}<br>
+                ${t('multiAttackAllCrit', { min: allCritsMin, max: allCritsMax })}<br>
+                ${t('multiAttackRange', { max: allCritsMax })}
             </span><br>
-            ${sneakNote}
+            ${sneakDice > 0 ? `<span style="color: var(--color-crit);">${t('multiAttackSneakNote', { n: sneakDice })}</span><br>` : ''}
             <br>
-            <em style="color: var(--text-muted); font-size: 0.9em;">Haz clic en cada grupo para ver el desglose detallado de críticos</em>
+            ${t('multiAttackHint')}
         `;
 
         // Distribución con grupos expandibles
@@ -1526,8 +4921,9 @@ class DnDCalculator {
             // Header del grupo
             const header = document.createElement('div');
             header.className = 'dist-header';
+            const hitsLabel = totalHits === 1 ? t('hits_singular') : t('hits_plural');
             header.innerHTML = `
-                <span class="dist-hits">${totalHits} ${totalHits === 1 ? 'impacto' : 'impactos'}</span>
+                <span class="dist-hits">${totalHits} ${hitsLabel}</span>
                 <span class="dist-total-prob">${(totalProbability * 100).toFixed(1)}%</span>
                 <button class="expand-btn">▼</button>
             `;
@@ -1536,18 +4932,24 @@ class DnDCalculator {
             const details = document.createElement('div');
             details.className = 'dist-details';
 
-            combinations.forEach(({ normals, crits, probability, damage, damageMin, damageMax }) => {
+            // Ocultar combinaciones despreciables (<0.1%); el total del grupo ya está calculado sin filtrar
+            combinations.filter(c => c.probability >= 0.001).forEach(({ normals, crits, probability, damage, damageMin, damageMax }) => {
                 const combo = document.createElement('div');
                 combo.className = 'dist-combo';
 
-                const label = normals === 0 && crits === 0
-                    ? 'Sin impactos'
-                    : `${normals} ${normals === 1 ? 'normal' : 'normales'}, ${crits} ${crits === 1 ? 'crítico' : 'críticos'}`;
+                let label;
+                if (normals === 0 && crits === 0) {
+                    label = t('noHits');
+                } else {
+                    const normalLabel = normals === 1 ? t('normal_singular') : t('normal_plural');
+                    const critLabel = crits === 1 ? t('crit_singular') : t('crit_plural');
+                    label = `${normals} ${normalLabel}, ${crits} ${critLabel}`;
+                }
 
                 // Formatear display de daño
                 const damageDisplay = damageMin === damageMax
-                    ? `${damageMin} daño`
-                    : `${damageMin}-${damageMax} daño <span style="color: var(--text-muted); font-size: 0.85em;">(avg: ${damage.toFixed(1)})</span>`;
+                    ? `${damageMin} ${t('damage')}`
+                    : `${damageMin}-${damageMax} ${t('damage')} <span style="color: var(--text-muted); font-size: 0.85em;">${t('damageAvg', { avg: damage.toFixed(1) })}</span>`;
 
                 combo.innerHTML = `
                     <span class="combo-label">${label}</span>
@@ -1569,6 +4971,125 @@ class DnDCalculator {
             group.appendChild(details);
             distributionDiv.appendChild(group);
         });
+    }
+
+    renderCombatStats(ac, dpr, hitChance, critChance) {
+        const panel = document.getElementById('combatStatsPanel');
+
+        if (!panel) {
+            console.warn('Combat stats panel element not found');
+            return;
+        }
+
+        // Calcular métricas (daño por impacto = solo arma; el SA se muestra aparte)
+        const normalDmg = this.calculateAverageDamage(false, false);
+        const critDmg = this.calculateAverageDamage(true, false);
+        const pNormalGivenHit = (hitChance - critChance) / hitChance;
+        const pCritGivenHit = critChance / hitChance;
+        const damagePerHit = (pNormalGivenHit * normalDmg) + (pCritGivenHit * critDmg);
+
+        const numAttacks = this.config.numberOfAttacks;
+        const critsPerRound = critChance * numAttacks;
+
+        // Sneak Attack esperado por turno (1 vez, se duplica en crítico)
+        const sneakDice = this.config.sneakAttackDice || 0;
+        const sneakPerRound = this.calculateExpectedSneakAttack(ac);
+
+        // Turnos para derrotar diferentes enemigos
+        const enemies = [
+            {key: 'enemyWeak', hp: 20},
+            {key: 'enemyNormal', hp: 50},
+            {key: 'enemyStrong', hp: 100},
+            {key: 'enemyBoss', hp: 200}
+        ];
+
+        // Nivel estimado
+        const level = estimateCharacterLevel(this.config.attackBonus, dpr);
+
+        // Mostrar panel
+        panel.style.display = 'block';
+
+        // Actualizar AC objetivo
+        const acLabel = document.getElementById('statsTargetAC');
+        if (acLabel) acLabel.textContent = ac;
+
+        // Actualizar estadísticas principales
+        const dprTotal = document.getElementById('statDPRTotal');
+        const hitProb = document.getElementById('statHitChance');
+        const dmgPerHit = document.getElementById('statDamagePerHit');
+        const critsRound = document.getElementById('statCritsPerRound');
+
+        if (dprTotal) dprTotal.textContent = dpr.toFixed(1);
+        if (hitProb) hitProb.textContent = (hitChance * 100).toFixed(1) + '%';
+        if (dmgPerHit) dmgPerHit.textContent = damagePerHit.toFixed(1);
+        if (critsRound) critsRound.textContent = critsPerRound.toFixed(2);
+
+        // Sneak Attack card (solo visible si hay dados de SA configurados)
+        const sneakCard = document.getElementById('statSneakAttackCard');
+        const sneakValue = document.getElementById('statSneakAttack');
+        if (sneakCard) {
+            if (sneakDice > 0) {
+                sneakCard.style.display = '';
+                if (sneakValue) sneakValue.textContent = sneakPerRound.toFixed(1);
+            } else {
+                sneakCard.style.display = 'none';
+            }
+        }
+
+        // Actualizar turnos para derrotar
+        const defeatList = document.getElementById('defeatTimesList');
+        if (defeatList) {
+            defeatList.innerHTML = enemies.map(enemy => {
+                const turns = Math.ceil(enemy.hp / dpr);
+                return `<div class="defeat-item">
+                    <span class="defeat-enemy">${t(enemy.key)}</span>
+                    <span class="defeat-turns">~${turns} ${t('turnsLabel')}</span>
+                </div>`;
+            }).join('');
+        }
+
+        // Actualizar nivel estimado
+        const levelBadge = document.getElementById('levelBadge');
+        if (levelBadge) {
+            levelBadge.textContent = `${t('levelRange')} ${level.min}-${level.max}`;
+        }
+    }
+
+    calculatePowerLevel(dpr, hitChance) {
+        // Fórmula: Power Level = DPR × hit_chance × 10
+        // Esto da un número único y comparable entre builds
+        const powerLevel = Math.round(dpr * hitChance * 10);
+        return powerLevel;
+    }
+
+    renderPowerLevel(ac, dpr, hitChance) {
+        const section = document.getElementById('powerLevelSection');
+
+        if (!section) {
+            console.warn('Power level section not found');
+            return;
+        }
+
+        // Calcular Power Level
+        const powerLevel = this.calculatePowerLevel(dpr, hitChance);
+
+        // Mostrar sección
+        section.style.display = 'block';
+
+        // Actualizar número principal
+        const powerNumber = document.getElementById('powerLevelNumber');
+        if (powerNumber) {
+            powerNumber.textContent = powerLevel;
+        }
+
+        // Actualizar fórmula breakdown
+        const formulaDPR = document.getElementById('formulaDPR');
+        const formulaHit = document.getElementById('formulaHit');
+        const formulaResult = document.getElementById('formulaResult');
+
+        if (formulaDPR) formulaDPR.textContent = dpr.toFixed(1);
+        if (formulaHit) formulaHit.textContent = (hitChance * 100).toFixed(1) + '%';
+        if (formulaResult) formulaResult.textContent = powerLevel;
     }
 }
 
@@ -1603,7 +5124,7 @@ function removeDice(button) {
 
     // No permitir eliminar el último dado
     if (diceList.children.length <= 1) {
-        alert('Debes tener al menos un dado de daño');
+        alert(t('alertMinDice'));
         return;
     }
 
@@ -1611,17 +5132,274 @@ function removeDice(button) {
     calculator.updateDiceFromInputs();
 }
 
+// ========== FUNCIONES DE PERFILES ==========
+
+let profileManager;
+let profileComparator;
+
+function saveProfile() {
+    const nameInput = document.getElementById('profileName');
+
+    // If editing, use existing profile name as default
+    let defaultName = nameInput ? nameInput.value : '';
+    if (profileManager.isEditing()) {
+        const editingProfile = profileManager.getEditingProfile();
+        if (editingProfile && !defaultName) {
+            defaultName = editingProfile.name;
+        }
+    }
+
+    const name = defaultName || '';
+
+    const result = profileManager.saveProfile(name);
+
+    if (result.success) {
+        // Limpiar input
+        if (nameInput) nameInput.value = '';
+        // Feedback visual
+        const messageKey = result.updated ? 'profileSaved' : 'profileSaved';
+        showProfileFeedback(t(messageKey, { name: result.profile.name }), 'success');
+    } else {
+        alert(t(result.messageKey));
+    }
+}
+
+function editProfile(id) {
+    profileManager.startEditing(id);
+    // Set the profile name in the input field
+    const profile = profileManager.profiles.find(p => p.id === id);
+    if (profile) {
+        const nameInput = document.getElementById('profileName');
+        if (nameInput) {
+            nameInput.value = profile.name;
+        }
+    }
+    // Scroll to config section
+    document.querySelector('.config-panel')?.scrollIntoView({ behavior: 'smooth' });
+}
+
+function cancelEditProfile() {
+    profileManager.cancelEditing();
+    // Clear name input
+    const nameInput = document.getElementById('profileName');
+    if (nameInput) nameInput.value = '';
+}
+
+function loadProfile(id) {
+    const result = profileManager.loadProfile(id);
+
+    if (result.success) {
+        showProfileFeedback(t('profileLoaded', { name: result.profile.name }), 'success');
+        // Scroll hacia los resultados
+        document.querySelector('.results-panel')?.scrollIntoView({ behavior: 'smooth' });
+    }
+}
+
+function deleteProfile(id) {
+    profileManager.deleteProfile(id);
+}
+
+function showProfileFeedback(message, type) {
+    // Crear elemento de feedback temporal
+    const feedback = document.createElement('div');
+    feedback.className = `profile-feedback ${type}`;
+    feedback.textContent = message;
+
+    const profilesSection = document.querySelector('.profiles-section');
+    if (profilesSection) {
+        profilesSection.appendChild(feedback);
+
+        // Remover después de 2 segundos
+        setTimeout(() => {
+            feedback.classList.add('fade-out');
+            setTimeout(() => feedback.remove(), 300);
+        }, 2000);
+    }
+}
+
+// ========== FUNCIONES DE COMPARACIÓN ==========
+
+function runComparison() {
+    // Verificar que hay perfiles seleccionados
+    const selectedIds = Array.from(profileComparator.selectedProfiles);
+
+    if (selectedIds.length < 2) {
+        alert(t('compareMinSelect'));
+        return;
+    }
+
+    // Obtener CA objetivo
+    const acInput = document.getElementById('compareTargetAC');
+    const targetAC = parseInt(acInput?.value) || 15;
+
+    // Ejecutar comparación
+    const comparisonData = profileComparator.compareProfiles(selectedIds, targetAC);
+
+    // Renderizar resultados
+    profileComparator.renderComparison(comparisonData);
+}
+
 // ========== INICIALIZACIÓN ==========
 
 let calculator;
 
 document.addEventListener('DOMContentLoaded', () => {
+    // Initialize language system first
+    initializeLanguage();
+
+    // Setup custom select with flags
+    const customSelect = document.getElementById('languageSelect');
+    if (customSelect) {
+        const selected = customSelect.querySelector('.select-selected');
+        const itemsContainer = customSelect.querySelector('.select-items');
+        const items = itemsContainer.querySelectorAll('div');
+
+        // Toggle dropdown
+        selected.addEventListener('click', (e) => {
+            e.stopPropagation();
+            closeAllSelect(selected);
+            itemsContainer.classList.toggle('select-hide');
+            selected.classList.toggle('select-arrow-active');
+        });
+
+        // Handle item selection
+        items.forEach(item => {
+            item.addEventListener('click', (e) => {
+                const lang = item.getAttribute('data-value');
+                selected.innerHTML = item.innerHTML;
+                itemsContainer.classList.add('select-hide');
+                selected.classList.remove('select-arrow-active');
+                setLanguage(lang);
+            });
+        });
+
+        // Close dropdown when clicking outside
+        document.addEventListener('click', () => {
+            closeAllSelect();
+        });
+
+        function closeAllSelect(except) {
+            const items = document.querySelectorAll('.select-items');
+            const selecteds = document.querySelectorAll('.select-selected');
+            items.forEach((item, i) => {
+                if (except !== selecteds[i]) {
+                    item.classList.add('select-hide');
+                    selecteds[i].classList.remove('select-arrow-active');
+                }
+            });
+        }
+    }
+
+    // Initialize calculator
     calculator = new DnDCalculator();
     calculator.updateDiceNotation();
+
+    // Initialize profile manager
+    profileManager = new ProfileManager(calculator);
+    profileManager.renderProfiles();
+
+    // Initialize profile comparator
+    profileComparator = new ProfileComparator(profileManager);
+    profileComparator.renderCompareCheckboxes();
+
+    // Initialize mobile panel toggle
+    initMobilePanelToggle();
 
     // Calcular automáticamente al cargar
     calculator.calculate();
 });
+
+// ========== MOBILE PANEL TOGGLE ==========
+
+// Estado del panel (mobile only)
+let mobileConfigPanelOpen = true; // Default abierto
+
+function initMobilePanelToggle() {
+    // Solo inicializar si estamos en móvil
+    if (window.innerWidth > 768) {
+        return;
+    }
+
+    // Leer estado guardado
+    const saved = localStorage.getItem('mobileConfigPanelOpen');
+    if (saved !== null) {
+        mobileConfigPanelOpen = saved === 'true';
+    }
+
+    // Aplicar estado inicial
+    updatePanelVisibility();
+}
+
+function closeMobilePanel() {
+    mobileConfigPanelOpen = false;
+    updatePanelVisibility();
+
+    // Scroll suave a resultados
+    setTimeout(() => {
+        const resultsPanel = document.querySelector('.results-panel');
+        if (resultsPanel) {
+            resultsPanel.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    }, 100);
+}
+
+function openMobilePanel() {
+    mobileConfigPanelOpen = true;
+    updatePanelVisibility();
+
+    // Scroll suave al panel
+    setTimeout(() => {
+        const configPanel = document.querySelector('.config-panel');
+        if (configPanel) {
+            configPanel.scrollIntoView({
+                behavior: 'smooth',
+                block: 'start'
+            });
+        }
+    }, 100);
+}
+
+function updatePanelVisibility() {
+    const panel = document.querySelector('.config-panel');
+    const fab = document.querySelector('.mobile-fab-btn');
+
+    if (!panel || !fab) return;
+
+    if (mobileConfigPanelOpen) {
+        panel.classList.remove('mobile-collapsed');
+        fab.style.display = 'none';
+    } else {
+        panel.classList.add('mobile-collapsed');
+        fab.style.display = 'flex';
+    }
+
+    localStorage.setItem('mobileConfigPanelOpen', mobileConfigPanelOpen);
+}
+
+// Auto-cerrar después de calcular (solo móvil)
+function autoClosePanelAfterCalculate() {
+    if (window.innerWidth <= 768 && mobileConfigPanelOpen) {
+        setTimeout(closeMobilePanel, 300);
+    }
+}
+
+// Resetear en resize
+window.addEventListener('resize', () => {
+    if (window.innerWidth > 768) {
+        // Desktop: siempre mostrar panel
+        const panel = document.querySelector('.config-panel');
+        const fab = document.querySelector('.mobile-fab-btn');
+        if (panel) panel.classList.remove('mobile-collapsed');
+        if (fab) fab.style.display = 'none';
+    } else {
+        // Móvil: aplicar estado guardado
+        updatePanelVisibility();
+    }
+});
+
     </script>
 </body>
 </html>

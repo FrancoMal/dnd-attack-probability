@@ -1209,61 +1209,25 @@ class ProfileComparator {
         this.selectedProfiles = new Set();
     }
 
-    // Calcular estadísticas para una configuración de perfil
-    calculateStatsForConfig(config, targetAC) {
-        // Cálculos de probabilidad
-        const targetRoll = targetAC - config.attackBonus;
-        const critMin = config.critRange;
-        const bonusDie = config.attackDiceBonus || 0;
+    // Calcular estadísticas para una configuración de perfil (toda la matemática vive en engine.js)
+    calculateStatsForConfig(rawConfig, targetAC) {
+        const config = DnDEngine.normalizeConfig(rawConfig);
+        const { hit: hitChance, crit: critChance } = DnDEngine.hitProbability(config, targetAC);
 
-        let hitChance, critChance;
+        const normalDamage = DnDEngine.damageRange(config, false, false);
+        const critDamage = DnDEngine.damageRange(config, true, false);
+        const normalAvgDmg = DnDEngine.damageAverage(config, false, false);
+        const critAvgDmg = DnDEngine.damageAverage(config, true, false);
 
-        // If there's an attack dice bonus, use the special calculation
-        if (bonusDie && bonusDie > 0) {
-            const result = this.calculateProbabilityWithBonusDie(targetRoll, critMin, config.advantage, bonusDie);
-            hitChance = result.hit;
-            critChance = result.crit;
-        } else if (config.advantage === 'normal') {
-            const result = this.calculateNormalProbability(targetRoll, critMin);
-            hitChance = result.hit;
-            critChance = result.crit;
-        } else if (config.advantage === 'advantage') {
-            const result = this.calculateAdvantageProbability(targetRoll, critMin);
-            hitChance = result.hit;
-            critChance = result.crit;
-        } else {
-            const result = this.calculateDisadvantageProbability(targetRoll, critMin);
-            hitChance = result.hit;
-            critChance = result.crit;
-        }
-
-        // Calcular daño
-        const normalDamage = this.calculateDamageRange(config.damageDice, config.damageBonus, false);
-        const critDamage = this.calculateDamageRange(config.damageDice, config.damageBonus, true);
-
-        // DPR
-        const normalAvgDmg = this.calculateAverageDamage(config.damageDice, config.damageBonus, false);
-        const critAvgDmg = this.calculateAverageDamage(config.damageDice, config.damageBonus, true);
-        const pNormalHit = hitChance - critChance;
-        const dprPerAttack = pNormalHit * normalAvgDmg + critChance * critAvgDmg;
-
-        // Sneak Attack: 1 vez por turno, se duplica en crítico (no se multiplica por nº de ataques)
-        const sneakDice = config.sneakAttackDice || 0;
-        const n = config.numberOfAttacks;
-        let sneakDPR = 0;
-        if (sneakDice > 0) {
-            const avgSA = sneakDice * 3.5;
-            const pNoCrit = Math.pow(1 - critChance, n);
-            const pNoHit = Math.pow(1 - hitChance, n);
-            sneakDPR = (1 - pNoCrit) * (2 * avgSA) + (pNoCrit - pNoHit) * avgSA;
-        }
-
-        const totalDPR = dprPerAttack * n + sneakDPR;
+        const dprPerAttack = DnDEngine.dprPerAttack(config, targetAC);
+        const sneakDPR = DnDEngine.sneakAttackPerTurn(config, targetAC);
+        const totalDPR = DnDEngine.dprPerTurn(config, targetAC);
 
         // Power Level
         const powerLevel = Math.round(totalDPR * hitChance * 10);
 
         // Roll mínimo necesario
+        const targetRoll = targetAC - config.attackBonus;
         let rollNeeded;
         if (targetRoll <= 1) {
             rollNeeded = 'auto'; // Impacto automático
@@ -1283,145 +1247,12 @@ class ProfileComparator {
             dprPerAttack,
             totalDPR,
             sneakDPR,
-            sneakAttackDice: sneakDice,
+            sneakAttackDice: config.sneakAttackDice,
             powerLevel,
             rollNeeded,
             numberOfAttacks: config.numberOfAttacks,
             advantage: config.advantage
         };
-    }
-
-    calculateNormalProbability(targetRoll, critMin) {
-        if (targetRoll >= 21) {
-            const critChance = (21 - critMin) / 20;
-            return { hit: critChance, crit: critChance };
-        }
-        if (targetRoll <= 1) {
-            const critChance = (21 - critMin) / 20;
-            return { hit: 0.95, crit: critChance };
-        }
-        const hitRolls = 21 - targetRoll;
-        const critRolls = 21 - critMin;
-        return { hit: hitRolls / 20, crit: critRolls / 20 };
-    }
-
-    calculateAdvantageProbability(targetRoll, critMin) {
-        let pHit, pCrit;
-        if (targetRoll >= 21) {
-            pCrit = 1 - ((critMin - 1) / 20) ** 2;
-            pHit = pCrit;
-        } else if (targetRoll <= 1) {
-            pHit = 1 - (1 / 20) ** 2;
-            pCrit = 1 - ((critMin - 1) / 20) ** 2;
-        } else {
-            pHit = 1 - ((targetRoll - 1) / 20) ** 2;
-            pCrit = 1 - ((critMin - 1) / 20) ** 2;
-        }
-        return { hit: pHit, crit: pCrit };
-    }
-
-    calculateDisadvantageProbability(targetRoll, critMin) {
-        let pHit, pCrit;
-        if (targetRoll >= 21) {
-            pCrit = ((21 - critMin) / 20) ** 2;
-            pHit = pCrit;
-        } else if (targetRoll <= 1) {
-            pHit = 1 - (1 / 20) ** 2;
-            pCrit = ((21 - critMin) / 20) ** 2;
-        } else {
-            pHit = ((21 - targetRoll) / 20) ** 2;
-            pCrit = ((21 - critMin) / 20) ** 2;
-        }
-        return { hit: pHit, crit: pCrit };
-    }
-
-    calculateProbabilityWithBonusDie(targetRoll, critMin, advantage, bonusDieSides) {
-        let hitCount = 0, critCount = 0, missCount = 0;
-        let totalOutcomes;
-
-        if (advantage === 'normal') {
-            totalOutcomes = 20 * bonusDieSides;
-            for (let d20 = 1; d20 <= 20; d20++) {
-                for (let bonus = 1; bonus <= bonusDieSides; bonus++) {
-                    if (d20 === 1) {
-                        missCount++;
-                    } else if (d20 >= critMin) {
-                        critCount++;
-                    } else if (d20 + bonus >= targetRoll) {
-                        hitCount++;
-                    } else {
-                        missCount++;
-                    }
-                }
-            }
-        } else if (advantage === 'advantage') {
-            totalOutcomes = 20 * 20 * bonusDieSides;
-            for (let d1 = 1; d1 <= 20; d1++) {
-                for (let d2 = 1; d2 <= 20; d2++) {
-                    const d20 = Math.max(d1, d2);
-                    for (let bonus = 1; bonus <= bonusDieSides; bonus++) {
-                        if (d1 === 1 && d2 === 1) {
-                            missCount++;
-                        } else if (d20 >= critMin) {
-                            critCount++;
-                        } else if (d20 + bonus >= targetRoll) {
-                            hitCount++;
-                        } else {
-                            missCount++;
-                        }
-                    }
-                }
-            }
-        } else {
-            // disadvantage
-            totalOutcomes = 20 * 20 * bonusDieSides;
-            for (let d1 = 1; d1 <= 20; d1++) {
-                for (let d2 = 1; d2 <= 20; d2++) {
-                    const d20 = Math.min(d1, d2);
-                    for (let bonus = 1; bonus <= bonusDieSides; bonus++) {
-                        if (d1 === 1 || d2 === 1) {
-                            missCount++;
-                        } else if (d20 >= critMin) {
-                            critCount++;
-                        } else if (d20 + bonus >= targetRoll) {
-                            hitCount++;
-                        } else {
-                            missCount++;
-                        }
-                    }
-                }
-            }
-        }
-
-        return {
-            hit: (hitCount + critCount) / totalOutcomes,
-            crit: critCount / totalOutcomes,
-            miss: missCount / totalOutcomes
-        };
-    }
-
-    calculateDamageRange(damageDice, damageBonus, isCrit) {
-        let min = 0, max = 0;
-        damageDice.forEach(die => {
-            const multiplier = isCrit ? die.count * 2 : die.count;
-            min += multiplier * 1;
-            max += multiplier * die.sides;
-        });
-        return {
-            min: min + damageBonus,
-            max: max + damageBonus,
-            avg: (min + max) / 2 + damageBonus
-        };
-    }
-
-    calculateAverageDamage(damageDice, damageBonus, isCrit) {
-        let avgDice = 0;
-        damageDice.forEach(die => {
-            const avgPerDie = (1 + die.sides) / 2;
-            const multiplier = isCrit ? die.count * 2 : die.count;
-            avgDice += multiplier * avgPerDie;
-        });
-        return avgDice + damageBonus;
     }
 
     // Comparar perfiles seleccionados
@@ -1787,393 +1618,53 @@ class DnDCalculator {
         document.getElementById('diceNotation').textContent = fullNotation;
     }
 
-    // ========== CÁLCULO DE PROBABILIDADES ==========
+    // ========== CÁLCULO (delegado a engine.js) ==========
+
+    // Configuración saneada para el motor. Siempre pasar por acá, nunca usar this.config directo.
+    engineConfig() {
+        return DnDEngine.normalizeConfig(this.config);
+    }
 
     calculateHitChance(ac) {
-        const targetRoll = ac - this.config.attackBonus;
-        const critMin = this.config.critRange;
-        const bonusDie = this.config.attackDiceBonus;
-
-        // If there's an attack dice bonus, use the special calculation
-        if (bonusDie && bonusDie > 0) {
-            return this.calculateProbabilityWithBonusDie(targetRoll, critMin, this.config.advantage, bonusDie);
-        }
-
-        // Standard calculation without bonus die
-        if (this.config.advantage === 'normal') {
-            return this.calculateNormalProbability(targetRoll, critMin);
-        } else if (this.config.advantage === 'advantage') {
-            return this.calculateAdvantageProbability(targetRoll, critMin);
-        } else {
-            return this.calculateDisadvantageProbability(targetRoll, critMin);
-        }
+        return DnDEngine.hitProbability(this.engineConfig(), ac);
     }
 
-    // Calculate probability with attack bonus die (Bless, Bardic Inspiration, etc.)
-    // This uses enumeration to get exact probabilities
-    calculateProbabilityWithBonusDie(targetRoll, critMin, advantage, bonusDieSides) {
-        let hitCount = 0, critCount = 0, missCount = 0;
-        let totalOutcomes;
-
-        if (advantage === 'normal') {
-            // d20 + bonus die
-            totalOutcomes = 20 * bonusDieSides;
-            for (let d20 = 1; d20 <= 20; d20++) {
-                for (let bonus = 1; bonus <= bonusDieSides; bonus++) {
-                    if (d20 === 1) {
-                        // Natural 1 always misses
-                        missCount++;
-                    } else if (d20 >= critMin) {
-                        // Critical hit (based on d20 only)
-                        critCount++;
-                    } else if (d20 + bonus >= targetRoll) {
-                        // Normal hit
-                        hitCount++;
-                    } else {
-                        missCount++;
-                    }
-                }
-            }
-        } else if (advantage === 'advantage') {
-            // max(d20_1, d20_2) + bonus die
-            totalOutcomes = 20 * 20 * bonusDieSides;
-            for (let d1 = 1; d1 <= 20; d1++) {
-                for (let d2 = 1; d2 <= 20; d2++) {
-                    const d20 = Math.max(d1, d2);
-                    for (let bonus = 1; bonus <= bonusDieSides; bonus++) {
-                        if (d1 === 1 && d2 === 1) {
-                            // Both natural 1s = miss
-                            missCount++;
-                        } else if (d20 >= critMin) {
-                            // Critical hit
-                            critCount++;
-                        } else if (d20 + bonus >= targetRoll) {
-                            // Normal hit
-                            hitCount++;
-                        } else {
-                            missCount++;
-                        }
-                    }
-                }
-            }
-        } else {
-            // min(d20_1, d20_2) + bonus die (disadvantage)
-            totalOutcomes = 20 * 20 * bonusDieSides;
-            for (let d1 = 1; d1 <= 20; d1++) {
-                for (let d2 = 1; d2 <= 20; d2++) {
-                    const d20 = Math.min(d1, d2);
-                    for (let bonus = 1; bonus <= bonusDieSides; bonus++) {
-                        if (d1 === 1 || d2 === 1) {
-                            // At least one natural 1 with disadvantage = miss
-                            // (we take the min, so if either is 1, result is 1)
-                            if (d20 === 1) {
-                                missCount++;
-                            } else if (d20 >= critMin) {
-                                critCount++;
-                            } else if (d20 + bonus >= targetRoll) {
-                                hitCount++;
-                            } else {
-                                missCount++;
-                            }
-                        } else if (d20 >= critMin) {
-                            critCount++;
-                        } else if (d20 + bonus >= targetRoll) {
-                            hitCount++;
-                        } else {
-                            missCount++;
-                        }
-                    }
-                }
-            }
-        }
-
-        return {
-            hit: (hitCount + critCount) / totalOutcomes,
-            crit: critCount / totalOutcomes,
-            miss: missCount / totalOutcomes
-        };
-    }
-
-    calculateNormalProbability(targetRoll, critMin) {
-        // Caso: crítico siempre impacta (incluso si necesitas 21+)
-        if (targetRoll >= 21) {
-            const critChance = (21 - critMin) / 20;
-            return {
-                hit: critChance,
-                crit: critChance,
-                miss: 1 - critChance
-            };
-        }
-
-        // Caso: siempre impactas (excepto con 1, que es fallo automático)
-        if (targetRoll <= 1) {
-            const critChance = (21 - critMin) / 20;
-            return {
-                hit: 0.95, // todo excepto el 1
-                crit: critChance,
-                miss: 0.05
-            };
-        }
-
-        // Caso normal
-        const hitRolls = 21 - targetRoll; // resultados que son hit
-        const critRolls = 21 - critMin;   // resultados que son crítico
-
-        return {
-            hit: hitRolls / 20,
-            crit: critRolls / 20,
-            miss: (targetRoll - 1) / 20
-        };
-    }
-
-    calculateAdvantageProbability(targetRoll, critMin) {
-        // Con ventaja: P(max >= x) = 1 - P(ambos < x) = 1 - ((x-1)/20)²
-
-        let pHit, pCrit;
-
-        if (targetRoll >= 21) {
-            // Solo crítico puede impactar
-            pCrit = 1 - ((critMin - 1) / 20) ** 2;
-            pHit = pCrit;
-        } else if (targetRoll <= 1) {
-            // Casi todo impacta (excepto doble 1)
-            pHit = 1 - (1 / 20) ** 2; // 1 - 0.0025 = 0.9975
-            pCrit = 1 - ((critMin - 1) / 20) ** 2;
-        } else {
-            pHit = 1 - ((targetRoll - 1) / 20) ** 2;
-            pCrit = 1 - ((critMin - 1) / 20) ** 2;
-        }
-
-        return {
-            hit: pHit,
-            crit: pCrit,
-            miss: 1 - pHit
-        };
-    }
-
-    calculateDisadvantageProbability(targetRoll, critMin) {
-        // Con desventaja: P(min >= x) = ((21-x)/20)²
-
-        let pHit, pCrit;
-
-        if (targetRoll >= 21) {
-            // Solo crítico puede impactar
-            pCrit = ((21 - critMin) / 20) ** 2;
-            pHit = pCrit;
-        } else if (targetRoll <= 1) {
-            // Siempre impactas excepto con doble 1
-            pHit = 1 - (1 / 20) ** 2;
-            pCrit = ((21 - critMin) / 20) ** 2;
-        } else {
-            pHit = ((21 - targetRoll) / 20) ** 2;
-            pCrit = ((21 - critMin) / 20) ** 2;
-        }
-
-        return {
-            hit: pHit,
-            crit: pCrit,
-            miss: 1 - pHit
-        };
-    }
-
-    // ========== CÁLCULO DE DAÑO ==========
-
-    // Promedio del Sneak Attack (Nd6). Se duplica en crítico como cualquier dado (RAW).
     getSneakAttackAverage(isCrit = false) {
-        const dice = this.config.sneakAttackDice || 0;
-        if (dice <= 0) return 0;
-        const multiplier = isCrit ? 2 : 1;
-        return dice * multiplier * 3.5; // promedio de un d6 = 3.5
+        return DnDEngine.sneakAttackAverage(this.engineConfig(), isCrit);
     }
 
-    // Rango (min-max) del Sneak Attack, duplicado en crítico
     getSneakAttackRange(isCrit = false) {
-        const dice = this.config.sneakAttackDice || 0;
-        if (dice <= 0) return { min: 0, max: 0 };
-        const multiplier = isCrit ? 2 : 1;
-        return { min: dice * multiplier * 1, max: dice * multiplier * 6 };
+        return DnDEngine.sneakAttackRange(this.engineConfig(), isCrit);
     }
 
     // includeSneak: true incluye el SA en el daño de UN impacto (útil para 1 ataque/turno).
-    // Para los totales por turno se usa false y el SA se suma aparte una sola vez.
     calculateAverageDamage(isCrit = false, includeSneak = true) {
-        let avgDice = 0;
-
-        this.config.damageDice.forEach(die => {
-            const avgPerDie = (1 + die.sides) / 2;
-            const multiplier = isCrit ? die.count * 2 : die.count;
-            avgDice += multiplier * avgPerDie;
-        });
-
-        // El bonificador NO se duplica en crítico
-        let total = avgDice + this.config.damageBonus;
-        if (includeSneak) total += this.getSneakAttackAverage(isCrit);
-        return total;
+        return DnDEngine.damageAverage(this.engineConfig(), isCrit, includeSneak);
     }
 
     calculateDamageRange(isCrit = false, includeSneak = true) {
-        let min = 0;
-        let max = 0;
-
-        this.config.damageDice.forEach(die => {
-            const multiplier = isCrit ? die.count * 2 : die.count;
-            min += multiplier * 1;
-            max += multiplier * die.sides;
-        });
-
-        min += this.config.damageBonus;
-        max += this.config.damageBonus;
-
-        if (includeSneak) {
-            const sa = this.getSneakAttackRange(isCrit);
-            min += sa.min;
-            max += sa.max;
-        }
-
-        return { min, max };
+        return DnDEngine.damageRange(this.engineConfig(), isCrit, includeSneak);
     }
 
+    // Daño esperado de UN ataque dadas sus probabilidades
     calculateExpectedDPR(hitChance, critChance, includeSneak = true) {
         const normalDmg = this.calculateAverageDamage(false, includeSneak);
         const critDmg = this.calculateAverageDamage(true, includeSneak);
-
-        // DPR = P(hit normal) × daño_normal + P(crit) × daño_crítico
-        const pNormalHit = hitChance - critChance;
-        const dpr = pNormalHit * normalDmg + critChance * critDmg;
-
-        return dpr;
+        return (hitChance - critChance) * normalDmg + critChance * critDmg;
     }
 
-    // Sneak Attack esperado POR TURNO: se aplica 1 sola vez (al mejor impacto disponible).
-    // Se duplica si hay al menos un crítico en el turno.
-    calculateExpectedSneakAttack(hitChance, critChance) {
-        const dice = this.config.sneakAttackDice || 0;
-        if (dice <= 0) return 0;
-
-        const n = this.config.numberOfAttacks;
-        const avgSA = dice * 3.5;
-
-        const pNoCrit = Math.pow(1 - critChance, n);
-        const pNoHit = Math.pow(1 - hitChance, n);
-        const pAtLeastCrit = 1 - pNoCrit;              // al menos un crítico
-        const pHitNoCrit = pNoCrit - pNoHit;           // al menos un impacto pero ningún crítico
-
-        // Si hay crítico, el SA se aplica ahí (dados duplicados); si no, en un impacto normal.
-        return pAtLeastCrit * (2 * avgSA) + pHitNoCrit * avgSA;
+    // Sneak Attack esperado POR TURNO (1 vez, duplicado si hubo crítico)
+    calculateExpectedSneakAttack(ac) {
+        return DnDEngine.sneakAttackPerTurn(this.engineConfig(), ac);
     }
 
-    // DPR TOTAL por turno = daño del arma × nº de ataques + Sneak Attack (1 vez por turno)
-    calculateTotalDPR(hitChance, critChance) {
-        const weaponDPRperAttack = this.calculateExpectedDPR(hitChance, critChance, false);
-        const weaponTotal = weaponDPRperAttack * this.config.numberOfAttacks;
-        const sneakTotal = this.calculateExpectedSneakAttack(hitChance, critChance);
-        return weaponTotal + sneakTotal;
+    // DPR TOTAL por turno = arma × nº de ataques + Sneak Attack
+    calculateTotalDPR(ac) {
+        return DnDEngine.dprPerTurn(this.engineConfig(), ac);
     }
-
-    // ========== MÚLTIPLES ATAQUES ==========
 
     calculateMultiAttackDistribution(ac) {
-        const n = this.config.numberOfAttacks;
-        const { hit: pHit, crit: pCrit } = this.calculateHitChance(ac);
-
-        const pMiss = 1 - pHit;
-        const pNormal = pHit - pCrit;
-
-        // Daño de ARMA por ataque (sin Sneak Attack: se suma aparte 1 vez por turno)
-        const normalDmg = this.calculateAverageDamage(false, false);
-        const critDmg = this.calculateAverageDamage(true, false);
-
-        // Rangos de daño del arma (sin Sneak Attack)
-        const normalRange = this.calculateDamageRange(false, false);
-        const critRange = this.calculateDamageRange(true, false);
-
-        const sneakDice = this.config.sneakAttackDice || 0;
-
-        const results = [];
-
-        // Para cada número total de hits
-        for (let totalHits = 0; totalHits <= n; totalHits++) {
-            const hitCombinations = [];
-
-            // Para cada combinación de críticos dentro de los hits
-            for (let crits = 0; crits <= totalHits; crits++) {
-                const normals = totalHits - crits;
-                const misses = n - totalHits;
-
-                // Probabilidad multinomial
-                const prob = this.multinomialCoeff(n, misses, normals, crits) *
-                            Math.pow(pMiss, misses) *
-                            Math.pow(pNormal, normals) *
-                            Math.pow(pCrit, crits);
-
-                // Sneak Attack: 1 sola vez por turno si hubo al menos un impacto.
-                // Se duplica si hay al menos un crítico (se aplica al crítico).
-                let saAvg = 0, saMin = 0, saMax = 0;
-                if (sneakDice > 0 && totalHits >= 1) {
-                    const saMult = crits >= 1 ? 2 : 1;
-                    saAvg = sneakDice * saMult * 3.5;
-                    saMin = sneakDice * saMult * 1;
-                    saMax = sneakDice * saMult * 6;
-                }
-
-                // Daño para esta combinación (promedio y rango)
-                const avgDamage = normals * normalDmg + crits * critDmg + saAvg;
-                const minDamage = normals * normalRange.min + crits * critRange.min + saMin;
-                const maxDamage = normals * normalRange.max + crits * critRange.max + saMax;
-
-                // Solo incluir si probabilidad > 0.1%
-                if (prob > 0.001) {
-                    hitCombinations.push({
-                        normals: normals,
-                        crits: crits,
-                        probability: prob,
-                        damage: avgDamage,
-                        damageMin: minDamage,
-                        damageMax: maxDamage
-                    });
-                }
-            }
-
-            // Calcular probabilidad total para este número de hits
-            const totalProbability = hitCombinations.reduce((sum, c) => sum + c.probability, 0);
-
-            results.push({
-                totalHits: totalHits,
-                combinations: hitCombinations,
-                totalProbability: totalProbability
-            });
-        }
-
-        return results;
-    }
-
-    multinomialCoeff(n, k1, k2, k3) {
-        return this.factorial(n) / (this.factorial(k1) * this.factorial(k2) * this.factorial(k3));
-    }
-
-    factorial(n) {
-        if (n === 0 || n === 1) return 1;
-        let result = 1;
-        for (let i = 2; i <= n; i++) {
-            result *= i;
-        }
-        return result;
-    }
-
-    binomial(n, k) {
-        if (k < 0 || k > n) return 0;
-        if (k === 0 || k === n) return 1;
-
-        // Optimización: usar la mitad más pequeña
-        k = Math.min(k, n - k);
-
-        let result = 1;
-        for (let i = 0; i < k; i++) {
-            result *= (n - i);
-            result /= (i + 1);
-        }
-
-        return result;
+        return DnDEngine.multiAttackDistribution(this.engineConfig(), ac);
     }
 
     // ========== GENERACIÓN DE UI ==========
@@ -2264,7 +1755,7 @@ class DnDCalculator {
         if (this.config.targetAC && combatStatsPanel) {
             const targetAC = this.config.targetAC;
             const { hit: targetHit, crit: targetCrit } = this.calculateHitChance(targetAC);
-            const targetDPR = this.calculateTotalDPR(targetHit, targetCrit);
+            const targetDPR = this.calculateTotalDPR(targetAC);
             this.renderCombatStats(targetAC, targetDPR, targetHit, targetCrit);
         } else if (combatStatsPanel) {
             combatStatsPanel.style.display = 'none';
@@ -2282,7 +1773,7 @@ class DnDCalculator {
         if (this.config.targetAC) {
             const targetAC = this.config.targetAC;
             const { hit: targetHit, crit: targetCrit } = this.calculateHitChance(targetAC);
-            const targetDPR = this.calculateTotalDPR(targetHit, targetCrit);
+            const targetDPR = this.calculateTotalDPR(targetAC);
             this.renderPowerLevel(targetAC, targetDPR, targetHit);
         } else {
             const powerLevelSection = document.getElementById('powerLevelSection');
@@ -2360,7 +1851,8 @@ class DnDCalculator {
             const details = document.createElement('div');
             details.className = 'dist-details';
 
-            combinations.forEach(({ normals, crits, probability, damage, damageMin, damageMax }) => {
+            // Ocultar combinaciones despreciables (<0.1%); el total del grupo ya está calculado sin filtrar
+            combinations.filter(c => c.probability >= 0.001).forEach(({ normals, crits, probability, damage, damageMin, damageMax }) => {
                 const combo = document.createElement('div');
                 combo.className = 'dist-combo';
 
@@ -2420,7 +1912,7 @@ class DnDCalculator {
 
         // Sneak Attack esperado por turno (1 vez, se duplica en crítico)
         const sneakDice = this.config.sneakAttackDice || 0;
-        const sneakPerRound = this.calculateExpectedSneakAttack(hitChance, critChance);
+        const sneakPerRound = this.calculateExpectedSneakAttack(ac);
 
         // Turnos para derrotar diferentes enemigos
         const enemies = [
