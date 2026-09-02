@@ -162,3 +162,45 @@ test('normalizeConfig aplica defaults y limpia valores inválidos', () => {
     assert.equal(cfg.numberOfAttacks, 1);
     assert.equal(cfg.damageDice[0].count, 1);
 });
+
+// ---------- Bugs B1 / B2: rangos críticos ampliados y tiradas extremas ----------
+
+test('B1: hitProbability con crit 18-20 / 19-20 coincide con el oráculo en TODO el rango (crit nunca supera a hit)', () => {
+    for (const advantage of MODES) {
+        for (const critRange of [20, 19, 18]) {
+            for (let ab = -5; ab <= 15; ab++) {
+                for (let ac = 1; ac <= 30; ac++) {
+                    const cfg = base({ attackBonus: ab, advantage, critRange });
+                    const got = engine.hitProbability(cfg, ac);
+                    const exp = oracleHit(cfg, ac);
+                    close(got.hit, exp.hit, `hit ${advantage} crit${critRange} AB${ab} CA${ac}`);
+                    close(got.crit, exp.crit, `crit ${advantage} crit${critRange} AB${ab} CA${ac}`);
+                    close(got.miss, exp.miss, `miss ${advantage} crit${critRange} AB${ab} CA${ac}`);
+                    assert.ok(got.hit - got.crit >= -EPS, `P(normal) negativa ${advantage} crit${critRange} AB${ab} CA${ac}`);
+                }
+            }
+        }
+    }
+});
+
+test('B2: con desventaja y CA muy baja se falla si CUALQUIER d20 es 1 (90.25%, no 99.75%)', () => {
+    const cfg = base({ attackBonus: 10, advantage: 'disadvantage' }); // vs CA 5 → necesita -5
+    const p = engine.hitProbability(cfg, 5);
+    close(p.hit, 361 / 400, 'hit desventaja auto');
+    close(p.miss, 39 / 400, 'miss desventaja auto');
+});
+
+test('B1: la distribución multiataque nunca produce probabilidades negativas', () => {
+    for (const advantage of MODES) {
+        for (const critRange of [19, 18]) {
+            const cfg = base({ attackBonus: 5, advantage, critRange, numberOfAttacks: 3 });
+            for (let ac = 20; ac <= 30; ac++) {
+                for (const g of engine.multiAttackDistribution(cfg, ac)) {
+                    for (const c of g.combinations) {
+                        assert.ok(c.probability >= -EPS, `negativa ${advantage} crit${critRange} CA${ac} ${c.normals}n/${c.crits}c: ${c.probability}`);
+                    }
+                }
+            }
+        }
+    }
+});

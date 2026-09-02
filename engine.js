@@ -56,39 +56,27 @@
 
     // ---------- Probabilidad de impacto ----------
 
-    function normalProbability(targetRoll, critMin) {
-        const critChance = (21 - critMin) / 20;
-
-        if (targetRoll >= 21) {
-            // Solo el crítico impacta
-            return { hit: critChance, crit: critChance, miss: 1 - critChance };
-        }
-        if (targetRoll <= 1) {
-            // Todo impacta salvo el 1 natural
-            return { hit: 0.95, crit: critChance, miss: 0.05 };
-        }
-        const hit = (21 - targetRoll) / 20;
-        return { hit, crit: critChance, miss: 1 - hit };
+    /**
+     * P(resultado efectivo del d20 >= x). Con ventaja/desventaja el "resultado
+     * efectivo" es el máximo/mínimo de dos d20.
+     */
+    function pAtLeast(x, advantage) {
+        const single = (21 - clamp(x, 1, 21)) / 20;
+        if (advantage === 'advantage') return 1 - (1 - single) ** 2;
+        if (advantage === 'disadvantage') return single ** 2;
+        return single;
     }
 
-    function advantageProbability(targetRoll, critMin) {
-        // P(max(d1,d2) >= x) = 1 - ((x-1)/20)²
-        const pCrit = 1 - ((critMin - 1) / 20) ** 2;
-        let pHit;
-        if (targetRoll >= 21) pHit = pCrit;
-        else if (targetRoll <= 1) pHit = 1 - (1 / 20) ** 2; // fallo solo con doble 1
-        else pHit = 1 - ((targetRoll - 1) / 20) ** 2;
-        return { hit: pHit, crit: pCrit, miss: 1 - pHit };
-    }
-
-    function disadvantageProbability(targetRoll, critMin) {
-        // P(min(d1,d2) >= x) = ((21-x)/20)²
-        const pCrit = ((21 - critMin) / 20) ** 2;
-        let pHit;
-        if (targetRoll >= 21) pHit = pCrit;
-        else if (targetRoll <= 1) pHit = 1 - (1 / 20) ** 2;
-        else pHit = ((21 - targetRoll) / 20) ** 2;
-        return { hit: pHit, crit: pCrit, miss: 1 - pHit };
+    /**
+     * Fórmula cerrada sin dado extra. Dos invariantes de 5e:
+     *  - El 1 natural siempre falla → como mínimo necesitás un 2.
+     *  - El crítico siempre impacta → hit nunca puede ser menor que crit
+     *    (importa cuando el rango crítico es 18-20/19-20 y necesitás 19 o 20 para pegar).
+     */
+    function closedFormProbability(targetRoll, critMin, advantage) {
+        const crit = pAtLeast(critMin, advantage);
+        const hit = Math.max(pAtLeast(Math.max(2, targetRoll), advantage), crit);
+        return { hit, crit, miss: 1 - hit };
     }
 
     /**
@@ -130,9 +118,7 @@
         if (cfg.attackDiceBonus > 0) {
             return bonusDieProbability(targetRoll, critMin, cfg.advantage, cfg.attackDiceBonus);
         }
-        if (cfg.advantage === 'advantage') return advantageProbability(targetRoll, critMin);
-        if (cfg.advantage === 'disadvantage') return disadvantageProbability(targetRoll, critMin);
-        return normalProbability(targetRoll, critMin);
+        return closedFormProbability(targetRoll, critMin, cfg.advantage);
     }
 
     // ---------- Daño ----------
