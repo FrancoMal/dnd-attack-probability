@@ -5,7 +5,7 @@
  * Para publicar una versión nueva: subí CACHE_VERSION. El SW nuevo se instala,
  * descarta las cachés viejas al activarse y toma el control de las pestañas abiertas.
  */
-const CACHE_VERSION = 'v5';
+const CACHE_VERSION = 'v6';
 const CACHE_NAME = `dnd-attack-${CACHE_VERSION}`;
 
 const APP_SHELL = [

@@ -45,6 +45,13 @@
     --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
     --font-num: "SF Mono", "Cascadia Mono", Consolas, "Roboto Mono", Menlo, monospace;
 
+    /* Curvas del comparador (se ciclan si hay más perfiles) */
+    --curve-0: #e0a03a;
+    --curve-1: #6aa8d8;
+    --curve-2: #7fbf62;
+    --curve-3: #c97fb8;
+    --curve-4: #d98a87;
+
     --radius: 10px;
     --radius-sm: 6px;
     --tap: 48px;                 /* objetivo táctil mínimo */
@@ -199,7 +206,9 @@ input:focus, select:focus { border-color: var(--line-strong); }
 .segmented label { position: relative; display: block; }
 .segmented input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
 .segmented span {
-    display: flex; align-items: center; justify-content: center; min-height: calc(var(--tap) - 6px);
+    /* -4px y no -6: descontando el borde y el padding del contenedor, cada opción
+       queda en 44px de alto, que es el mínimo táctil. */
+    display: flex; align-items: center; justify-content: center; min-height: calc(var(--tap) - 4px);
     border-radius: 4px; color: var(--ink-2); font-weight: 600; font-variant-numeric: tabular-nums; font-size: 0.95em;
     transition: background 0.15s, color 0.15s;
 }
@@ -299,10 +308,33 @@ details.panel > .panel-body { padding: 0 14px 14px; display: flex; flex-directio
 
 .defeat { margin-top: 12px; }
 .defeat h4 { font-size: 0.9em; color: var(--ink-2); margin-bottom: 6px; }
+/* PV del enemigo + probabilidad de matarlo este turno */
+.kill-check {
+    display: grid; grid-template-columns: 1fr auto; align-items: center;
+    gap: 4px 12px; margin-bottom: 10px; padding: 10px 12px;
+    background: var(--bg-elev-2); border-radius: var(--radius-sm);
+}
+.kill-check > label { font-size: 0.85em; color: var(--ink-2); }
+.kill-check .stepper { max-width: 160px; }
+.kill-result { grid-column: 1 / -1; display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+.kill-value {
+    font-family: var(--font-display); font-size: 1.9em; font-weight: 700; line-height: 1.1;
+    font-variant-numeric: tabular-nums; color: var(--crit);
+}
+.kill-caption { font-size: 0.85em; color: var(--ink-2); }
+
 .defeat-list { display: grid; grid-template-columns: 1fr; gap: 6px; }
-.defeat-item { display: flex; justify-content: space-between; gap: 8px; padding: 8px 10px; background: var(--bg-input); border-radius: var(--radius-sm); font-size: 0.9em; }
+/* En móvil el nombre del enemigo ocupa su propia línea: si comparte fila con los dos
+   números, se parte en dos y las cifras quedan colgadas de la primera mitad. */
+.defeat-item {
+    display: grid; grid-template-columns: 1fr auto; align-items: baseline;
+    gap: 4px 10px; padding: 8px 10px; background: var(--bg-input);
+    border-radius: var(--radius-sm); font-size: 0.9em;
+}
+.defeat-enemy { grid-column: 1 / -1; }
 .defeat-enemy { color: var(--ink-2); }
-.defeat-turns { font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.defeat-kill { font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--crit); }
+.defeat-turns { font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--ink-3); font-size: 0.9em; }
 .level-line { display: flex; align-items: center; gap: 10px; margin-top: 12px; font-size: 0.85em; flex-wrap: wrap; }
 .level-badge { padding: 4px 10px; border-radius: 999px; background: var(--bg-elev-2); border: 1px solid var(--line-strong); font-weight: 650; }
 
@@ -449,6 +481,32 @@ details.panel > .panel-body { padding: 0 14px 14px; display: flex; flex-directio
 }
 .comparison-table th { font-size: 0.8em; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-3); border-top: 0; }
 .best-badge { color: var(--crit); display: inline-flex; vertical-align: middle; margin-left: 4px; font-size: 0.95em; }
+/* Curva de DPR contra el rango de CA */
+.curve-block { margin-top: 16px; }
+.curve-block h4 { font-size: 0.9em; color: var(--ink-2); margin-bottom: 8px; }
+.curve-range { font-size: 0.85em; font-variant-numeric: tabular-nums; }
+.curve-chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+.curve-grid { stroke: var(--line); stroke-width: 1; }
+.curve-target { stroke: var(--ink-3); stroke-width: 1; stroke-dasharray: 3 3; }
+.curve-tick { fill: var(--ink-3); font-size: 9px; font-family: var(--font-body); }
+.curve-line { fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.curve-cross { fill: var(--bg-elev); stroke-width: 2; }
+.curve-c0 { stroke: var(--curve-0); }
+.curve-c1 { stroke: var(--curve-1); }
+.curve-c2 { stroke: var(--curve-2); }
+.curve-c3 { stroke: var(--curve-3); }
+.curve-c4 { stroke: var(--curve-4); }
+.curve-legend { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 8px; font-size: 0.85em; color: var(--ink-2); }
+.curve-key { display: inline-flex; align-items: center; gap: 6px; }
+.curve-swatch { display: inline-block; width: 14px; height: 3px; border-radius: 2px; }
+.curve-swatch.curve-c0 { background: var(--curve-0); }
+.curve-swatch.curve-c1 { background: var(--curve-1); }
+.curve-swatch.curve-c2 { background: var(--curve-2); }
+.curve-swatch.curve-c3 { background: var(--curve-3); }
+.curve-swatch.curve-c4 { background: var(--curve-4); }
+.curve-note { margin-top: 8px; font-size: 0.9em; color: var(--ink); }
+.curve-note:empty { display: none; }
+
 .adv-badge, .attacks-badge { display: inline-block; padding: 1px 6px; border-radius: 999px; font-size: 0.8em; background: var(--bg-input); margin-left: 4px; }
 .adv-badge.advantage { color: #9fcf8b; } .adv-badge.disadvantage { color: #d98a87; }
 
@@ -470,6 +528,11 @@ details.panel > .panel-body { padding: 0 14px 14px; display: flex; flex-directio
     .config { position: sticky; top: calc(var(--hero-h) + 16px); align-self: start; max-height: calc(100vh - var(--hero-h) - 32px); overflow-y: auto; padding-right: 4px; }
     .stats-grid { grid-template-columns: repeat(4, 1fr); }
     .defeat-list { grid-template-columns: repeat(2, 1fr); }
+    .defeat-item { grid-template-columns: 1fr auto auto; }
+    .defeat-enemy { grid-column: auto; }
+    .kill-check { grid-template-columns: auto minmax(0, 200px) 1fr; }
+    .kill-result { grid-column: auto; justify-content: flex-end; margin-top: 0; }
+    .curve-chart { max-width: 640px; }
     .results-table th, .results-table td { padding: 9px 10px; }
     .results-table tbody tr.row-far { display: table-row; }
     .col-miss, .col-dmg,
@@ -617,6 +680,27 @@ details.panel > .panel-body { padding: 0 14px 14px; display: flex; flex-directio
                 </div>
             </div>
 
+            <label class="toggle" for="greatWeaponFighting">
+                <input type="checkbox" id="greatWeaponFighting">
+                <span class="toggle-track" aria-hidden="true"></span>
+                <span class="toggle-text">
+                    <span data-i18n="gwf">Estilo de Combate: Arma Grande</span>
+                    <small data-i18n="gwfHint">Relanza los 1 y 2 de los dados del arma. Sube el promedio (un d8 pasa de 4.5 a 5.25), no el mínimo.</small>
+                </span>
+            </label>
+
+            <div class="field">
+                <span class="field-label">
+                    <span data-i18n="damageMultiplierLabel">Daño contra el objetivo</span>
+                    <button type="button" class="tooltip" data-i18n-aria="ariaHelp" aria-label="Ayuda">?<span class="tooltip-text" data-i18n="damageMultiplierTooltip">Resistencia divide el daño a la mitad (redondeando hacia abajo) y vulnerabilidad lo duplica. No cambia la probabilidad de impactar.</span></button>
+                </span>
+                <div class="segmented segmented-3" role="radiogroup" data-i18n-aria="damageMultiplierLabel" aria-label="Daño contra el objetivo">
+                    <label><input type="radio" name="damageMultiplier" value="0.5"><span data-i18n="damageTargetResistant">Resistente</span></label>
+                    <label><input type="radio" name="damageMultiplier" value="1" checked><span data-i18n="damageTargetNormal">Normal</span></label>
+                    <label><input type="radio" name="damageMultiplier" value="2"><span data-i18n="damageTargetVulnerable">Vulnerable</span></label>
+                </div>
+            </div>
+
             <div class="field">
                 <span class="field-label" data-i18n="numberOfAttacks">Número de Ataques</span>
                 <div class="segmented" role="radiogroup" id="attacksGroup" aria-label="Número de ataques">
@@ -756,7 +840,19 @@ details.panel > .panel-body { padding: 0 14px 14px; display: flex; flex-directio
                     </div>
                 </div>
                 <div class="defeat">
-                    <h4 data-i18n="defeatTimesTitle">Turnos para Derrotar</h4>
+                    <h4 data-i18n="killTitle">¿Lo mato este turno?</h4>
+                    <div class="kill-check">
+                        <label for="enemyHP" data-i18n="enemyHPLabel">PV del enemigo</label>
+                        <div class="stepper">
+                            <button type="button" class="step" data-step="enemyHP" data-delta="-1">−</button>
+                            <input type="number" id="enemyHP" value="10" min="1" max="999" inputmode="numeric">
+                            <button type="button" class="step" data-step="enemyHP" data-delta="1">+</button>
+                        </div>
+                        <p class="kill-result">
+                            <span class="kill-value" id="killChanceValue">—</span>
+                            <span class="kill-caption" id="killChanceCaption" data-i18n="killChanceCaption">de matarlo este turno</span>
+                        </p>
+                    </div>
                     <div class="defeat-list" id="defeatTimesList"></div>
                 </div>
                 <div class="level-line">
@@ -866,6 +962,12 @@ details.panel > .panel-body { padding: 0 14px 14px; display: flex; flex-directio
                         <tbody id="comparisonTableBody"></tbody>
                     </table>
                 </div>
+                <div class="curve-block">
+                    <h4><span data-i18n="curveTitle">DPR contra el rango de CA</span> <span class="muted curve-range" id="curveRange"></span></h4>
+                    <div class="curve-chart" id="dprCurve"></div>
+                    <div class="curve-legend" id="curveLegend"></div>
+                    <p class="curve-note" id="curveCrossings"></p>
+                </div>
             </section>
         </main>
     </div>
@@ -893,6 +995,9 @@ details.panel > .panel-body { padding: 0 14px 14px; display: flex; flex-directio
     'use strict';
 
     const ADVANTAGE_MODES = ['normal', 'advantage', 'disadvantage'];
+
+    // Resistencia / normal / vulnerabilidad del objetivo al tipo de daño.
+    const DAMAGE_MULTIPLIERS = [0.5, 1, 2];
 
     // ---------- Configuración ----------
 
@@ -928,7 +1033,9 @@ details.panel > .panel-body { padding: 0 14px 14px; display: flex; flex-directio
             critRange: clamp(toInt(cfg.critRange, 20), 2, 20),
             numberOfAttacks: clamp(toInt(cfg.numberOfAttacks, 1), 1, 20),
             targetAC: cfg.targetAC == null || cfg.targetAC === '' ? null : clamp(toInt(cfg.targetAC, 15), 1, 40),
-            powerAttack: !!cfg.powerAttack
+            powerAttack: !!cfg.powerAttack,
+            damageMultiplier: DAMAGE_MULTIPLIERS.includes(Number(cfg.damageMultiplier)) ? Number(cfg.damageMultiplier) : 1,
+            greatWeaponFighting: !!cfg.greatWeaponFighting
         };
     }
 
@@ -1003,13 +1110,60 @@ details.panel > .panel-body { padding: 0 14px 14px; display: flex; flex-directio
 
     const SNEAK_DIE_AVG = 3.5;
 
-    function sneakAttackAverage(cfg, isCrit) {
+    /**
+     * Promedio de una cara de dado de daño.
+     *
+     * Con el Estilo de Combate de Arma Grande (GWF) se relanzan los 1 y los 2 y hay que
+     * quedarse con el segundo resultado, así que esas dos caras pasan a valer el promedio
+     * del dado entero: un d8 sube de 4.5 a 5.25. El mínimo NO cambia (el relanzamiento
+     * puede volver a salir 1), solo el promedio.
+     */
+    function dieAverage(sides, gwf) {
+        const plain = (1 + sides) / 2;
+        if (!gwf) return plain;
+        const rerolled = Math.min(2, sides);
+        let total = rerolled * plain;
+        for (let face = rerolled + 1; face <= sides; face++) total += face;
+        return total / sides;
+    }
+
+    /*
+     * Resistencia (x0.5) y vulnerabilidad (x2).
+     *
+     * 5e redondea hacia abajo al reducir a la mitad, pero redondear solo tiene sentido
+     * sobre una tirada concreta: mínimos, máximos y la distribución exacta usan
+     * applyMultiplierRoll; los promedios se multiplican sin redondear (applyMultiplier),
+     * porque el promedio de floor(X/2) no es floor(promedio/2).
+     */
+    function applyMultiplier(value, cfg) {
+        return value * cfg.damageMultiplier;
+    }
+
+    function applyMultiplierRoll(value, cfg) {
+        return cfg.damageMultiplier === 0.5 ? Math.floor(value / 2) : value * cfg.damageMultiplier;
+    }
+
+    // Daño de arma sin multiplicador: bono fijo + dados (duplicados en crítico).
+    function weaponAverageRaw(cfg, isCrit) {
+        let total = cfg.damageBonus;
+        for (const die of cfg.damageDice) {
+            total += die.count * (isCrit ? 2 : 1) * dieAverage(die.sides, cfg.greatWeaponFighting);
+        }
+        return total;
+    }
+
+    // El GWF pide relanzar "un dado de daño del arma", así que no toca al Sneak Attack.
+    function sneakAverageRaw(cfg, isCrit) {
         return cfg.sneakAttackDice * (isCrit ? 2 : 1) * SNEAK_DIE_AVG;
+    }
+
+    function sneakAttackAverage(cfg, isCrit) {
+        return applyMultiplier(sneakAverageRaw(cfg, isCrit), cfg);
     }
 
     function sneakAttackRange(cfg, isCrit) {
         const dice = cfg.sneakAttackDice * (isCrit ? 2 : 1);
-        return { min: dice, max: dice * 6 };
+        return { min: applyMultiplierRoll(dice, cfg), max: applyMultiplierRoll(dice * 6, cfg) };
     }
 
     /**
@@ -1017,12 +1171,9 @@ details.panel > .panel-body { padding: 0 14px 14px; display: flex; flex-directio
      * includeSneak: sumar el Sneak Attack a este impacto (útil solo para 1 ataque/turno).
      */
     function damageAverage(cfg, isCrit, includeSneak) {
-        let total = cfg.damageBonus;
-        for (const die of cfg.damageDice) {
-            total += die.count * (isCrit ? 2 : 1) * (1 + die.sides) / 2;
-        }
-        if (includeSneak) total += sneakAttackAverage(cfg, isCrit);
-        return total;
+        let raw = weaponAverageRaw(cfg, isCrit);
+        if (includeSneak) raw += sneakAverageRaw(cfg, isCrit);
+        return applyMultiplier(raw, cfg);
     }
 
     function damageRange(cfg, isCrit, includeSneak) {
@@ -1033,11 +1184,11 @@ details.panel > .panel-body { padding: 0 14px 14px; display: flex; flex-directio
             max += n * die.sides;
         }
         if (includeSneak) {
-            const sa = sneakAttackRange(cfg, isCrit);
-            min += sa.min;
-            max += sa.max;
+            const dice = cfg.sneakAttackDice * (isCrit ? 2 : 1);
+            min += dice;
+            max += dice * 6;
         }
-        return { min, max };
+        return { min: applyMultiplierRoll(min, cfg), max: applyMultiplierRoll(max, cfg) };
     }
 
     // ---------- DPR ----------
@@ -1239,8 +1390,198 @@ details.panel > .panel-body { padding: 0 14px 14px; display: flex; flex-directio
         return groups;
     }
 
+    // ---------- Curva de DPR contra un rango de CA ----------
+
+    // Rango útil en mesa: por debajo de 10 casi no hay enemigos, por encima de 25 tampoco.
+    const DPR_CURVE_AC_MIN = 10;
+    const DPR_CURVE_AC_MAX = 25;
+
+    /** Daño esperado por turno para cada CA del rango. */
+    function dprCurve(cfg, acMin = DPR_CURVE_AC_MIN, acMax = DPR_CURVE_AC_MAX) {
+        const points = [];
+        for (let ac = acMin; ac <= acMax; ac++) {
+            points.push({ ac, dpr: dprPerTurn(cfg, ac) });
+        }
+        return points;
+    }
+
+    /**
+     * Dónde se cruzan varias curvas: devuelve, en orden de CA, cada punto en el que
+     * cambia quién va ganando. `from` y `to` son índices dentro de `curves`.
+     * En un empate exacto gana el índice más chico y no se reporta cruce.
+     */
+    function curveLeadChanges(curves) {
+        if (!curves.length || !curves[0].length) return [];
+
+        const changes = [];
+        let previous = null;
+        for (let i = 0; i < curves[0].length; i++) {
+            let leader = 0;
+            for (let c = 1; c < curves.length; c++) {
+                if (curves[c][i].dpr > curves[leader][i].dpr + 1e-9) leader = c;
+            }
+            if (previous !== null && leader !== previous) {
+                changes.push({ ac: curves[0][i].ac, from: previous, to: leader });
+            }
+            previous = leader;
+        }
+        return changes;
+    }
+
+    // ---------- Distribución exacta de daño y probabilidad de matar ----------
+
+    /*
+     * Todo lo de acá abajo trabaja con distribuciones de probabilidad representadas como
+     * arrays: dist[d] es P(daño = d). Es la única parte del motor que no se resuelve con
+     * promedios, y es lo que permite responder "¿lo mato este turno?" en vez de "¿cuánto
+     * daño hago en promedio?", que es la pregunta que se hace de verdad en la mesa.
+     */
+
+    // Techo de seguridad: por encima de esto la convolución no vale la pena y se devuelve null.
+    const DIST_MAX_DAMAGE = 4000;
+
+    /** Distribución de UN dado. Con GWF, las caras 1 y 2 se reparten sobre todas las caras. */
+    function dieDistribution(sides, gwf) {
+        const dist = new Array(sides + 1).fill(0);
+        const p = 1 / sides;
+        for (let face = 1; face <= sides; face++) {
+            if (gwf && face <= 2) {
+                for (let again = 1; again <= sides; again++) dist[again] += p * p;
+            } else {
+                dist[face] += p;
+            }
+        }
+        return dist;
+    }
+
+    /** Distribución de la suma de dos variables independientes. */
+    function convolve(a, b) {
+        const out = new Array(a.length + b.length - 1).fill(0);
+        for (let i = 0; i < a.length; i++) {
+            const pa = a[i];
+            if (pa === 0) continue;
+            for (let j = 0; j < b.length; j++) out[i + j] += pa * b[j];
+        }
+        return out;
+    }
+
+    /** Suma un valor fijo. Un daño negativo no cura: se recorta en 0. */
+    function shiftDistribution(dist, offset) {
+        if (offset === 0) return dist.slice();
+        const out = new Array(Math.max(1, dist.length + offset)).fill(0);
+        for (let i = 0; i < dist.length; i++) {
+            out[clamp(i + offset, 0, out.length - 1)] += dist[i];
+        }
+        return out;
+    }
+
+    /** Aplica resistencia o vulnerabilidad a una tirada concreta (con su redondeo). */
+    function scaleDistribution(dist, cfg) {
+        if (cfg.damageMultiplier === 1) return dist;
+        const out = new Array(applyMultiplierRoll(dist.length - 1, cfg) + 1).fill(0);
+        for (let i = 0; i < dist.length; i++) out[applyMultiplierRoll(i, cfg)] += dist[i];
+        return out;
+    }
+
+    function diceDistribution(dice, isCrit, gwf) {
+        let dist = [1];
+        for (const die of dice) {
+            const one = dieDistribution(die.sides, gwf);
+            const n = die.count * (isCrit ? 2 : 1);
+            for (let k = 0; k < n; k++) dist = convolve(dist, one);
+        }
+        return dist;
+    }
+
+    /** Daño de UN ataque de arma (dados + bono), ya con resistencia/vulnerabilidad. */
+    function attackDamageDistribution(cfg, isCrit) {
+        const dice = diceDistribution(cfg.damageDice, isCrit, cfg.greatWeaponFighting);
+        return scaleDistribution(shiftDistribution(dice, cfg.damageBonus), cfg);
+    }
+
+    function sneakDamageDistribution(cfg, isCrit) {
+        if (cfg.sneakAttackDice <= 0) return [1];
+        const dice = diceDistribution([{ count: cfg.sneakAttackDice, sides: 6 }], isCrit, false);
+        return scaleDistribution(dice, cfg);
+    }
+
+    /**
+     * Distribución exacta del daño TOTAL de un turno contra una CA.
+     *
+     * Se recorre ataque por ataque arrastrando tres estados, porque el Sneak Attack
+     * depende del turno entero y no de cada ataque por separado:
+     *   0 = todavía no impactó nada        -> sin Sneak Attack
+     *   1 = hubo impacto, ninguno crítico  -> Sneak Attack normal
+     *   2 = hubo al menos un crítico       -> Sneak Attack duplicado
+     * Por eso el Sneak se suma al final y no dentro del bucle: un crítico en el último
+     * ataque duplica el Sneak aunque el primer impacto haya sido normal.
+     *
+     * Devuelve null si la build es tan grande que el cálculo exacto no vale la pena.
+     */
+    function turnDamageDistribution(cfg, ac) {
+        const maxDamage = damageRange(cfg, true, true).max * cfg.numberOfAttacks;
+        if (!Number.isFinite(maxDamage) || maxDamage > DIST_MAX_DAMAGE) return null;
+
+        const { hit, crit } = hitProbability(cfg, ac);
+        const pCrit = crit;
+        const pNormal = hit - crit;
+        const pMiss = 1 - hit;
+
+        const normalDist = attackDamageDistribution(cfg, false);
+        const critDist = attackDamageDistribution(cfg, true);
+
+        const addInto = (acc, dist, weight) => {
+            if (weight === 0 || dist.length === 0) return;
+            for (let i = 0; i < dist.length; i++) acc[i] = (acc[i] || 0) + dist[i] * weight;
+        };
+
+        let states = [[1], [], []];
+        for (let attack = 0; attack < cfg.numberOfAttacks; attack++) {
+            const next = [[], [], []];
+            for (let s = 0; s < states.length; s++) {
+                const current = states[s];
+                if (current.length === 0) continue;
+                addInto(next[s], current, pMiss);
+                addInto(next[Math.max(s, 1)], convolve(current, normalDist), pNormal);
+                addInto(next[2], convolve(current, critDist), pCrit);
+            }
+            states = next;
+        }
+
+        const total = [];
+        addInto(total, states[0], 1);
+        if (states[1].length) addInto(total, convolve(states[1], sneakDamageDistribution(cfg, false)), 1);
+        if (states[2].length) addInto(total, convolve(states[2], sneakDamageDistribution(cfg, true)), 1);
+        return total;
+    }
+
+    /**
+     * P(el daño del turno alcance para bajar a un enemigo con hp puntos de vida).
+     * Es la pregunta accionable en mesa: el DPR dice cuánto pegás en promedio, esto dice
+     * si conviene rematar a ese enemigo o cambiar de objetivo. Devuelve null si no se pudo
+     * calcular (build demasiado grande). Acepta una distribución ya calculada para no
+     * repetir el trabajo cuando se preguntan varios enemigos contra la misma CA.
+     */
+    function killProbability(cfg, ac, hp, distribution) {
+        if (hp <= 0) return 1;
+        const dist = distribution || turnDamageDistribution(cfg, ac);
+        if (!dist) return null;
+
+        let p = 0;
+        for (let d = Math.max(0, Math.ceil(hp)); d < dist.length; d++) p += dist[d];
+        return p;
+    }
+
+    /** Valor esperado de una distribución. Los tests lo usan para contrastar con el DPR. */
+    function distributionAverage(dist) {
+        let total = 0;
+        for (let d = 0; d < dist.length; d++) total += d * dist[d];
+        return total;
+    }
+
     return {
         ADVANTAGE_MODES,
+        DAMAGE_MULTIPLIERS,
         normalizeConfig,
         hitProbability,
         damageAverage,
@@ -1256,7 +1597,17 @@ details.panel > .panel-body { padding: 0 14px 14px; display: flex; flex-directio
         withPowerAttack,
         powerAttackComparison,
         powerAttackCutoff,
-        multiAttackDistribution
+        multiAttackDistribution,
+        dieAverage,
+        DPR_CURVE_AC_MIN,
+        DPR_CURVE_AC_MAX,
+        dprCurve,
+        curveLeadChanges,
+        dieDistribution,
+        attackDamageDistribution,
+        turnDamageDistribution,
+        killProbability,
+        distributionAverage
     };
 }));
 
@@ -1437,6 +1788,25 @@ let currentLanguage = 'es';
 // Translation object with all supported languages
 const translations = {
     es: {
+        curveLeaderStart: "Hasta CA {{ac}} gana {{name}}.",
+        // Resistencia, GWF, probabilidad de matar y curva de DPR
+        gwf: "Estilo de Combate: Arma Grande",
+        gwfHint: "Relanza los 1 y 2 de los dados del arma. Sube el promedio (un d8 pasa de 4.5 a 5.25), no el mínimo.",
+        damageMultiplierLabel: "Daño contra el objetivo",
+        damageMultiplierTooltip: "Resistencia divide el daño a la mitad (redondeando hacia abajo) y vulnerabilidad lo duplica. No cambia la probabilidad de impactar.",
+        damageTargetResistant: "Resistente",
+        damageTargetNormal: "Normal",
+        damageTargetVulnerable: "Vulnerable",
+        killTitle: "¿Lo mato este turno?",
+        enemyHPLabel: "PV del enemigo",
+        killChanceCaption: "de matarlo este turno",
+        killChanceUnavailable: "La build es demasiado grande para calcular la distribución exacta",
+        killListChance: "lo mato",
+        curveTitle: "DPR contra el rango de CA",
+        curveNoCrossing: "{{name}} gana en todo el rango.",
+        curveCrossing: "Desde CA {{ac}} pasa a ganar {{to}}.",
+        curveNeedsTwo: "Elegí dos o más perfiles para ver dónde se cruzan.",
+        curveAria: "Curva de daño por turno de cada perfil contra CA {{min}} a {{max}}.",
         turnsLabelSingular: "turno",
         ariaHelp: "Ayuda",
         // Etiquetas accesibles (botones que sólo muestran un ícono)
@@ -1680,6 +2050,25 @@ const translations = {
     },
 
     en: {
+        curveLeaderStart: "Up to AC {{ac}}, {{name}} wins.",
+        // Resistencia, GWF, probabilidad de matar y curva de DPR
+        gwf: "Great Weapon Fighting",
+        gwfHint: "Rerolls 1s and 2s on the weapon damage dice. Raises the average (a d8 goes from 4.5 to 5.25), not the minimum.",
+        damageMultiplierLabel: "Damage against the target",
+        damageMultiplierTooltip: "Resistance halves the damage (rounding down) and vulnerability doubles it. It does not change the chance to hit.",
+        damageTargetResistant: "Resistant",
+        damageTargetNormal: "Normal",
+        damageTargetVulnerable: "Vulnerable",
+        killTitle: "Can I kill it this turn?",
+        enemyHPLabel: "Enemy HP",
+        killChanceCaption: "to kill it this turn",
+        killChanceUnavailable: "The build is too large to compute the exact distribution",
+        killListChance: "kill it",
+        curveTitle: "DPR across the AC range",
+        curveNoCrossing: "{{name}} wins across the whole range.",
+        curveCrossing: "From AC {{ac}} on, {{to}} takes the lead.",
+        curveNeedsTwo: "Pick two or more profiles to see where they cross.",
+        curveAria: "Damage per turn curve for each profile against AC {{min}} to {{max}}.",
         turnsLabelSingular: "turn",
         ariaHelp: "Help",
         // Etiquetas accesibles (botones que sólo muestran un ícono)
@@ -1923,6 +2312,25 @@ const translations = {
     },
 
     pt: {
+        curveLeaderStart: "Até CA {{ac}} ganha {{name}}.",
+        // Resistencia, GWF, probabilidad de matar y curva de DPR
+        gwf: "Estilo de Combate: Arma Grande",
+        gwfHint: "Relança os 1 e 2 dos dados da arma. Aumenta a média (um d8 passa de 4.5 a 5.25), não o mínimo.",
+        damageMultiplierLabel: "Dano contra o alvo",
+        damageMultiplierTooltip: "Resistência divide o dano pela metade (arredondando para baixo) e vulnerabilidade o dobra. Não muda a chance de acertar.",
+        damageTargetResistant: "Resistente",
+        damageTargetNormal: "Normal",
+        damageTargetVulnerable: "Vulnerável",
+        killTitle: "Mato ele neste turno?",
+        enemyHPLabel: "PV do inimigo",
+        killChanceCaption: "de matá-lo neste turno",
+        killChanceUnavailable: "A build é grande demais para calcular a distribuição exata",
+        killListChance: "mato ele",
+        curveTitle: "DPR ao longo do intervalo de CA",
+        curveNoCrossing: "{{name}} ganha em todo o intervalo.",
+        curveCrossing: "A partir de CA {{ac}}, {{to}} passa a ganhar.",
+        curveNeedsTwo: "Escolha dois ou mais perfis para ver onde se cruzam.",
+        curveAria: "Curva de dano por turno de cada perfil contra CA {{min}} a {{max}}.",
         turnsLabelSingular: "turno",
         ariaHelp: "Ajuda",
         // Etiquetas accesibles (botones que sólo muestran un ícono)
@@ -2166,6 +2574,25 @@ const translations = {
     },
 
     de: {
+        curveLeaderStart: "Bis RK {{ac}} gewinnt {{name}}.",
+        // Resistencia, GWF, probabilidad de matar y curva de DPR
+        gwf: "Kampfstil: Großer Waffenkampf",
+        gwfHint: "Wirft 1en und 2en der Waffenschadenswürfel neu. Hebt den Durchschnitt (ein W8 steigt von 4.5 auf 5.25), nicht das Minimum.",
+        damageMultiplierLabel: "Schaden gegen das Ziel",
+        damageMultiplierTooltip: "Resistenz halbiert den Schaden (abgerundet), Verwundbarkeit verdoppelt ihn. Die Trefferchance ändert sich nicht.",
+        damageTargetResistant: "Resistent",
+        damageTargetNormal: "Normal",
+        damageTargetVulnerable: "Verwundbar",
+        killTitle: "Töte ich es diese Runde?",
+        enemyHPLabel: "TP des Gegners",
+        killChanceCaption: "es diese Runde zu töten",
+        killChanceUnavailable: "Der Build ist zu groß für die exakte Verteilung",
+        killListChance: "töte ich",
+        curveTitle: "DPR über die RK-Spanne",
+        curveNoCrossing: "{{name}} gewinnt über die ganze Spanne.",
+        curveCrossing: "Ab RK {{ac}} übernimmt {{to}} die Führung.",
+        curveNeedsTwo: "Wähle zwei oder mehr Profile, um den Schnittpunkt zu sehen.",
+        curveAria: "Schaden-pro-Runde-Kurve jedes Profils gegen RK {{min}} bis {{max}}.",
         turnsLabelSingular: "Runde",
         ariaHelp: "Hilfe",
         // Etiquetas accesibles (botones que sólo muestran un ícono)
@@ -2615,6 +3042,25 @@ class ProfileManager {
         return this.profiles.find(p => p.id === this.editingProfileId);
     }
 
+    // Foto de la configuración actual para guardar en un perfil.
+    snapshotConfig() {
+        const cfg = this.calculator.config;
+        return {
+            attackBonus: cfg.attackBonus,
+            damageBonus: cfg.damageBonus,
+            damageDice: cfg.damageDice.map(d => ({ ...d })),
+            attackDiceBonus: cfg.attackDiceBonus,
+            sneakAttackDice: cfg.sneakAttackDice,
+            advantage: cfg.advantage,
+            critRange: cfg.critRange,
+            numberOfAttacks: cfg.numberOfAttacks,
+            targetAC: cfg.targetAC,
+            powerAttack: !!cfg.powerAttack,
+            damageMultiplier: cfg.damageMultiplier,
+            greatWeaponFighting: !!cfg.greatWeaponFighting
+        };
+    }
+
     saveProfile(name) {
         if (!name || !name.trim()) {
             return { success: false, messageKey: 'profileNameRequired' };
@@ -2628,18 +3074,7 @@ class ProfileManager {
                     ...this.profiles[index],
                     name: name.trim(),
                     updatedAt: Date.now(),
-                    config: {
-                        attackBonus: this.calculator.config.attackBonus,
-                        damageBonus: this.calculator.config.damageBonus,
-                        damageDice: this.calculator.config.damageDice.map(d => ({ ...d })),
-                        attackDiceBonus: this.calculator.config.attackDiceBonus,
-                        sneakAttackDice: this.calculator.config.sneakAttackDice,
-                        advantage: this.calculator.config.advantage,
-                        critRange: this.calculator.config.critRange,
-                        numberOfAttacks: this.calculator.config.numberOfAttacks,
-                        targetAC: this.calculator.config.targetAC,
-                        powerAttack: !!this.calculator.config.powerAttack
-                    }
+                    config: this.snapshotConfig()
                 };
                 const updatedProfile = this.profiles[index];
                 this.editingProfileId = null;
@@ -2655,18 +3090,7 @@ class ProfileManager {
             id: this.generateId(),
             name: name.trim(),
             createdAt: Date.now(),
-            config: {
-                attackBonus: this.calculator.config.attackBonus,
-                damageBonus: this.calculator.config.damageBonus,
-                damageDice: this.calculator.config.damageDice.map(d => ({ ...d })),
-                attackDiceBonus: this.calculator.config.attackDiceBonus,
-                sneakAttackDice: this.calculator.config.sneakAttackDice,
-                advantage: this.calculator.config.advantage,
-                critRange: this.calculator.config.critRange,
-                numberOfAttacks: this.calculator.config.numberOfAttacks,
-                targetAC: this.calculator.config.targetAC,
-                        powerAttack: !!this.calculator.config.powerAttack
-            }
+            config: this.snapshotConfig()
         };
 
         this.profiles.unshift(profile); // Más reciente primero
@@ -2693,6 +3117,8 @@ class ProfileManager {
         this.calculator.config.attackDiceBonus = cfg.attackDiceBonus || 0;
         this.calculator.config.sneakAttackDice = cfg.sneakAttackDice || 0;
         this.calculator.config.powerAttack = !!cfg.powerAttack;
+        this.calculator.config.damageMultiplier = DnDEngine.normalizeConfig(cfg).damageMultiplier;
+        this.calculator.config.greatWeaponFighting = !!cfg.greatWeaponFighting;
 
         // Actualizar UI inputs
         this.updateUIFromConfig();
@@ -2742,6 +3168,13 @@ class ProfileManager {
         });
         const powerAttackInput = document.getElementById('powerAttack');
         if (powerAttackInput) powerAttackInput.checked = !!cfg.powerAttack;
+
+        const gwfInput = document.getElementById('greatWeaponFighting');
+        if (gwfInput) gwfInput.checked = !!cfg.greatWeaponFighting;
+
+        document.querySelectorAll('input[name="damageMultiplier"]').forEach(radio => {
+            radio.checked = parseFloat(radio.value) === (cfg.damageMultiplier || 1);
+        });
 
         if (cfg.targetAC) {
             document.getElementById('targetAC').value = cfg.targetAC;
@@ -2818,6 +3251,13 @@ class ProfileManager {
         if (config.numberOfAttacks > 1) {
             parts.push(t('profileAttacks', { n: config.numberOfAttacks }));
         }
+
+        if (config.greatWeaponFighting) {
+            parts.push('↻1,2');
+        }
+
+        if (config.damageMultiplier === 0.5) parts.push('÷2');
+        if (config.damageMultiplier === 2) parts.push('×2');
 
         if (config.targetAC) {
             parts.push(`CA: ${config.targetAC}`);
@@ -3119,8 +3559,104 @@ class ProfileComparator {
             `;
         }).join('');
 
+        this.renderDprCurve(results);
+
         // Scroll a los resultados
         panel.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    /**
+     * Curva de DPR de cada perfil contra el rango de CA, con los puntos donde una build
+     * pasa a la otra. Una sola CA no alcanza para decidir: la comparación cambia según
+     * contra quién estés peleando, y el cruce es justo el dato que falta.
+     *
+     * El SVG se arma a mano: sin librerías, sin red y sin romper el modo offline.
+     */
+    renderDprCurve(results) {
+        const chart = document.getElementById('dprCurve');
+        const legendEl = document.getElementById('curveLegend');
+        const noteEl = document.getElementById('curveCrossings');
+        const rangeEl = document.getElementById('curveRange');
+        if (!chart) return;
+
+        const acMin = DnDEngine.DPR_CURVE_AC_MIN;
+        const acMax = DnDEngine.DPR_CURVE_AC_MAX;
+        const curves = results.map(r => DnDEngine.dprCurve(DnDEngine.normalizeConfig(r.config), acMin, acMax));
+
+        if (rangeEl) rangeEl.textContent = `${acMin}–${acMax}`;
+        if (!curves.length) {
+            chart.innerHTML = '';
+            if (legendEl) legendEl.innerHTML = '';
+            if (noteEl) noteEl.textContent = '';
+            return;
+        }
+
+        // Geometría en coordenadas del viewBox; el SVG escala solo al ancho disponible.
+        const W = 320, H = 190, padL = 34, padR = 10, padT = 12, padB = 26;
+        const points = curves[0].length;
+        const maxDpr = Math.max(1, ...curves.flat().map(p => p.dpr));
+        const x = (i) => padL + (W - padL - padR) * (points === 1 ? 0 : i / (points - 1));
+        const y = (v) => padT + (H - padT - padB) * (1 - v / maxDpr);
+        const round = (n) => Math.round(n * 10) / 10;
+
+        // Rejilla horizontal con tres referencias de daño
+        const yTicks = [0, maxDpr / 2, maxDpr];
+        const grid = yTicks.map(v => `
+            <line class="curve-grid" x1="${padL}" y1="${round(y(v))}" x2="${W - padR}" y2="${round(y(v))}" />
+            <text class="curve-tick" x="${padL - 5}" y="${round(y(v)) + 3}" text-anchor="end">${v.toFixed(0)}</text>`).join('');
+
+        // Etiquetas de CA cada 5 puntos
+        const xLabels = curves[0].map((p, i) => (p.ac % 5 === 0
+            ? `<text class="curve-tick" x="${round(x(i))}" y="${H - 8}" text-anchor="middle">${p.ac}</text>`
+            : '')).join('');
+
+        // CA de comparación elegida: línea vertical de referencia
+        const targetIndex = curves[0].findIndex(p => p.ac === parseInt(document.getElementById('compareTargetAC')?.value, 10));
+        const targetLine = targetIndex >= 0
+            ? `<line class="curve-target" x1="${round(x(targetIndex))}" y1="${padT}" x2="${round(x(targetIndex))}" y2="${H - padB}" />`
+            : '';
+
+        const lines = curves.map((curve, c) => {
+            const d = curve.map((p, i) => `${round(x(i))},${round(y(p.dpr))}`).join(' ');
+            return `<polyline class="curve-line curve-c${c % 5}" points="${d}" />`;
+        }).join('');
+
+        // Cruces: un punto marcado justo donde cambia quién va ganando
+        const changes = DnDEngine.curveLeadChanges(curves);
+        const marks = changes.map(change => {
+            const i = curves[0].findIndex(p => p.ac === change.ac);
+            return `<circle class="curve-cross curve-c${change.to % 5}" cx="${round(x(i))}" cy="${round(y(curves[change.to][i].dpr))}" r="4" />`;
+        }).join('');
+
+        chart.innerHTML = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${this.escapeHtml(t('curveAria', { min: acMin, max: acMax }))}" preserveAspectRatio="xMidYMid meet">
+            ${grid}${targetLine}${lines}${marks}${xLabels}
+        </svg>`;
+
+        if (legendEl) {
+            legendEl.innerHTML = results.map((r, c) =>
+                `<span class="curve-key"><i class="curve-swatch curve-c${c % 5}"></i>${this.escapeHtml(r.name)}</span>`).join('');
+        }
+
+        if (noteEl) {
+            noteEl.textContent = this.describeCrossings(results, curves, changes);
+        }
+    }
+
+    // Texto de los cruces: es lo que se lee de verdad en la mesa, el dibujo sólo acompaña.
+    describeCrossings(results, curves, changes) {
+        if (results.length < 2) return t('curveNeedsTwo');
+
+        if (changes.length === 0) {
+            let leader = 0;
+            for (let c = 1; c < curves.length; c++) {
+                if (curves[c][0].dpr > curves[leader][0].dpr) leader = c;
+            }
+            return t('curveNoCrossing', { name: results[leader].name });
+        }
+
+        const frases = [t('curveLeaderStart', { ac: changes[0].ac - 1, name: results[changes[0].from].name })];
+        for (const change of changes) frases.push(t('curveCrossing', { ac: change.ac, to: results[change.to].name }));
+        return frases.join(' ');
     }
 
     escapeHtml(text) {
@@ -3196,8 +3732,14 @@ class DnDCalculator {
             critRange: 20,
             numberOfAttacks: 1,
             targetAC: 15,
-            powerAttack: false // mostrar análisis de GWM / Sharpshooter (-5/+10)
+            powerAttack: false, // mostrar análisis de GWM / Sharpshooter (-5/+10)
+            damageMultiplier: 1, // 0.5 = objetivo resistente, 2 = vulnerable
+            greatWeaponFighting: false // relanzar 1 y 2 en los dados del arma
         };
+
+        // PV del enemigo para "¿lo mato este turno?". No es parte de la build: describe
+        // al enemigo que tenés enfrente, así que no se guarda en los perfiles.
+        this.enemyHP = 10;
 
         this.calcTimer = null;
         this.initializeEventListeners();
@@ -3259,6 +3801,31 @@ class DnDCalculator {
             });
         }
 
+        const gwfInput = document.getElementById('greatWeaponFighting');
+        if (gwfInput) {
+            gwfInput.addEventListener('change', (e) => {
+                this.config.greatWeaponFighting = e.target.checked;
+                this.updateDiceNotation();
+                this.scheduleCalculate(0);
+            });
+        }
+
+        document.querySelectorAll('input[name="damageMultiplier"]').forEach(radio => {
+            radio.addEventListener('change', (e) => {
+                this.config.damageMultiplier = parseFloat(e.target.value);
+                this.updateDiceNotation();
+                this.scheduleCalculate(0);
+            });
+        });
+
+        const enemyHPInput = document.getElementById('enemyHP');
+        if (enemyHPInput) {
+            enemyHPInput.addEventListener('input', (e) => {
+                this.enemyHP = Math.max(1, parseInt(e.target.value, 10) || 1);
+                this.scheduleCalculate();
+            });
+        }
+
         document.getElementById('targetAC').addEventListener('input', (e) => {
             this.config.targetAC = e.target.value ? parseInt(e.target.value) : null;
             this.scheduleCalculate();
@@ -3313,6 +3880,11 @@ class DnDCalculator {
         if (this.config.sneakAttackDice > 0) {
             fullNotation += ` + ${this.config.sneakAttackDice}d6 ${t('sneakNotation')}`;
         }
+
+        // Marcas sin texto para que se entiendan en cualquier idioma
+        if (this.config.greatWeaponFighting) fullNotation += ' ↻1,2';
+        if (this.config.damageMultiplier === 0.5) fullNotation = `(${fullNotation}) ÷2`;
+        if (this.config.damageMultiplier === 2) fullNotation = `(${fullNotation}) ×2`;
 
         document.getElementById('diceNotation').textContent = fullNotation;
     }
@@ -3676,7 +4248,28 @@ class DnDCalculator {
             }
         }
 
-        // Actualizar turnos para derrotar
+        // Probabilidad de matar este turno. Se calcula la distribución exacta del daño
+        // UNA sola vez y se reutiliza para los PV escritos a mano y para cada enemigo tipo.
+        const cfg = this.engineConfig();
+        const distribution = DnDEngine.turnDamageDistribution(cfg, ac);
+        const killChance = (hp) => DnDEngine.killProbability(cfg, ac, hp, distribution);
+        // Una chance chiquita pero real no debería verse igual que un cero redondo.
+        const formatKill = (p) => {
+            if (p === null) return '—';
+            if (p > 0 && p < 0.001) return '<0.1%';
+            return (p * 100).toFixed(1) + '%';
+        };
+
+        const killValue = document.getElementById('killChanceValue');
+        const killCaption = document.getElementById('killChanceCaption');
+        if (killValue) {
+            killValue.textContent = formatKill(killChance(this.enemyHP));
+            // Sin distribución no hay número: se avisa en vez de mostrar un guión mudo.
+            killValue.title = distribution ? '' : t('killChanceUnavailable');
+            if (killCaption) killCaption.textContent = distribution ? t('killChanceCaption') : t('killChanceUnavailable');
+        }
+
+        // Enemigos tipo: cuánto tardo y qué chance tengo de resolverlo en un turno
         const defeatList = document.getElementById('defeatTimesList');
         if (defeatList) {
             defeatList.innerHTML = enemies.map(enemy => {
@@ -3685,6 +4278,7 @@ class DnDCalculator {
                 const label = n === 1 ? t('turnsLabelSingular') : t('turnsLabel');
                 return `<div class="defeat-item">
                     <span class="defeat-enemy">${t(enemy.key)}</span>
+                    <span class="defeat-kill">${formatKill(killChance(enemy.hp))} ${t('killListChance')}</span>
                     <span class="defeat-turns">${turns} ${label}</span>
                 </div>`;
             }).join('');

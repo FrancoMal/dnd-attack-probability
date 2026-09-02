@@ -19,7 +19,9 @@ const perfil = (over = {}) => ({
         critRange: 20,
         numberOfAttacks: 1,
         targetAC: 15,
-        powerAttack: false
+        powerAttack: false,
+        damageMultiplier: 1,
+        greatWeaponFighting: false
     },
     ...over
 });

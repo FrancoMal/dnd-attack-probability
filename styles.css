@@ -33,6 +33,13 @@
     --font-body: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif;
     --font-num: "SF Mono", "Cascadia Mono", Consolas, "Roboto Mono", Menlo, monospace;
 
+    /* Curvas del comparador (se ciclan si hay más perfiles) */
+    --curve-0: #e0a03a;
+    --curve-1: #6aa8d8;
+    --curve-2: #7fbf62;
+    --curve-3: #c97fb8;
+    --curve-4: #d98a87;
+
     --radius: 10px;
     --radius-sm: 6px;
     --tap: 48px;                 /* objetivo táctil mínimo */
@@ -187,7 +194,9 @@ input:focus, select:focus { border-color: var(--line-strong); }
 .segmented label { position: relative; display: block; }
 .segmented input { position: absolute; opacity: 0; inset: 0; margin: 0; cursor: pointer; }
 .segmented span {
-    display: flex; align-items: center; justify-content: center; min-height: calc(var(--tap) - 6px);
+    /* -4px y no -6: descontando el borde y el padding del contenedor, cada opción
+       queda en 44px de alto, que es el mínimo táctil. */
+    display: flex; align-items: center; justify-content: center; min-height: calc(var(--tap) - 4px);
     border-radius: 4px; color: var(--ink-2); font-weight: 600; font-variant-numeric: tabular-nums; font-size: 0.95em;
     transition: background 0.15s, color 0.15s;
 }
@@ -287,10 +296,33 @@ details.panel > .panel-body { padding: 0 14px 14px; display: flex; flex-directio
 
 .defeat { margin-top: 12px; }
 .defeat h4 { font-size: 0.9em; color: var(--ink-2); margin-bottom: 6px; }
+/* PV del enemigo + probabilidad de matarlo este turno */
+.kill-check {
+    display: grid; grid-template-columns: 1fr auto; align-items: center;
+    gap: 4px 12px; margin-bottom: 10px; padding: 10px 12px;
+    background: var(--bg-elev-2); border-radius: var(--radius-sm);
+}
+.kill-check > label { font-size: 0.85em; color: var(--ink-2); }
+.kill-check .stepper { max-width: 160px; }
+.kill-result { grid-column: 1 / -1; display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; margin-top: 4px; }
+.kill-value {
+    font-family: var(--font-display); font-size: 1.9em; font-weight: 700; line-height: 1.1;
+    font-variant-numeric: tabular-nums; color: var(--crit);
+}
+.kill-caption { font-size: 0.85em; color: var(--ink-2); }
+
 .defeat-list { display: grid; grid-template-columns: 1fr; gap: 6px; }
-.defeat-item { display: flex; justify-content: space-between; gap: 8px; padding: 8px 10px; background: var(--bg-input); border-radius: var(--radius-sm); font-size: 0.9em; }
+/* En móvil el nombre del enemigo ocupa su propia línea: si comparte fila con los dos
+   números, se parte en dos y las cifras quedan colgadas de la primera mitad. */
+.defeat-item {
+    display: grid; grid-template-columns: 1fr auto; align-items: baseline;
+    gap: 4px 10px; padding: 8px 10px; background: var(--bg-input);
+    border-radius: var(--radius-sm); font-size: 0.9em;
+}
+.defeat-enemy { grid-column: 1 / -1; }
 .defeat-enemy { color: var(--ink-2); }
-.defeat-turns { font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.defeat-kill { font-weight: 700; font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--crit); }
+.defeat-turns { font-variant-numeric: tabular-nums; white-space: nowrap; color: var(--ink-3); font-size: 0.9em; }
 .level-line { display: flex; align-items: center; gap: 10px; margin-top: 12px; font-size: 0.85em; flex-wrap: wrap; }
 .level-badge { padding: 4px 10px; border-radius: 999px; background: var(--bg-elev-2); border: 1px solid var(--line-strong); font-weight: 650; }
 
@@ -437,6 +469,32 @@ details.panel > .panel-body { padding: 0 14px 14px; display: flex; flex-directio
 }
 .comparison-table th { font-size: 0.8em; text-transform: uppercase; letter-spacing: 0.05em; color: var(--ink-3); border-top: 0; }
 .best-badge { color: var(--crit); display: inline-flex; vertical-align: middle; margin-left: 4px; font-size: 0.95em; }
+/* Curva de DPR contra el rango de CA */
+.curve-block { margin-top: 16px; }
+.curve-block h4 { font-size: 0.9em; color: var(--ink-2); margin-bottom: 8px; }
+.curve-range { font-size: 0.85em; font-variant-numeric: tabular-nums; }
+.curve-chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+.curve-grid { stroke: var(--line); stroke-width: 1; }
+.curve-target { stroke: var(--ink-3); stroke-width: 1; stroke-dasharray: 3 3; }
+.curve-tick { fill: var(--ink-3); font-size: 9px; font-family: var(--font-body); }
+.curve-line { fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.curve-cross { fill: var(--bg-elev); stroke-width: 2; }
+.curve-c0 { stroke: var(--curve-0); }
+.curve-c1 { stroke: var(--curve-1); }
+.curve-c2 { stroke: var(--curve-2); }
+.curve-c3 { stroke: var(--curve-3); }
+.curve-c4 { stroke: var(--curve-4); }
+.curve-legend { display: flex; flex-wrap: wrap; gap: 6px 14px; margin-top: 8px; font-size: 0.85em; color: var(--ink-2); }
+.curve-key { display: inline-flex; align-items: center; gap: 6px; }
+.curve-swatch { display: inline-block; width: 14px; height: 3px; border-radius: 2px; }
+.curve-swatch.curve-c0 { background: var(--curve-0); }
+.curve-swatch.curve-c1 { background: var(--curve-1); }
+.curve-swatch.curve-c2 { background: var(--curve-2); }
+.curve-swatch.curve-c3 { background: var(--curve-3); }
+.curve-swatch.curve-c4 { background: var(--curve-4); }
+.curve-note { margin-top: 8px; font-size: 0.9em; color: var(--ink); }
+.curve-note:empty { display: none; }
+
 .adv-badge, .attacks-badge { display: inline-block; padding: 1px 6px; border-radius: 999px; font-size: 0.8em; background: var(--bg-input); margin-left: 4px; }
 .adv-badge.advantage { color: #9fcf8b; } .adv-badge.disadvantage { color: #d98a87; }
 
@@ -458,6 +516,11 @@ details.panel > .panel-body { padding: 0 14px 14px; display: flex; flex-directio
     .config { position: sticky; top: calc(var(--hero-h) + 16px); align-self: start; max-height: calc(100vh - var(--hero-h) - 32px); overflow-y: auto; padding-right: 4px; }
     .stats-grid { grid-template-columns: repeat(4, 1fr); }
     .defeat-list { grid-template-columns: repeat(2, 1fr); }
+    .defeat-item { grid-template-columns: 1fr auto auto; }
+    .defeat-enemy { grid-column: auto; }
+    .kill-check { grid-template-columns: auto minmax(0, 200px) 1fr; }
+    .kill-result { grid-column: auto; justify-content: flex-end; margin-top: 0; }
+    .curve-chart { max-width: 640px; }
     .results-table th, .results-table td { padding: 9px 10px; }
     .results-table tbody tr.row-far { display: table-row; }
     .col-miss, .col-dmg,

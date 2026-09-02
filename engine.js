@@ -17,6 +17,9 @@
 
     const ADVANTAGE_MODES = ['normal', 'advantage', 'disadvantage'];
 
+    // Resistencia / normal / vulnerabilidad del objetivo al tipo de daño.
+    const DAMAGE_MULTIPLIERS = [0.5, 1, 2];
+
     // ---------- Configuración ----------
 
     function toInt(value, fallback) {
@@ -51,7 +54,9 @@
             critRange: clamp(toInt(cfg.critRange, 20), 2, 20),
             numberOfAttacks: clamp(toInt(cfg.numberOfAttacks, 1), 1, 20),
             targetAC: cfg.targetAC == null || cfg.targetAC === '' ? null : clamp(toInt(cfg.targetAC, 15), 1, 40),
-            powerAttack: !!cfg.powerAttack
+            powerAttack: !!cfg.powerAttack,
+            damageMultiplier: DAMAGE_MULTIPLIERS.includes(Number(cfg.damageMultiplier)) ? Number(cfg.damageMultiplier) : 1,
+            greatWeaponFighting: !!cfg.greatWeaponFighting
         };
     }
 
@@ -126,13 +131,60 @@
 
     const SNEAK_DIE_AVG = 3.5;
 
-    function sneakAttackAverage(cfg, isCrit) {
+    /**
+     * Promedio de una cara de dado de daño.
+     *
+     * Con el Estilo de Combate de Arma Grande (GWF) se relanzan los 1 y los 2 y hay que
+     * quedarse con el segundo resultado, así que esas dos caras pasan a valer el promedio
+     * del dado entero: un d8 sube de 4.5 a 5.25. El mínimo NO cambia (el relanzamiento
+     * puede volver a salir 1), solo el promedio.
+     */
+    function dieAverage(sides, gwf) {
+        const plain = (1 + sides) / 2;
+        if (!gwf) return plain;
+        const rerolled = Math.min(2, sides);
+        let total = rerolled * plain;
+        for (let face = rerolled + 1; face <= sides; face++) total += face;
+        return total / sides;
+    }
+
+    /*
+     * Resistencia (x0.5) y vulnerabilidad (x2).
+     *
+     * 5e redondea hacia abajo al reducir a la mitad, pero redondear solo tiene sentido
+     * sobre una tirada concreta: mínimos, máximos y la distribución exacta usan
+     * applyMultiplierRoll; los promedios se multiplican sin redondear (applyMultiplier),
+     * porque el promedio de floor(X/2) no es floor(promedio/2).
+     */
+    function applyMultiplier(value, cfg) {
+        return value * cfg.damageMultiplier;
+    }
+
+    function applyMultiplierRoll(value, cfg) {
+        return cfg.damageMultiplier === 0.5 ? Math.floor(value / 2) : value * cfg.damageMultiplier;
+    }
+
+    // Daño de arma sin multiplicador: bono fijo + dados (duplicados en crítico).
+    function weaponAverageRaw(cfg, isCrit) {
+        let total = cfg.damageBonus;
+        for (const die of cfg.damageDice) {
+            total += die.count * (isCrit ? 2 : 1) * dieAverage(die.sides, cfg.greatWeaponFighting);
+        }
+        return total;
+    }
+
+    // El GWF pide relanzar "un dado de daño del arma", así que no toca al Sneak Attack.
+    function sneakAverageRaw(cfg, isCrit) {
         return cfg.sneakAttackDice * (isCrit ? 2 : 1) * SNEAK_DIE_AVG;
+    }
+
+    function sneakAttackAverage(cfg, isCrit) {
+        return applyMultiplier(sneakAverageRaw(cfg, isCrit), cfg);
     }
 
     function sneakAttackRange(cfg, isCrit) {
         const dice = cfg.sneakAttackDice * (isCrit ? 2 : 1);
-        return { min: dice, max: dice * 6 };
+        return { min: applyMultiplierRoll(dice, cfg), max: applyMultiplierRoll(dice * 6, cfg) };
     }
 
     /**
@@ -140,12 +192,9 @@
      * includeSneak: sumar el Sneak Attack a este impacto (útil solo para 1 ataque/turno).
      */
     function damageAverage(cfg, isCrit, includeSneak) {
-        let total = cfg.damageBonus;
-        for (const die of cfg.damageDice) {
-            total += die.count * (isCrit ? 2 : 1) * (1 + die.sides) / 2;
-        }
-        if (includeSneak) total += sneakAttackAverage(cfg, isCrit);
-        return total;
+        let raw = weaponAverageRaw(cfg, isCrit);
+        if (includeSneak) raw += sneakAverageRaw(cfg, isCrit);
+        return applyMultiplier(raw, cfg);
     }
 
     function damageRange(cfg, isCrit, includeSneak) {
@@ -156,11 +205,11 @@
             max += n * die.sides;
         }
         if (includeSneak) {
-            const sa = sneakAttackRange(cfg, isCrit);
-            min += sa.min;
-            max += sa.max;
+            const dice = cfg.sneakAttackDice * (isCrit ? 2 : 1);
+            min += dice;
+            max += dice * 6;
         }
-        return { min, max };
+        return { min: applyMultiplierRoll(min, cfg), max: applyMultiplierRoll(max, cfg) };
     }
 
     // ---------- DPR ----------
@@ -362,8 +411,198 @@
         return groups;
     }
 
+    // ---------- Curva de DPR contra un rango de CA ----------
+
+    // Rango útil en mesa: por debajo de 10 casi no hay enemigos, por encima de 25 tampoco.
+    const DPR_CURVE_AC_MIN = 10;
+    const DPR_CURVE_AC_MAX = 25;
+
+    /** Daño esperado por turno para cada CA del rango. */
+    function dprCurve(cfg, acMin = DPR_CURVE_AC_MIN, acMax = DPR_CURVE_AC_MAX) {
+        const points = [];
+        for (let ac = acMin; ac <= acMax; ac++) {
+            points.push({ ac, dpr: dprPerTurn(cfg, ac) });
+        }
+        return points;
+    }
+
+    /**
+     * Dónde se cruzan varias curvas: devuelve, en orden de CA, cada punto en el que
+     * cambia quién va ganando. `from` y `to` son índices dentro de `curves`.
+     * En un empate exacto gana el índice más chico y no se reporta cruce.
+     */
+    function curveLeadChanges(curves) {
+        if (!curves.length || !curves[0].length) return [];
+
+        const changes = [];
+        let previous = null;
+        for (let i = 0; i < curves[0].length; i++) {
+            let leader = 0;
+            for (let c = 1; c < curves.length; c++) {
+                if (curves[c][i].dpr > curves[leader][i].dpr + 1e-9) leader = c;
+            }
+            if (previous !== null && leader !== previous) {
+                changes.push({ ac: curves[0][i].ac, from: previous, to: leader });
+            }
+            previous = leader;
+        }
+        return changes;
+    }
+
+    // ---------- Distribución exacta de daño y probabilidad de matar ----------
+
+    /*
+     * Todo lo de acá abajo trabaja con distribuciones de probabilidad representadas como
+     * arrays: dist[d] es P(daño = d). Es la única parte del motor que no se resuelve con
+     * promedios, y es lo que permite responder "¿lo mato este turno?" en vez de "¿cuánto
+     * daño hago en promedio?", que es la pregunta que se hace de verdad en la mesa.
+     */
+
+    // Techo de seguridad: por encima de esto la convolución no vale la pena y se devuelve null.
+    const DIST_MAX_DAMAGE = 4000;
+
+    /** Distribución de UN dado. Con GWF, las caras 1 y 2 se reparten sobre todas las caras. */
+    function dieDistribution(sides, gwf) {
+        const dist = new Array(sides + 1).fill(0);
+        const p = 1 / sides;
+        for (let face = 1; face <= sides; face++) {
+            if (gwf && face <= 2) {
+                for (let again = 1; again <= sides; again++) dist[again] += p * p;
+            } else {
+                dist[face] += p;
+            }
+        }
+        return dist;
+    }
+
+    /** Distribución de la suma de dos variables independientes. */
+    function convolve(a, b) {
+        const out = new Array(a.length + b.length - 1).fill(0);
+        for (let i = 0; i < a.length; i++) {
+            const pa = a[i];
+            if (pa === 0) continue;
+            for (let j = 0; j < b.length; j++) out[i + j] += pa * b[j];
+        }
+        return out;
+    }
+
+    /** Suma un valor fijo. Un daño negativo no cura: se recorta en 0. */
+    function shiftDistribution(dist, offset) {
+        if (offset === 0) return dist.slice();
+        const out = new Array(Math.max(1, dist.length + offset)).fill(0);
+        for (let i = 0; i < dist.length; i++) {
+            out[clamp(i + offset, 0, out.length - 1)] += dist[i];
+        }
+        return out;
+    }
+
+    /** Aplica resistencia o vulnerabilidad a una tirada concreta (con su redondeo). */
+    function scaleDistribution(dist, cfg) {
+        if (cfg.damageMultiplier === 1) return dist;
+        const out = new Array(applyMultiplierRoll(dist.length - 1, cfg) + 1).fill(0);
+        for (let i = 0; i < dist.length; i++) out[applyMultiplierRoll(i, cfg)] += dist[i];
+        return out;
+    }
+
+    function diceDistribution(dice, isCrit, gwf) {
+        let dist = [1];
+        for (const die of dice) {
+            const one = dieDistribution(die.sides, gwf);
+            const n = die.count * (isCrit ? 2 : 1);
+            for (let k = 0; k < n; k++) dist = convolve(dist, one);
+        }
+        return dist;
+    }
+
+    /** Daño de UN ataque de arma (dados + bono), ya con resistencia/vulnerabilidad. */
+    function attackDamageDistribution(cfg, isCrit) {
+        const dice = diceDistribution(cfg.damageDice, isCrit, cfg.greatWeaponFighting);
+        return scaleDistribution(shiftDistribution(dice, cfg.damageBonus), cfg);
+    }
+
+    function sneakDamageDistribution(cfg, isCrit) {
+        if (cfg.sneakAttackDice <= 0) return [1];
+        const dice = diceDistribution([{ count: cfg.sneakAttackDice, sides: 6 }], isCrit, false);
+        return scaleDistribution(dice, cfg);
+    }
+
+    /**
+     * Distribución exacta del daño TOTAL de un turno contra una CA.
+     *
+     * Se recorre ataque por ataque arrastrando tres estados, porque el Sneak Attack
+     * depende del turno entero y no de cada ataque por separado:
+     *   0 = todavía no impactó nada        -> sin Sneak Attack
+     *   1 = hubo impacto, ninguno crítico  -> Sneak Attack normal
+     *   2 = hubo al menos un crítico       -> Sneak Attack duplicado
+     * Por eso el Sneak se suma al final y no dentro del bucle: un crítico en el último
+     * ataque duplica el Sneak aunque el primer impacto haya sido normal.
+     *
+     * Devuelve null si la build es tan grande que el cálculo exacto no vale la pena.
+     */
+    function turnDamageDistribution(cfg, ac) {
+        const maxDamage = damageRange(cfg, true, true).max * cfg.numberOfAttacks;
+        if (!Number.isFinite(maxDamage) || maxDamage > DIST_MAX_DAMAGE) return null;
+
+        const { hit, crit } = hitProbability(cfg, ac);
+        const pCrit = crit;
+        const pNormal = hit - crit;
+        const pMiss = 1 - hit;
+
+        const normalDist = attackDamageDistribution(cfg, false);
+        const critDist = attackDamageDistribution(cfg, true);
+
+        const addInto = (acc, dist, weight) => {
+            if (weight === 0 || dist.length === 0) return;
+            for (let i = 0; i < dist.length; i++) acc[i] = (acc[i] || 0) + dist[i] * weight;
+        };
+
+        let states = [[1], [], []];
+        for (let attack = 0; attack < cfg.numberOfAttacks; attack++) {
+            const next = [[], [], []];
+            for (let s = 0; s < states.length; s++) {
+                const current = states[s];
+                if (current.length === 0) continue;
+                addInto(next[s], current, pMiss);
+                addInto(next[Math.max(s, 1)], convolve(current, normalDist), pNormal);
+                addInto(next[2], convolve(current, critDist), pCrit);
+            }
+            states = next;
+        }
+
+        const total = [];
+        addInto(total, states[0], 1);
+        if (states[1].length) addInto(total, convolve(states[1], sneakDamageDistribution(cfg, false)), 1);
+        if (states[2].length) addInto(total, convolve(states[2], sneakDamageDistribution(cfg, true)), 1);
+        return total;
+    }
+
+    /**
+     * P(el daño del turno alcance para bajar a un enemigo con hp puntos de vida).
+     * Es la pregunta accionable en mesa: el DPR dice cuánto pegás en promedio, esto dice
+     * si conviene rematar a ese enemigo o cambiar de objetivo. Devuelve null si no se pudo
+     * calcular (build demasiado grande). Acepta una distribución ya calculada para no
+     * repetir el trabajo cuando se preguntan varios enemigos contra la misma CA.
+     */
+    function killProbability(cfg, ac, hp, distribution) {
+        if (hp <= 0) return 1;
+        const dist = distribution || turnDamageDistribution(cfg, ac);
+        if (!dist) return null;
+
+        let p = 0;
+        for (let d = Math.max(0, Math.ceil(hp)); d < dist.length; d++) p += dist[d];
+        return p;
+    }
+
+    /** Valor esperado de una distribución. Los tests lo usan para contrastar con el DPR. */
+    function distributionAverage(dist) {
+        let total = 0;
+        for (let d = 0; d < dist.length; d++) total += d * dist[d];
+        return total;
+    }
+
     return {
         ADVANTAGE_MODES,
+        DAMAGE_MULTIPLIERS,
         normalizeConfig,
         hitProbability,
         damageAverage,
@@ -379,6 +618,16 @@
         withPowerAttack,
         powerAttackComparison,
         powerAttackCutoff,
-        multiAttackDistribution
+        multiAttackDistribution,
+        dieAverage,
+        DPR_CURVE_AC_MIN,
+        DPR_CURVE_AC_MAX,
+        dprCurve,
+        curveLeadChanges,
+        dieDistribution,
+        attackDamageDistribution,
+        turnDamageDistribution,
+        killProbability,
+        distributionAverage
     };
 }));

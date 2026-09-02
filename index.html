@@ -145,6 +145,27 @@
                 </div>
             </div>
 
+            <label class="toggle" for="greatWeaponFighting">
+                <input type="checkbox" id="greatWeaponFighting">
+                <span class="toggle-track" aria-hidden="true"></span>
+                <span class="toggle-text">
+                    <span data-i18n="gwf">Estilo de Combate: Arma Grande</span>
+                    <small data-i18n="gwfHint">Relanza los 1 y 2 de los dados del arma. Sube el promedio (un d8 pasa de 4.5 a 5.25), no el mínimo.</small>
+                </span>
+            </label>
+
+            <div class="field">
+                <span class="field-label">
+                    <span data-i18n="damageMultiplierLabel">Daño contra el objetivo</span>
+                    <button type="button" class="tooltip" data-i18n-aria="ariaHelp" aria-label="Ayuda">?<span class="tooltip-text" data-i18n="damageMultiplierTooltip">Resistencia divide el daño a la mitad (redondeando hacia abajo) y vulnerabilidad lo duplica. No cambia la probabilidad de impactar.</span></button>
+                </span>
+                <div class="segmented segmented-3" role="radiogroup" data-i18n-aria="damageMultiplierLabel" aria-label="Daño contra el objetivo">
+                    <label><input type="radio" name="damageMultiplier" value="0.5"><span data-i18n="damageTargetResistant">Resistente</span></label>
+                    <label><input type="radio" name="damageMultiplier" value="1" checked><span data-i18n="damageTargetNormal">Normal</span></label>
+                    <label><input type="radio" name="damageMultiplier" value="2"><span data-i18n="damageTargetVulnerable">Vulnerable</span></label>
+                </div>
+            </div>
+
             <div class="field">
                 <span class="field-label" data-i18n="numberOfAttacks">Número de Ataques</span>
                 <div class="segmented" role="radiogroup" id="attacksGroup" aria-label="Número de ataques">
@@ -284,7 +305,19 @@
                     </div>
                 </div>
                 <div class="defeat">
-                    <h4 data-i18n="defeatTimesTitle">Turnos para Derrotar</h4>
+                    <h4 data-i18n="killTitle">¿Lo mato este turno?</h4>
+                    <div class="kill-check">
+                        <label for="enemyHP" data-i18n="enemyHPLabel">PV del enemigo</label>
+                        <div class="stepper">
+                            <button type="button" class="step" data-step="enemyHP" data-delta="-1">−</button>
+                            <input type="number" id="enemyHP" value="10" min="1" max="999" inputmode="numeric">
+                            <button type="button" class="step" data-step="enemyHP" data-delta="1">+</button>
+                        </div>
+                        <p class="kill-result">
+                            <span class="kill-value" id="killChanceValue">—</span>
+                            <span class="kill-caption" id="killChanceCaption" data-i18n="killChanceCaption">de matarlo este turno</span>
+                        </p>
+                    </div>
                     <div class="defeat-list" id="defeatTimesList"></div>
                 </div>
                 <div class="level-line">
@@ -393,6 +426,12 @@
                         </thead>
                         <tbody id="comparisonTableBody"></tbody>
                     </table>
+                </div>
+                <div class="curve-block">
+                    <h4><span data-i18n="curveTitle">DPR contra el rango de CA</span> <span class="muted curve-range" id="curveRange"></span></h4>
+                    <div class="curve-chart" id="dprCurve"></div>
+                    <div class="curve-legend" id="curveLegend"></div>
+                    <p class="curve-note" id="curveCrossings"></p>
                 </div>
             </section>
         </main>
