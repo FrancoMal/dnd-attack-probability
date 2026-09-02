@@ -1195,7 +1195,9 @@ class ProfileManager {
         this.calculator.config.advantage = cfg.advantage;
         this.calculator.config.critRange = cfg.critRange;
         this.calculator.config.numberOfAttacks = cfg.numberOfAttacks;
-        this.calculator.config.targetAC = cfg.targetAC;
+        // Los perfiles viejos podían no tener CA objetivo (era opcional). En ese caso se
+        // conserva la que ya estaba: vaciarla dejaría la barra de resultados en blanco.
+        if (cfg.targetAC != null) this.calculator.config.targetAC = cfg.targetAC;
         this.calculator.config.attackDiceBonus = cfg.attackDiceBonus || 0;
         this.calculator.config.sneakAttackDice = cfg.sneakAttackDice || 0;
         this.calculator.config.powerAttack = !!cfg.powerAttack;
@@ -2511,8 +2513,12 @@ document.addEventListener('DOMContentLoaded', () => {
             const min = input.min !== '' ? parseInt(input.min, 10) : -Infinity;
             const max = input.max !== '' ? parseInt(input.max, 10) : Infinity;
             const current = parseInt(input.value, 10);
-            const base = Number.isFinite(current) ? current : (delta > 0 ? min - 1 : max + 1);
-            input.value = Math.min(max, Math.max(min, base + delta));
+            const fallback = parseInt(input.defaultValue, 10);
+            // Campo vacío: el primer toque restaura el valor por defecto del input
+            const next = Number.isFinite(current) ? current + delta
+                : Number.isFinite(fallback) ? fallback
+                : (delta > 0 ? min : max);
+            input.value = Math.min(max, Math.max(min, next));
             input.dispatchEvent(new Event('input', { bubbles: true }));
         });
     });
