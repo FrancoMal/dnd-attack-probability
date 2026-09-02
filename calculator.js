@@ -6,6 +6,7 @@ let currentLanguage = 'es';
 // Translation object with all supported languages
 const translations = {
     es: {
+        installApp: "Instalar",
         // Barra superior / hero / tabla compacta
         appName: "Ataque D&D",
         skipToResults: "Ir a los resultados",
@@ -219,6 +220,7 @@ const translations = {
     },
 
     en: {
+        installApp: "Install",
         // Barra superior / hero / tabla compacta
         appName: "D&D Attack",
         skipToResults: "Skip to results",
@@ -432,6 +434,7 @@ const translations = {
     },
 
     pt: {
+        installApp: "Instalar",
         // Barra superior / hero / tabla compacta
         appName: "Ataque D&D",
         skipToResults: "Ir para os resultados",
@@ -645,6 +648,7 @@ const translations = {
     },
 
     de: {
+        installApp: "Installieren",
         // Barra superior / hero / tabla compacta
         appName: "D&D Angriff",
         skipToResults: "Zu den Ergebnissen",
@@ -2419,4 +2423,37 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Calcular automáticamente al cargar
     calculator.calculate();
+
+    initPWA();
 });
+
+// ========== PWA ==========
+
+// Registra el service worker (sólo bajo http/https: en file:// no está disponible)
+// y muestra el botón "Instalar" cuando el navegador ofrece la instalación (Chrome/Edge/Android).
+// En iOS no existe ese evento: se instala desde Compartir → "Agregar a inicio".
+function initPWA() {
+    if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
+        navigator.serviceWorker.register('./sw.js').catch(err => console.warn('Service worker:', err));
+    }
+
+    const installBtn = document.getElementById('installBtn');
+    if (!installBtn) return;
+    let deferredPrompt = null;
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        installBtn.hidden = false;
+    });
+
+    installBtn.addEventListener('click', async () => {
+        if (!deferredPrompt) return;
+        installBtn.hidden = true;
+        deferredPrompt.prompt();
+        await deferredPrompt.userChoice;
+        deferredPrompt = null;
+    });
+
+    window.addEventListener('appinstalled', () => { installBtn.hidden = true; });
+}

@@ -5,7 +5,8 @@
   "private": true,
   "scripts": {
     "test": "node --test \"tests/**/*.test.js\"",
-    "build:standalone": "node scripts/build-standalone.js"
+    "build:standalone": "node scripts/build-standalone.js",
+    "build:icons": "node scripts/build-icons.js"
   },
   "license": "MIT"
 }

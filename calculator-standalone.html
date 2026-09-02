@@ -6,7 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="color-scheme" content="dark">
     <meta name="theme-color" content="#1b1613">
+    <meta name="description" content="Calculadora de probabilidades de impacto y daño esperado para D&D 5e. Funciona sin conexión.">
     <title>D&D Attack Probability Calculator</title>
+
     <style>
 /* ==========================================================================
    D&D Attack Probability Calculator — hoja de estilos
@@ -109,6 +111,8 @@ b, strong { font-weight: 650; }
     font-size: 0.8em; font-weight: 650; letter-spacing: 0.04em;
 }
 .lang-switch button[aria-pressed="true"] { background: var(--bg-elev-2); color: var(--ink); }
+
+.btn-install { margin-left: auto; margin-right: 10px; border-color: var(--crit); color: var(--crit); }
 
 /* ---------- Barra de resultado pegajosa ---------- */
 .hero {
@@ -422,6 +426,7 @@ details.panel > .panel-body { padding: 0 14px 14px; display: flex; flex-directio
             <span class="brand-mark" aria-hidden="true">⚔</span>
             <span class="brand-name" data-i18n="appName">Ataque D&D</span>
         </div>
+        <button type="button" class="btn-ghost btn-sm btn-install" id="installBtn" hidden data-i18n="installApp">Instalar</button>
         <nav class="lang-switch" id="languageSelect" aria-label="Idioma">
             <button type="button" data-lang="es" aria-pressed="true">ES</button>
             <button type="button" data-lang="en">EN</button>
@@ -1095,6 +1100,7 @@ let currentLanguage = 'es';
 // Translation object with all supported languages
 const translations = {
     es: {
+        installApp: "Instalar",
         // Barra superior / hero / tabla compacta
         appName: "Ataque D&D",
         skipToResults: "Ir a los resultados",
@@ -1308,6 +1314,7 @@ const translations = {
     },
 
     en: {
+        installApp: "Install",
         // Barra superior / hero / tabla compacta
         appName: "D&D Attack",
         skipToResults: "Skip to results",
@@ -1521,6 +1528,7 @@ const translations = {
     },
 
     pt: {
+        installApp: "Instalar",
         // Barra superior / hero / tabla compacta
         appName: "Ataque D&D",
         skipToResults: "Ir para os resultados",
@@ -1734,6 +1742,7 @@ const translations = {
     },
 
     de: {
+        installApp: "Installieren",
         // Barra superior / hero / tabla compacta
         appName: "D&D Angriff",
         skipToResults: "Zu den Ergebnissen",
@@ -3508,7 +3517,40 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Calcular automáticamente al cargar
     calculator.calculate();
+
+    initPWA();
 });
+
+// ========== PWA ==========
+
+// Registra el service worker (sólo bajo http/https: en file:// no está disponible)
+// y muestra el botón "Instalar" cuando el navegador ofrece la instalación (Chrome/Edge/Android).
+// En iOS no existe ese evento: se instala desde Compartir → "Agregar a inicio".
+function initPWA() {
+    if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
+        navigator.serviceWorker.register('./sw.js').catch(err => console.warn('Service worker:', err));
+    }
+
+    const installBtn = document.getElementById('installBtn');
+    if (!installBtn) return;
+    let deferredPrompt = null;
+
+    window.addEventListener('beforeinstallprompt', (e) => {
+        e.preventDefault();
+        deferredPrompt = e;
+        installBtn.hidden = false;
+    });
+
+    installBtn.addEventListener('click', async () => {
+        if (!deferredPrompt) return;
+        installBtn.hidden = true;
+        deferredPrompt.prompt();
+        await deferredPrompt.userChoice;
+        deferredPrompt = null;
+    });
+
+    window.addEventListener('appinstalled', () => { installBtn.hidden = true; });
+}
 
     </script>
 </body>

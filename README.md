@@ -13,6 +13,10 @@ Una calculadora de probabilidades de combate para Dungeons & Dragons 5e. Calcula
 
 ![Vista general de la calculadora](screenshots/preview-full.png)
 
+<img src="screenshots/mobile.png" alt="Vista móvil" width="300">
+
+![GWM / Sharpshooter: CA de corte](screenshots/gwm-cutoff.png)
+
 </details>
 
 ### Características principales
@@ -25,24 +29,41 @@ Una calculadora de probabilidades de combate para Dungeons & Dragons 5e. Calcula
 - **Múltiples ataques**: Calcula probabilidades de hacer 0, 1, 2... n impactos
 - **Distribución de críticos**: Ve cuántos de tus impactos serán críticos
 - **Rangos de daño**: Muestra daño mínimo-máximo para cada escenario
-- **Tooltips informativos**: Explicaciones de todos los términos técnicos
+- **Great Weapon Master / Sharpshooter**: te dice hasta qué CA conviene el -5/+10, y qué hacer contra la CA objetivo
+- **Recálculo en vivo**: todo se actualiza al instante al cambiar cualquier valor
+- **Pensada para el celular**: barra pegajosa con la CA objetivo, % de impacto y daño por turno siempre a la vista; controles grandes para usarla con una mano en la mesa
+- **Instalable y offline (PWA)**: agregala a la pantalla de inicio y funciona sin internet
+- **Perfiles**: guardá builds y comparalas contra una CA
 
 ### Cómo usar
 
-1. Abre `calculator-standalone.html` en cualquier navegador
-2. Configura tu personaje:
-   - Bonificador de ataque (+5, +8, etc.)
-   - Dados de daño (1d8, 2d6, etc.)
-   - Bonificador de daño
-3. Selecciona ventaja/desventaja si aplica
-4. Ajusta número de ataques
-5. (Opcional) Especifica CA objetivo
-6. Haz clic en "Calcular Probabilidades"
+1. Abrí la [versión online](https://francomal.github.io/dnd-attack-probability/) o `calculator-standalone.html`
+2. Ajustá la **CA objetivo** con − / + en la barra superior
+3. Configurá tu personaje: bonificador de ataque, dados y bono de daño, nº de ataques, ventaja/desventaja, rango crítico, dado extra (Bendición), Sneak Attack
+4. Los resultados se recalculan solos: la barra superior muestra impacto y daño por turno; más abajo, estadísticas, tabla y distribución de multiataque
+
+**Instalar en el celular**: en Android/Chrome tocá el botón "Instalar" que aparece arriba (o menú → *Agregar a pantalla de inicio*). En iOS/Safari: Compartir → *Agregar a inicio*. Después funciona sin conexión.
 
 ### Archivos
 
-- **`calculator-standalone.html`**: Todo en un solo archivo (recomendado)
-- **`index.html`** + **`styles.css`** + **`calculator.js`**: Versión modular
+- **`index.html`** + **`styles.css`** + **`engine.js`** + **`calculator.js`**: la app
+  - `engine.js`: toda la matemática (funciones puras, sin DOM). Única fuente de verdad
+  - `calculator.js`: interfaz, perfiles, comparador, i18n
+- **`manifest.webmanifest`**, **`sw.js`**, **`icons/`**: PWA (instalación y caché offline)
+- **`calculator-standalone.html`**: todo en un solo archivo, **generado** desde los fuentes (no editar a mano)
+- **`tests/`**: tests del motor contra un oráculo de fuerza bruta
+
+### Desarrollo
+
+Sin dependencias: sólo hace falta Node ≥ 20.
+
+```bash
+npm test                  # tests del motor (node --test)
+npm run build:standalone  # regenera calculator-standalone.html
+npm run build:icons       # regenera icons/*.png
+```
+
+Al publicar una versión nueva subí `CACHE_VERSION` en `sw.js` para que los usuarios instalados reciban la actualización.
 
 ### Matemáticas
 
@@ -50,6 +71,9 @@ Utiliza distribución multinomial para cálculos precisos:
 - **Ventaja**: P(max ≥ x) = 1 - ((x-1)/20)²
 - **Desventaja**: P(min ≥ x) = ((21-x)/20)²
 - **Múltiples ataques**: P(f,n,c) = (n!/(f!×n!×c!)) × p_fallo^f × p_normal^n × p_crítico^c
+- **Dado extra al ataque** (Bendición, Inspiración): enumeración exacta de todas las combinaciones de dados
+- **Invariantes de 5e**: el 1 natural siempre falla; el crítico siempre impacta (aunque necesites más de lo que muestra el rango crítico)
+- **GWM / Sharpshooter**: DPR por turno con y sin -5/+10 para cada CA; la "CA de corte" es la mayor CA hasta la que conviene de forma contigua desde CA 1
 - **Power Level**: round(DPR_total × P(hit) × 10)
   - Métrica combinada que considera daño esperado y probabilidad de impacto
   - Útil para comparar efectividad general entre builds
@@ -67,6 +91,10 @@ A combat probability calculator for Dungeons & Dragons 5e. It calculates exact p
 
 ![Calculator overview](screenshots/preview-full.png)
 
+<img src="screenshots/mobile.png" alt="Mobile view" width="300">
+
+![GWM / Sharpshooter cutoff AC](screenshots/gwm-cutoff.png)
+
 </details>
 
 ### Main Features
@@ -79,24 +107,41 @@ A combat probability calculator for Dungeons & Dragons 5e. It calculates exact p
 - **Multiple attacks**: Calculate probabilities of landing 0, 1, 2... n hits
 - **Critical distribution**: See how many of your hits will be critical
 - **Damage ranges**: Shows minimum-maximum damage for each scenario
-- **Informative tooltips**: Explanations for all technical terms
+- **Great Weapon Master / Sharpshooter**: tells you up to which AC the -5/+10 is worth it, and what to do against your target AC
+- **Live recalculation**: everything updates instantly as you change any value
+- **Built for phones**: sticky bar with target AC, hit chance and damage per turn always visible; large one-handed controls for use at the table
+- **Installable and offline (PWA)**: add it to your home screen and it works with no internet
+- **Profiles**: save builds and compare them against an AC
 
 ### How to Use
 
-1. Open `calculator-standalone.html` in any browser
-2. Configure your character:
-   - Attack bonus (+5, +8, etc.)
-   - Damage dice (1d8, 2d6, etc.)
-   - Damage bonus
-3. Select advantage/disadvantage if applicable
-4. Adjust number of attacks
-5. (Optional) Specify target AC
-6. Click "Calculate Probabilities"
+1. Open the [online version](https://francomal.github.io/dnd-attack-probability/) or `calculator-standalone.html`
+2. Set the **target AC** with − / + in the top bar
+3. Configure your character: attack bonus, damage dice and bonus, number of attacks, advantage/disadvantage, crit range, extra attack die (Bless), Sneak Attack
+4. Results recalculate on their own: the top bar shows hit chance and damage per turn; below it, combat stats, the table and the multi-attack distribution
+
+**Install on your phone**: on Android/Chrome tap the "Install" button at the top (or menu → *Add to Home screen*). On iOS/Safari: Share → *Add to Home Screen*. It then works offline.
 
 ### Files
 
-- **`calculator-standalone.html`**: Everything in one file (recommended)
-- **`index.html`** + **`styles.css`** + **`calculator.js`**: Modular version
+- **`index.html`** + **`styles.css`** + **`engine.js`** + **`calculator.js`**: the app
+  - `engine.js`: all the math (pure functions, no DOM). Single source of truth
+  - `calculator.js`: UI, profiles, comparison, i18n
+- **`manifest.webmanifest`**, **`sw.js`**, **`icons/`**: PWA (install and offline cache)
+- **`calculator-standalone.html`**: everything in one file, **generated** from the sources (do not edit by hand)
+- **`tests/`**: engine tests against a brute-force oracle
+
+### Development
+
+No dependencies: only Node ≥ 20.
+
+```bash
+npm test                  # engine tests (node --test)
+npm run build:standalone  # regenerates calculator-standalone.html
+npm run build:icons       # regenerates icons/*.png
+```
+
+When shipping a new version bump `CACHE_VERSION` in `sw.js` so installed users get the update.
 
 ### Mathematics
 
@@ -104,6 +149,9 @@ Uses multinomial distribution for precise calculations:
 - **Advantage**: P(max ≥ x) = 1 - ((x-1)/20)²
 - **Disadvantage**: P(min ≥ x) = ((21-x)/20)²
 - **Multiple attacks**: P(f,n,c) = (n!/(f!×n!×c!)) × p_miss^f × p_normal^n × p_crit^c
+- **Extra attack die** (Bless, Bardic Inspiration): exact enumeration of every dice combination
+- **5e invariants**: a natural 1 always misses; a crit always hits (even when the roll you need is above the crit range)
+- **GWM / Sharpshooter**: DPR per turn with and without -5/+10 for every AC; the "cutoff AC" is the highest AC up to which it is worth it contiguously from AC 1
 - **Power Level**: round(DPR_total × P(hit) × 10)
   - Combined metric considering expected damage and hit probability
   - Useful for comparing overall effectiveness between builds

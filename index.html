@@ -5,7 +5,19 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <meta name="color-scheme" content="dark">
     <meta name="theme-color" content="#1b1613">
+    <meta name="description" content="Calculadora de probabilidades de impacto y daño esperado para D&D 5e. Funciona sin conexión.">
     <title>D&D Attack Probability Calculator</title>
+
+    <!-- PWA -->
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="Ataque D&D">
+    <meta name="application-name" content="Ataque D&D">
+
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
@@ -16,6 +28,7 @@
             <span class="brand-mark" aria-hidden="true">⚔</span>
             <span class="brand-name" data-i18n="appName">Ataque D&D</span>
         </div>
+        <button type="button" class="btn-ghost btn-sm btn-install" id="installBtn" hidden data-i18n="installApp">Instalar</button>
         <nav class="lang-switch" id="languageSelect" aria-label="Idioma">
             <button type="button" data-lang="es" aria-pressed="true">ES</button>
             <button type="button" data-lang="en">EN</button>

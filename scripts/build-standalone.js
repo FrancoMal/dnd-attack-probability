@@ -20,8 +20,9 @@ const app = read('calculator.js');
 const safeJs = (s) => s.replace(/<\/script/gi, '<\\/script');
 
 let out = html
-    // Quitar hojas de estilo externas (CDN de banderas): el standalone tiene que funcionar offline
+    // Quitar recursos externos y el bloque PWA (manifest, íconos): el standalone es un archivo suelto sin red
     .replace(/^\s*<link rel="stylesheet" href="https?:\/\/[^"]+">\s*\n/gm, '')
+    .replace(/^[ \t]*<!-- PWA -->[ \t]*\n(?:[ \t]*<(?:link|meta) [^\n]*\n)+\n?/m, '')
     // Inlinear CSS local
     .replace(/<link rel="stylesheet" href="styles\.css">/, () => `<style>\n${css}\n    </style>`)
     // Inlinear JS local (motor + app), en el mismo orden que index.html
