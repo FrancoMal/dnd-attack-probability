@@ -84,9 +84,14 @@ Utiliza distribución multinomial para cálculos precisos:
 - **Dado extra al ataque** (Bendición, Inspiración): enumeración exacta de todas las combinaciones de dados
 - **Invariantes de 5e**: el 1 natural siempre falla; el crítico siempre impacta (aunque necesites más de lo que muestra el rango crítico)
 - **GWM / Sharpshooter**: DPR por turno con y sin -5/+10 para cada CA; la "CA de corte" es la mayor CA hasta la que conviene de forma contigua desde CA 1
-- **Power Level**: round(DPR_total × P(hit) × 10)
-  - Métrica combinada que considera daño esperado y probabilidad de impacto
-  - Útil para comparar efectividad general entre builds
+- **Power Level**: round(DPR_por_turno promediado sobre CA 13–20 × 10)
+  - No multiplica por la probabilidad de impacto: el DPR ya la incorpora, y volver a
+    multiplicarla penalizaba dos veces a las builds imprecisas
+  - Se promedia sobre un rango de CAs en vez de usar la CA objetivo, para que el número
+    sirva para comparar builds aunque cada una tenga otro enemigo en pantalla
+- **Nivel estimado**: se traduce a nivel el bonificador de ataque y el DPR por separado
+  (interpolando sus tablas) y se promedian. Antes se devolvía el primer tramo que coincidía
+  con cualquiera de las dos señales, así que un +2 al ataque con 36 de DPR caía en "nivel 1-4"
 
 ---
 
@@ -172,9 +177,14 @@ Uses multinomial distribution for precise calculations:
 - **Extra attack die** (Bless, Bardic Inspiration): exact enumeration of every dice combination
 - **5e invariants**: a natural 1 always misses; a crit always hits (even when the roll you need is above the crit range)
 - **GWM / Sharpshooter**: DPR per turn with and without -5/+10 for every AC; the "cutoff AC" is the highest AC up to which it is worth it contiguously from AC 1
-- **Power Level**: round(DPR_total × P(hit) × 10)
-  - Combined metric considering expected damage and hit probability
-  - Useful for comparing overall effectiveness between builds
+- **Power Level**: round(per-turn DPR averaged over AC 13–20 × 10)
+  - It does not multiply by hit probability: DPR already includes it, and multiplying again
+    penalised imprecise builds twice
+  - Averaged over a range of ACs instead of the target AC, so the number can compare builds
+    even when each one has a different enemy on screen
+- **Estimated level**: attack bonus and DPR are each translated to a level (by interpolating
+  their tables) and averaged. Previously the first tier matching *either* signal was returned,
+  so a +2 to hit with 36 DPR landed in "level 1-4"
 
 ---
 

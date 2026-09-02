@@ -327,16 +327,14 @@
                         <span class="muted" data-i18n="powerLevelLabel">Power Level</span>
                     </div>
                     <div class="formula">
-                        <div><span data-i18n="statDPRTotal">DPR Total</span><b id="formulaDPR">0</b></div>
-                        <div class="op">×</div>
-                        <div><span data-i18n="statHitProb">Probabilidad de Impacto</span><b id="formulaHit">0%</b></div>
+                        <div><span><span data-i18n="powerLevelFormula">DPR promedio vs CA</span> <span class="ac-range" id="formulaAcRange">13–20</span></span><b id="formulaDPR">0</b></div>
                         <div class="op">× 10</div>
                         <div class="res"><span data-i18n="powerLevelLabel">Power Level</span><b id="formulaResult">0</b></div>
                     </div>
                     <ul class="muted small">
-                        <li><b data-i18n="statDPRTotal">DPR Total:</b> <span data-i18n="dprTotalExplain">Incluye ventaja, críticos y múltiples ataques</span></li>
-                        <li><b data-i18n="statHitProb">Probabilidad de Impacto:</b> <span data-i18n="hitChanceExplain">Penaliza builds poco confiables</span></li>
-                        <li><b>× 10:</b> <span data-i18n="scaleExplain">Escala para números comparables</span></li>
+                        <li><b data-i18n="powerLevelBulletDPR">DPR promedio</b>: <span data-i18n="powerLevelExplainDPR">Daño esperado por turno promediado sobre las CAs con las que te cruzás de verdad. Incluye ventaja, críticos, múltiples ataques y Sneak Attack.</span></li>
+                        <li><b data-i18n="powerLevelBulletRange">Rango de CAs</b>: <span data-i18n="powerLevelExplainRange">Se promedia sobre un rango de CAs en vez de usar tu CA objetivo, para que el número sirva para comparar builds entre sí.</span></li>
+                        <li><b>× 10</b>: <span data-i18n="powerLevelExplainScale">Escala para números comparables</span></li>
                     </ul>
                 </div>
             </details>

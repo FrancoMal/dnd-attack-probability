@@ -190,6 +190,62 @@
         return dprPerAttack(cfg, ac) * cfg.numberOfAttacks + sneakAttackPerTurn(cfg, ac);
     }
 
+    // ---------- Métricas de build ----------
+
+    // CAs de referencia: el rango con el que te cruzás de verdad en la mesa.
+    const POWER_LEVEL_ACS = [13, 14, 15, 16, 17, 18, 19, 20];
+
+    /**
+     * Puntaje único para comparar builds entre sí: daño esperado por turno promediado
+     * sobre las CAs típicas, ×10.
+     *
+     * A propósito NO multiplica por la probabilidad de impacto: el DPR ya la incorpora,
+     * y volver a multiplicarla penalizaba dos veces a las builds imprecisas.
+     * Promediar sobre un rango de CAs (en vez de usar la CA objetivo) hace que el número
+     * sea comparable entre dos builds aunque cada una tenga otro enemigo en pantalla.
+     */
+    function powerLevel(cfg) {
+        const total = POWER_LEVEL_ACS.reduce((sum, ac) => sum + dprPerTurn(cfg, ac), 0);
+        return Math.round(total / POWER_LEVEL_ACS.length * 10);
+    }
+
+    /*
+     * Nivel estimado a partir de dos señales independientes:
+     *   - el bonificador de ataque, que en 5e sigue de cerca al bono de competencia;
+     *   - el daño por turno, que depende más del equipo y de la clase.
+     * Cada una se traduce a un nivel interpolando su tabla, y el resultado es el promedio.
+     *
+     * Antes se recorrían tramos y se devolvía el primero que coincidía con CUALQUIERA de
+     * las dos señales, así que un +2 al ataque con 36 de DPR caía en "nivel 1-4" y un +12
+     * con 3.9 de DPR caía en "nivel 9-16". Promediar es monótono por construcción: subir
+     * el daño o el bonificador nunca puede bajar el nivel estimado.
+     */
+    const LEVEL_BY_ATTACK_BONUS = [[3.5, 2.5], [5.5, 5], [8, 8], [11, 12.5], [14.5, 17.5]];
+    const LEVEL_BY_DPR = [[10, 2.5], [18.5, 5], [30, 8], [47.5, 12.5], [77.5, 17.5]];
+
+    /** Interpola (y extrapola en los extremos) el nivel que corresponde a un valor. */
+    function interpolateLevel(points, value) {
+        const slope = (i, j) => (points[j][1] - points[i][1]) / (points[j][0] - points[i][0]);
+
+        if (value <= points[0][0]) {
+            return Math.max(1, points[0][1] - (points[0][0] - value) * slope(0, 1));
+        }
+        for (let i = 1; i < points.length; i++) {
+            if (value <= points[i][0]) {
+                return points[i - 1][1] + (value - points[i - 1][0]) * slope(i - 1, i);
+            }
+        }
+        const last = points.length - 1;
+        return Math.min(20, points[last][1] + (value - points[last][0]) * slope(last - 1, last));
+    }
+
+    function estimateCharacterLevel(attackBonus, dpr) {
+        const level = Math.round(
+            (interpolateLevel(LEVEL_BY_ATTACK_BONUS, attackBonus) + interpolateLevel(LEVEL_BY_DPR, dpr)) / 2
+        );
+        return { min: Math.max(1, level - 2), max: Math.min(20, level + 2) };
+    }
+
     // ---------- Great Weapon Master / Sharpshooter ----------
 
     const POWER_ATTACK_TO_HIT = -5;
@@ -317,6 +373,9 @@
         dprPerAttack,
         sneakAttackPerTurn,
         dprPerTurn,
+        POWER_LEVEL_ACS,
+        powerLevel,
+        estimateCharacterLevel,
         withPowerAttack,
         powerAttackComparison,
         powerAttackCutoff,
